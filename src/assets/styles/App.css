@@ -5,14 +5,16 @@
 }
 
 .chat-box-container {
+    display: flex;
     background: #fff;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 4px;
     box-sizing: border-box;
-    height: 592px;
-    max-width: 432px;
+    height: 90%;
     padding: 0 1rem;
-    width: 100%;
+    width: 70%;
+    justify-content: center;
+    align-items: center;
 
     /* Vertical and horizontal center alignment */
     position: absolute;
@@ -21,10 +23,19 @@
     transform: translate(-50%, -50%);
 }
 
+.chats-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
 .user-statements-container {
     display: flex;
+    position: absolute;
+    bottom: 8px;
     flex-flow: column;
     justify-content: flex-end;
-    height: calc(100% - 8px);
+    align-items: center;
+    height: 100%;
     width: 100%;
 }
