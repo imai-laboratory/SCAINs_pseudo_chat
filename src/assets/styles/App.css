@@ -31,6 +31,16 @@
     flex-flow: column;
 }
 
+.chat-text {
+    background: #78BB7B;
+    border-radius: 4px;
+    color: #fff;
+    padding: .5rem;
+    margin-right: 1rem;
+    max-width: 80%;
+    width: auto;
+}
+
 .user-statements-container {
     display: flex;
     position: absolute;
@@ -40,4 +50,49 @@
     align-items: center;
     height: 20%;
     width: 100%;
+}
+
+/*フォントサイズクラス*/
+.text-bold {
+    font-weight: 700;
+}
+
+.xl-4 {
+    font-size: 96px;
+    line-height: 144px;
+}
+
+.xl-3 {
+    font-size: 48px;
+    line-height: 72px;
+}
+
+.xl-2 {
+    font-size: 32px;
+    line-height: 48px;
+}
+
+.xl {
+    font-size: 24px;
+    line-height: 36px;
+}
+
+.lg {
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.md {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.sm {
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.xs {
+    font-size: 12px;
+    line-height: 16px;
 }
