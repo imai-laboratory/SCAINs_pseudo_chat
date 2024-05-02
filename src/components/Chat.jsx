@@ -14,9 +14,10 @@ function setAvatarColor(name) {
 
 export const Chat = ({text, person}) => {
     const isUser = (person === "user");
+    const classes = isUser ? 'right-chat' : 'left-chat'
 
     return (
-        <ListItem>
+        <ListItem className={classes}>
             <ListItemAvatar>
                 {isUser ? (
                     <Avatar alt={person} src={UserAvatar} />
