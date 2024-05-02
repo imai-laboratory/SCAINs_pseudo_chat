@@ -8,9 +8,8 @@ function App() {
     const [userStatement, setUserStatements] = useState();
 
     useEffect(() => {
-        const chatsData = sampleData.filter(item => item.person !== "user");
         const userData = sampleData.filter(item => item.person === "user");
-        setChats(chatsData);
+        setChats(sampleData);
         setUserStatements(userData[0].content);
     }, []);
 
