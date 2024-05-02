@@ -1,17 +1,15 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
 import React from "react";
-import Typography from "@mui/material/Typography";
 
-export const Chat = () => {
+export const Chat = ({text, person}) => {
     return (
         <ListItem>
             <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="A" src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
-            <div className="chat-text sm">テスト</div>
+            <div className="chat-text sm">{text}</div>
         </ListItem>
     )
 }
