@@ -7,7 +7,7 @@ export const Chat = ({text, person}) => {
     return (
         <ListItem>
             <ListItemAvatar>
-                <Avatar alt="A" src="/static/images/avatar/1.jpg" />
+                <Avatar alt={person} src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
             <div className="chat-text sm">{text}</div>
         </ListItem>

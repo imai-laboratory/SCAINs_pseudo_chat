@@ -7,12 +7,12 @@ const sampleData = [
     {
         "index": 2,
         "content": "おはよう！元気だよ。でも、少し眠いかな。",
-        "person": "B"
+        "person": "user"
     },
     {
         "index": 3,
         "content": "おはようございます！私はとても元気です。今日の天気はどうかな？",
-        "person": "C"
+        "person": "B"
     },
     {
         "index": 4,
@@ -22,12 +22,12 @@ const sampleData = [
     {
         "index": 5,
         "content": "いいね！晴れた日は気分もいいよね。",
-        "person": "B"
+        "person": "user"
     },
     {
         "index": 6,
         "content": "そうですね。でも、私は雨の日も好きです。雨の日は家でくつろげるから。",
-        "person": "C"
+        "person": "B"
     },
     {
         "index": 7,
@@ -37,12 +37,12 @@ const sampleData = [
     {
         "index": 8,
         "content": "ああ、私も同じだよ。映画鑑賞は雨の日にぴったりだね。",
-        "person": "B"
+        "person": "user"
     },
     {
         "index": 9,
         "content": "そうですね。映画館に行くのもいいけど、家で映画を見るのも快適ですね。",
-        "person": "C"
+        "person": "B"
     },
     {
         "index": 10,
@@ -52,12 +52,12 @@ const sampleData = [
     {
         "index": 11,
         "content": "いいアイデアだ！楽しみだね。",
-        "person": "B"
+        "person": "user"
     },
     {
         "index": 12,
         "content": "はい、それは素晴らしいアイデアですね。楽しみにしています。",
-        "person": "C"
+        "person": "B"
     }
 ]
 
