@@ -7,11 +7,20 @@ function App() {
     const [chats, setChats] = useState([]);
     const [userStatement, setUserStatements] = useState();
 
+    // サンプルデータのセット
     useEffect(() => {
         const userData = sampleData.filter(item => item.person === "user");
         setChats(sampleData);
         setUserStatements(userData[0].content);
     }, []);
+
+    // スクロール位置の設定
+    useEffect(() => {
+        const scrollArea = document.getElementById('scroll-area');
+        if (scrollArea) {
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+        }
+    });
 
     return (
     <section className="app-container">
