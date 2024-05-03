@@ -1,26 +1,32 @@
 import './assets/styles/App.css';
 import React, { useState, useCallback, useEffect } from 'react';
-import sampleData from './assets/data/sample.js'
 import {Chats, UserStatements} from "./components/index";
+import sampleData from "./assets/data/sample.js";
 
 function App() {
-    const [chats, setChats] = useState([]);
-    const [userStatement, setUserStatement] = useState();
-    const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [buttonVisible, setButtonVisible] = useState(true);
+    const [chats, setChats] = useState([]);
+    const [currentUserIndex, setCurrentUserStatement] = useState(0);
+    const [dataset, setDataset] = useState([]);
+    const [userStatement, setUserStatement] = useState();
 
+    //データセットの指定
+    useEffect(() => {
+        setDataset(sampleData);
+    }, []);
 
     // サンプルデータの初期値セット
     useEffect(() => {
-        const initUserIndex = sampleData.findIndex((data) =>
-            data.person === 'user'
-        );
-        const initChats = sampleData.slice(0, initUserIndex);
-        setChats(initChats);
-        setCurrentUserStatement(initUserIndex);
-        setUserStatement(sampleData[initUserIndex].content);
-    }, []);
+        if (dataset.length > 0) {
+            const initUserIndex = dataset.findIndex((data) => data.person === 'user');
+            const initChats = dataset.slice(0, initUserIndex);
+            setChats(initChats);
+            setCurrentUserStatement(initUserIndex);
+            setUserStatement(dataset[initUserIndex].content);
+        }
+    }, [dataset]);
 
+    //chatを加えていく
     const addChats = useCallback((chat) => {
         setChats(prevChats => {
             return [...prevChats, chat]
@@ -28,14 +34,14 @@ function App() {
     }, [setChats]);
 
     const handleUserSendMessage = () => {
-        const nextUserIndex = sampleData.findIndex((data, index) =>
+        const nextUserIndex = dataset.findIndex((data, index) =>
             index > currentUserIndex && data.person === 'user'
         );
         setButtonVisible(false);
 
         if (nextUserIndex !== -1) {
             // 次のユーザーのインデックスまでのチャットを取得
-            const chats = sampleData.slice(currentUserIndex, nextUserIndex);
+            const chats = dataset.slice(currentUserIndex, nextUserIndex);
             // チャットを1秒ごとに追加していく
             chats.forEach((chat, index) => {
                 setTimeout(() => {
@@ -46,10 +52,10 @@ function App() {
                 }, index * 1000);
             });
             setCurrentUserStatement(nextUserIndex);
-            setUserStatement(sampleData[nextUserIndex].content);
+            setUserStatement(dataset[nextUserIndex].content);
         } else {
             // データの最後まで表示
-            const chats = sampleData.slice(currentUserIndex);
+            const chats = dataset.slice(currentUserIndex);
             chats.forEach((chat, index) => {
                 setTimeout(() => {
                     addChats(chat);
