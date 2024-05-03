@@ -1,6 +1,10 @@
 # About
 
-Reactで作成したChat風のUIです。
+Reactで作成したChat風のUIです。下の青ボタンを押すことでチャットが進みます。
+
+<img src="https://github.com/Kenshin0011/chat_ui_react/assets/111888364/6d2d0ea0-408c-4f29-81aa-387d1797ec85" width="50%" />
+
+json形式で事前に用意したチャットデータを利用しています。（詳しくは`sample.js`をご確認ください）
 
 # Getting Started with Create React App
 
