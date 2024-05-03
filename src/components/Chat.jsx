@@ -25,7 +25,11 @@ export const Chat = ({text, person}) => {
                     <Avatar {...setAvatarColor(person)}  alt={person} src="/static/images/avatar/1.jpg" />
                 )}
             </ListItemAvatar>
-            <div className="chat-text sm">{text}</div>
+            {isUser ? (
+                <div className="chat-user-text sm">{text}</div>
+            ) : (
+                <div className="chat-text sm">{text}</div>
+            )}
         </ListItem>
     )
 }

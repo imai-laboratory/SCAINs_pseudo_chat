@@ -32,9 +32,19 @@
 }
 
 .chat-text {
-    background: #78BB7B;
+    background-color: #EFEFEF;
+    color: black;
     border-radius: 4px;
-    color: #fff;
+    padding: .5rem;
+    margin-right: 1rem;
+    max-width: 80%;
+    width: auto;
+}
+
+.chat-user-text {
+    background-color: #B5F892;
+    color: black;
+    border-radius: 4px;
     padding: .5rem;
     margin-right: 1rem;
     max-width: 80%;
@@ -44,12 +54,17 @@
 .user-statements-container {
     display: flex;
     position: absolute;
-    bottom: 8px;
+    bottom: 0;
     flex-flow: column;
     justify-content: flex-end;
     align-items: center;
     height: 20%;
     width: 100%;
+    background-color: rgba(220, 224, 224, 0.71);
+}
+
+.user-statement {
+    bottom: 24px;
 }
 
 .left-chat {

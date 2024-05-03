@@ -8,6 +8,7 @@ export const UserStatements = ({userStatement}) => {
                 variant="contained"
                 color="info"
                 size="large"
+                className="user-statement"
             >
                 {userStatement}
             </Button>
