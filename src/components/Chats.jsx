@@ -16,8 +16,8 @@ export const Chats = ({chats}) => {
 
     return (
         <div className="chats-container">
-            <ChatsContainer>
-                <List id={"scroll-area"}>
+            <ChatsContainer id={"scroll-area"}>
+                <List>
                     {chats.map((chat, index) => {
                         return <Chat text={chat.content} person={chat.person} key={index.toString()}/>
                     })}
