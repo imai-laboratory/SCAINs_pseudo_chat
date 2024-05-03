@@ -64,6 +64,15 @@ function App() {
         }
     }
 
+    const handleReset = () => {
+        const initUserIndex = dataset.findIndex((data) => data.person === 'user');
+        const initChats = dataset.slice(0, initUserIndex);
+        setChats(initChats);
+        setCurrentUserStatement(initUserIndex);
+        setUserStatement(dataset[initUserIndex].content);
+        setButtonVisible(true);
+    };
+
     // スクロール位置の設定
     useEffect(() => {
         const scrollArea = document.getElementById('scroll-area');
@@ -78,6 +87,7 @@ function App() {
             <Chats chats={chats}/>
             <UserStatements buttonVisible={buttonVisible} handleUserSendMessage={handleUserSendMessage} userStatement={userStatement} />
         </div>
+        <button onClick={handleReset}>リセット</button>
     </section>
     );
 }
