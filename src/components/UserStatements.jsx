@@ -1,17 +1,20 @@
 import React from "react";
 import Button from '@mui/material/Button';
 
-export const UserStatements = ({userStatement}) => {
+export const UserStatements = ({buttonVisible, userStatement, handleUserSendMessage}) => {
     return (
         <div className="user-statements-container">
-            <Button
-                variant="contained"
-                color="info"
-                size="large"
-                className="user-statement"
-            >
-                {userStatement}
-            </Button>
+            {buttonVisible && (
+                <Button
+                    variant="contained"
+                    color="info"
+                    size="large"
+                    className="user-statement"
+                    onClick={handleUserSendMessage}
+                >
+                    {userStatement}
+                </Button>
+            )}
         </div>
     )
 }
