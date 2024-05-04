@@ -1,6 +1,6 @@
 import './assets/styles/App.css';
 import React, { useState, useCallback, useEffect } from 'react';
-import {Chats, UserStatements} from "./components/index";
+import {Chats, UserStatements} from "./components";
 import sampleData from "./assets/data/sample.js";
 
 function App() {
