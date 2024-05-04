@@ -11,6 +11,6 @@ Json形式のデータを```front/src/assets/data```の中に作ります。
 ## front
 チャットアプリのフロント部分です。
 
-[こちら][]のリポジトリでからForkできるのでご自由に使ってください：
+[こちら][]のリポジトリでからForkできるのでご自由に使ってください
 
 [こちら]: https://github.com/Kenshin0011/chat_ui_react
