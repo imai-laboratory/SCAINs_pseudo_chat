@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Editor directories and files
 ../.idea
+src/assets/data/*
+!src/assets/data/sample.js
+!src/assets/data/sampleData.txt
