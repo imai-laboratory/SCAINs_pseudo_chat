@@ -28,5 +28,4 @@ python_version = "*"
 [scripts]
 extraction = "python ./src/extraction.py"
 setup = "python ./src/setup.py"
-assistant = "python ./src/assistant.py"
-topic = "python ./src/extraction_topic.py"
+text2js = "python ./src/text-to-js.py"
