@@ -1,9 +1,12 @@
 import json
 
+# 話者user
+username = "B"
+# ファイル名
 filename = "PP2"
+
 txt_file = "./dat/" + filename + ".txt"
 js_file = "../front/src/assets/data/" + filename + ".js"
-username = "B"
 
 def txt_to_js(txt_file, js_file):
     with open(txt_file, "r", encoding="utf-8") as file:
