@@ -1,7 +1,8 @@
 import './assets/styles/App.css';
 import React, { useState, useCallback, useEffect } from 'react';
-import {Chats, UserStatements} from "./components";
-import sampleData from "./assets/data/sample.js";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Admin, Chats, UserStatements } from "./components";
+import sampleData from "./assets/data/PP2.js";
 
 function App() {
     const [buttonVisible, setButtonVisible] = useState(true);
@@ -29,7 +30,7 @@ function App() {
     //chatを加えていく
     const addChats = useCallback((chat) => {
         setChats(prevChats => {
-            return [...prevChats, chat]
+            return [...prevChats, chat];
         });
     }, [setChats]);
 
@@ -62,7 +63,7 @@ function App() {
                 }, index * 1000);
             });
         }
-    }
+    };
 
     const handleReset = () => {
         const initUserIndex = dataset.findIndex((data) => data.person === 'user');
@@ -82,13 +83,20 @@ function App() {
     });
 
     return (
-    <section className="app-container">
-        <div className="chat-box-container">
-            <Chats chats={chats}/>
-            <UserStatements buttonVisible={buttonVisible} handleUserSendMessage={handleUserSendMessage} userStatement={userStatement} />
-        </div>
-        <button onClick={handleReset}>リセット</button>
-    </section>
+        <Router>
+            <Routes>
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/" element={
+                    <section className="app-container">
+                        <div className="chat-box-container">
+                            <Chats chats={chats} />
+                            <UserStatements buttonVisible={buttonVisible} handleUserSendMessage={handleUserSendMessage} userStatement={userStatement} />
+                        </div>
+                        <button onClick={handleReset}>リセット</button>
+                    </section>
+                } />
+            </Routes>
+        </Router>
     );
 }
 
