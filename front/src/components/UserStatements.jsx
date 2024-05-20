@@ -4,17 +4,20 @@ import Button from '@mui/material/Button';
 export const UserStatements = ({buttonVisible, userStatement, handleUserSendMessage}) => {
     return (
         <div className="user-statements-container">
-            {buttonVisible && (
+            <div className="user-statement-content">
+                <textarea className="user-statement" value={userStatement}>
+                </textarea>
                 <Button
                     variant="contained"
                     color="info"
                     size="large"
-                    className="user-statement"
+                    className="submit"
+                    disabled={!buttonVisible}
                     onClick={handleUserSendMessage}
                 >
-                    {userStatement}
+                    送信
                 </Button>
-            )}
+            </div>
         </div>
     )
 }

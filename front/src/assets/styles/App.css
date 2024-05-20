@@ -63,8 +63,19 @@
     background-color: rgba(220, 224, 224, 0.71);
 }
 
-.user-statement {
+.user-statement-content {
+    display: flex;
+    width: 100%;
+    position: absolute;
     bottom: 24px;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.user-statement {
+    width: 80%;
+    font-size: 16px;
 }
 
 .left-chat {
