@@ -12,15 +12,15 @@ const ChatsContainer = styled('div')({
 });
 
 
-export const Chats = ({chats}) => {
+export const Chats = ({ chats, isFreeChatMode }) => {
 
     return (
         <div className="chats-container">
             <ChatsContainer id={"scroll-area"}>
                 <List>
-                    {chats.map((chat, index) => {
-                        return <Chat text={chat.content} person={chat.person} key={index.toString()}/>
-                    })}
+                    {chats.map((chat, index) => (
+                        <Chat text={chat.content} person={chat.person} key={index.toString()} />
+                    ))}
                 </List>
             </ChatsContainer>
         </div>
