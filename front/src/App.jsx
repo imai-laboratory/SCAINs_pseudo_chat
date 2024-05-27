@@ -38,7 +38,6 @@ function App() {
 
     const handleUserSendMessage = async (inputValue) => {
         if (isFreeChatMode) {
-            console.log(chats);
             addChats({ index: chats.length + 1, content: inputValue, person: 'user' });
             setUserStatement(inputValue);
             // await handleFreeChat(userStatement);
