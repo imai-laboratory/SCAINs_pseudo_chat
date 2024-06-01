@@ -22,7 +22,7 @@ export const Chat = ({text, person}) => {
                 {isUser ? (
                     <Avatar alt={person} src={UserAvatar} />
                 ) : (
-                    <Avatar {...setAvatarColor(person)}  alt={person} src="/static/images/avatar/1.jpg" />
+                    <Avatar {...setAvatarColor(person)}  alt={person}>{person}</Avatar>
                 )}
             </ListItemAvatar>
             {isUser ? (
