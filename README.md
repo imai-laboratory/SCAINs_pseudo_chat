@@ -10,7 +10,7 @@ Aさんとあなたが事前対話に応じてチャットを進め、 最後は
 # 実行
 ### 1. .envの編集
 ```
-cp .env.example .env`
+cp .env.example .env
 ```
 作成されたenvファイルにOPENAI_API_KEYを入力
 
