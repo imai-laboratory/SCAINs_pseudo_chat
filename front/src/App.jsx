@@ -1,21 +1,25 @@
 import './assets/styles/App.css';
-import React, { useState, useCallback, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Admin, Chats, UserStatements } from "./components";
-import sampleData from "./assets/data/PP2.js";
-// import axios from 'axios';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { Chats, UserStatements } from "./components";
+import sampleData from "./assets/data/PP10.js";
+import axios from 'axios';
 
 function App() {
+    const [agent, setAgent] = useState('');
     const [buttonVisible, setButtonVisible] = useState(true);
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
-    const [userStatement, setUserStatement] = useState();
+    const [llmUrl, setLlmUrl] = useState('');
+    const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
 
-    //データセットの指定
+    const chatsRef = useRef(chats);
+
     useEffect(() => {
+        setAgent('B');
         setDataset(sampleData);
+        setLlmUrl('http://localhost:8000/api/generate-response');
     }, []);
 
     // サンプルデータの初期値セット
@@ -29,18 +33,23 @@ function App() {
         }
     }, [dataset]);
 
-    //chatを加えていく
+    useEffect(() => {
+        chatsRef.current = chats;
+    }, [chats]);
+
     const addChats = useCallback((chat) => {
         setChats(prevChats => {
-            return [...prevChats, chat];
+            const newChats = [...prevChats, chat];
+            chatsRef.current = newChats;
+            return newChats;
         });
     }, []);
 
     const handleUserSendMessage = async (inputValue) => {
         if (isFreeChatMode) {
-            addChats({ index: chats.length + 1, content: inputValue, person: 'user' });
+            await addChats({ index: chats.length + 1, content: inputValue, person: 'user' });
             setUserStatement(inputValue);
-            // await handleFreeChat(userStatement);
+            await handleFreeChat(inputValue);
         } else {
             const nextUserIndex = dataset.findIndex((data, index) =>
                 index > currentUserIndex && data.person === 'user'
@@ -80,31 +89,25 @@ function App() {
         }
     };
 
-    // const handleFreeChat = async (userInput) => {
-    //     addChats({ person: 'user', content: userInput });
-    //     setButtonVisible(false);
-    //
-    //     try {
-    //         const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-    //             prompt: userInput,
-    //             max_tokens: 200,
-    //             temperature: 0,
-    //         }, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
-    //             }
-    //         });
-    //
-    //         const botResponse = response.data.choices[0].text.trim();
-    //         addChats({ person: 'bot', content: botResponse });
-    //     } catch (error) {
-    //         console.error('Error with ChatGPT API:', error);
-    //         addChats({ person: 'bot', content: '申し訳ありません。現在応答できません。' });
-    //     }
-    //
-    //     setButtonVisible(true);
-    //     setUserStatement('');
-    // };
+    const handleFreeChat = async () => {
+        setButtonVisible(false);
+        const payload = {
+            conversation: chatsRef.current,
+            agent: agent
+        };
+
+        try {
+            const response = await axios.post(llmUrl, payload);
+            addChats({ person: agent, content: response.data.response });
+        } catch (error) {
+            console.error('Error with ChatGPT API:', error);
+            console.error('Error details:', error.response ? error.response.data : error.message);
+            addChats({ person: agent, content: '申し訳ありません。現在応答できません。' });
+        }
+
+        setButtonVisible(true);
+        setUserStatement('');
+    };
 
     const handleReset = () => {
         const initUserIndex = dataset.findIndex((data) => data.person === 'user');
@@ -125,29 +128,22 @@ function App() {
     });
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/" element={
-                    <section className="app-container">
-                        <div className="chat-box-container">
-                            <Chats
-                                chats={chats}
-                                isFreeChatMode={isFreeChatMode}
-                                userStatement={userStatement}
-                            />
-                            <UserStatements
-                                buttonVisible={buttonVisible}
-                                handleUserSendMessage={handleUserSendMessage}
-                                isFreeChatMode={isFreeChatMode}
-                                userStatement={userStatement}
-                            />
-                        </div>
-                        <button onClick={handleReset}>リセット</button>
-                    </section>
-                } />
-            </Routes>
-        </Router>
+        <section className="app-container">
+            <div className="chat-box-container">
+                <Chats
+                    chats={chats}
+                    isFreeChatMode={isFreeChatMode}
+                    userStatement={userStatement}
+                />
+                <UserStatements
+                    buttonVisible={buttonVisible}
+                    handleUserSendMessage={handleUserSendMessage}
+                    isFreeChatMode={isFreeChatMode}
+                    userStatement={userStatement}
+                />
+            </div>
+            <button onClick={handleReset}>リセット</button>
+        </section>
     );
 }
 
