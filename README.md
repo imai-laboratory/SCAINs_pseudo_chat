@@ -24,8 +24,7 @@ make init
 
 ### 3. ローカルで動かす
 以下のURL叩いてください。
-
-http://localhost:8000/
+<p><a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a></p>
 
 # 以下参考
 
