@@ -12,24 +12,21 @@ function setAvatarColor(name) {
     };
 }
 
-export const Chat = ({text, person}) => {
+export const Chat = ({text, person, isScains}) => {
     const isUser = (person === "user");
     const classes = isUser ? 'right-chat' : 'left-chat'
+    const textClass = isScains ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
 
     return (
         <ListItem className={classes}>
             <ListItemAvatar>
                 {isUser ? (
-                    <Avatar alt={person} src={UserAvatar} />
+                    <Avatar alt={person} src={UserAvatar}/>
                 ) : (
-                    <Avatar {...setAvatarColor(person)}  alt={person}>{person}</Avatar>
+                    <Avatar {...setAvatarColor(person)} alt={person}>{person}</Avatar>
                 )}
             </ListItemAvatar>
-            {isUser ? (
-                <div className="chat-user-text sm">{text}</div>
-            ) : (
-                <div className="chat-text sm">{text}</div>
-            )}
+            <div className={textClass}>{text}</div>
         </ListItem>
     )
 }

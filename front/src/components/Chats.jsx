@@ -12,15 +12,24 @@ const ChatsContainer = styled('div')({
 });
 
 
-export const Chats = ({ chats, isFreeChatMode }) => {
+export const Chats = ({ chats, isScainsMode, scains }) => {
 
     return (
         <div className="chats-container">
             <ChatsContainer id={"scroll-area"}>
                 <List>
-                    {chats.map((chat, index) => (
-                        <Chat text={chat.content} person={chat.person} key={index.toString()} />
-                    ))}
+                    {chats.map((chat, index) => {
+                        const isScainsIndex = isScainsMode && scains.some(s => s.index === chat.index);
+
+                        return (
+                            <Chat
+                                text={chat.content}
+                                person={chat.person}
+                                key={index.toString()}
+                                isScains={isScainsIndex}
+                            />
+                        );
+                    })}
                 </List>
             </ChatsContainer>
         </div>

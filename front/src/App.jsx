@@ -15,6 +15,7 @@ function App() {
     const [scains, setScains] = useState([]);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
+    const [isScainsMode, setIsScainsMode] = useState(false);
 
     const chatsRef = useRef(chats);
 
@@ -29,9 +30,9 @@ function App() {
         if (dataset.length > 0) {
             const initUserIndex = dataset.findIndex((data) => data.person === 'user');
             const initChats = dataset.slice(0, initUserIndex);
-            const part1 = dataset.slice(0, dataset.length - 3);
-            const initScains = dataset.slice(dataset.length - 3, dataset.length - 1);
-            const part2 = dataset.slice(dataset.length - 1, dataset.length);
+            const part1 = dataset.slice(0, dataset.length - 5);
+            const initScains = dataset.slice(dataset.length - 5, dataset.length - 3);
+            const part2 = dataset.slice(dataset.length - 3, dataset.length);
             const initOmittedChats = part1.concat(part2);
             setScains(initScains);
             setChats(initChats);
@@ -39,6 +40,7 @@ function App() {
             setCurrentUserStatement(initUserIndex);
             setUserStatement(dataset[initUserIndex].content);
         }
+        console.log(scains);
     }, [dataset]);
 
     useEffect(() => {
@@ -135,6 +137,10 @@ function App() {
         setIsFreeChatMode(false);
     };
 
+    const handleChangeMode = () => {
+        setIsScainsMode(!isScainsMode);
+    };
+
     // スクロール位置の設定
     useEffect(() => {
         const scrollArea = document.getElementById('scroll-area');
@@ -148,8 +154,8 @@ function App() {
             <div className="chat-box-container">
                 <Chats
                     chats={chats}
-                    isFreeChatMode={isFreeChatMode}
-                    userStatement={userStatement}
+                    isScainsMode={isScainsMode}
+                    scains={scains}
                 />
                 <UserStatements
                     buttonVisible={buttonVisible}
@@ -159,6 +165,9 @@ function App() {
                 />
             </div>
             <button onClick={handleReset}>リセット</button>
+            <button onClick={handleChangeMode}>
+                {isScainsMode ? 'SCAINsを非表示にする': 'SCAINsを表示する'}
+            </button>
         </section>
     );
 }
