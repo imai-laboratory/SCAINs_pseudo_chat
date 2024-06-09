@@ -40,7 +40,6 @@ function App() {
             setCurrentUserStatement(initUserIndex);
             setUserStatement(dataset[initUserIndex].content);
         }
-        console.log(scains);
     }, [dataset]);
 
     useEffect(() => {
@@ -153,6 +152,7 @@ function App() {
         <section className="app-container">
             <div className="chat-box-container">
                 <Chats
+                    agent={agent}
                     chats={chats}
                     isScainsMode={isScainsMode}
                     scains={scains}
