@@ -1,7 +1,7 @@
 .app-container {
     position: relative;
     height: 100vh;
-    width: 70%;
+    width: 80%;
 }
 
 .chat-box-container {
@@ -46,7 +46,6 @@
     color: black;
     border-radius: 4px;
     padding: .5rem;
-    margin-right: 1rem;
     max-width: 80%;
     width: auto;
 }
@@ -59,6 +58,14 @@
     margin-right: 1rem;
     max-width: 80%;
     width: auto;
+}
+
+.agent-joined-text {
+    background-color: rgb(200, 199, 199);
+    color: black;
+    border-radius: 4px;
+    padding: .1rem .5rem;
+    text-align: center;
 }
 
 .user-statements-container {
@@ -88,8 +95,16 @@
     font-size: 16px;
 }
 
+.chat-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 24px;
+}
+
 .left-chat {
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: flex-start;
     padding-right: 0 !important;
@@ -97,10 +112,17 @@
 
 .right-chat {
     display: flex;
+    width: 100%;
     flex-direction: row-reverse;
-    justify-content: flex-end;
     padding-right: 0 !important;
 }
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 /*フォントサイズクラス*/
 .text-bold {
