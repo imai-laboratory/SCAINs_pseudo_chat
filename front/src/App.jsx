@@ -11,6 +11,8 @@ function App() {
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
     const [llmUrl, setLlmUrl] = useState('');
+    const [omittedChats, setOmittedChats] = useState([]);
+    const [scains, setScains] = useState([]);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
 
@@ -27,18 +29,30 @@ function App() {
         if (dataset.length > 0) {
             const initUserIndex = dataset.findIndex((data) => data.person === 'user');
             const initChats = dataset.slice(0, initUserIndex);
+            const part1 = dataset.slice(0, dataset.length - 3);
+            const initScains = dataset.slice(dataset.length - 3, dataset.length - 1);
+            const part2 = dataset.slice(dataset.length - 1, dataset.length);
+            const initOmittedChats = part1.concat(part2);
+            setScains(initScains);
             setChats(initChats);
+            setOmittedChats(initOmittedChats);
             setCurrentUserStatement(initUserIndex);
             setUserStatement(dataset[initUserIndex].content);
         }
     }, [dataset]);
 
     useEffect(() => {
-        chatsRef.current = chats;
-    }, [chats]);
+        chatsRef.current = omittedChats;
+    }, [omittedChats]);
 
     const addChats = useCallback((chat) => {
         setChats(prevChats => {
+            return [...prevChats, chat];
+        });
+    }, []);
+
+    const addChatsToOmitted = useCallback((chat) => {
+        setOmittedChats(prevChats => {
             const newChats = [...prevChats, chat];
             chatsRef.current = newChats;
             return newChats;
@@ -48,6 +62,7 @@ function App() {
     const handleUserSendMessage = async (inputValue) => {
         if (isFreeChatMode) {
             await addChats({ index: chats.length + 1, content: inputValue, person: 'user' });
+            await addChatsToOmitted({ index: chats.length + 1, content: inputValue, person: 'user' });
             setUserStatement(inputValue);
             await handleFreeChat(inputValue);
         } else {
@@ -98,13 +113,14 @@ function App() {
 
         try {
             const response = await axios.post(llmUrl, payload);
-            addChats({ person: agent, content: response.data.response });
+            addChats({ index: chats.length + 2, person: agent, content: response.data.response });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: response.data.response });
         } catch (error) {
             console.error('Error with ChatGPT API:', error);
             console.error('Error details:', error.response ? error.response.data : error.message);
-            addChats({ person: agent, content: '申し訳ありません。現在応答できません。' });
+            addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
         }
-
         setButtonVisible(true);
         setUserStatement('');
     };
