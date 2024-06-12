@@ -49,7 +49,7 @@ async def generate_response(request: Conversation):
         prompt = generate_answer(request.conversation, request.agent)
 
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=200,
             temperature=0,
