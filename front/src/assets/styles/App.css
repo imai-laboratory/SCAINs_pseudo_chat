@@ -39,6 +39,7 @@
     margin-right: 1rem;
     max-width: 80%;
     width: auto;
+    word-break: break-word;
 }
 
 .chat-user-text {
@@ -49,6 +50,7 @@
     margin-right: 1rem;
     max-width: 80%;
     width: auto;
+    word-break: break-word;
 }
 
 .scains-text {
@@ -59,6 +61,7 @@
     margin-right: 1rem;
     max-width: 80%;
     width: auto;
+    word-break: break-word;
 }
 
 .user-statements-container {
