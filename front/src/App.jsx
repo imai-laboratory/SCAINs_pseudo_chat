@@ -181,7 +181,9 @@ function App() {
         <section className="app-container">
             <div className="chat-box-container">
                 <Chats
+                    agent={agent}
                     chats={displayChats}
+                    isMissedListener={isMissedListener}
                     isScainsMode={isScainsMode}
                     scains={scains}
                 />

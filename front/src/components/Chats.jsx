@@ -12,7 +12,7 @@ const ChatsContainer = styled('div')({
 });
 
 
-export const Chats = ({ chats, isScainsMode, scains }) => {
+export const Chats = ({ agent, chats, isMissedListener, isScainsMode, scains }) => {
 
     return (
         <div className="chats-container">
@@ -23,9 +23,11 @@ export const Chats = ({ chats, isScainsMode, scains }) => {
 
                         return (
                             <Chat
+                                agent={agent}
                                 text={chat.content}
                                 person={chat.person}
                                 key={index.toString()}
+                                isMissedListener={isMissedListener}
                                 isScains={isScainsIndex}
                             />
                         );

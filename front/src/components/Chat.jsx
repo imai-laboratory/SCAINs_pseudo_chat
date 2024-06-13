@@ -12,10 +12,19 @@ function setAvatarColor(name) {
     };
 }
 
-export const Chat = ({text, person, isScains}) => {
+export const Chat = ({agent, text, person, isMissedListener, isScains}) => {
     const isUser = (person === "user");
-    const classes = isUser ? 'right-chat' : 'left-chat'
-    const textClass = isScains ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
+    const isAgent = (person === agent);
+    let classes;
+    let textClass;
+
+    if (isMissedListener) {
+        classes = isAgent ? 'right-chat' : 'left-chat'
+        textClass = isScains ? 'scains-text md text-bold' : isAgent ? 'chat-user-text sm' : 'chat-text sm';
+    } else {
+        classes = isUser ? 'right-chat' : 'left-chat'
+        textClass = isScains ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
+    }
 
     return (
         <ListItem className={classes}>
