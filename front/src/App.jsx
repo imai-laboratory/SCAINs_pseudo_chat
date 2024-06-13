@@ -7,6 +7,7 @@ import image_A from "./assets/images/A.jpg";
 import image_B from "./assets/images/B.jpg";
 import image_missing_B from "./assets/images/missing_B.jpg";
 import image_user from "./assets/images/sample_B.jpg";
+import Button from "@mui/material/Button";
 
 function App() {
     const [agent, setAgent] = useState('');
@@ -196,7 +197,7 @@ function App() {
             </div>
             <div className="monitor-container">
                 {/*<button onClick={handleReset}>リセット</button>*/}
-                <button onClick={handleChangeMode}>
+                <button className="scains-btn text-bold md" onClick={handleChangeMode}>
                     {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
                 </button>
                 <Monitor
@@ -207,9 +208,15 @@ function App() {
                     isMissedListener={isMissedListener}
                     switchMissedImage={switchMissedImage}
                 />
-                <button onClick={handleChangePerspective}>
+                <Button
+                    variant="contained"
+                    color="success"
+                    size="large"
+                    className="submit"
+                    onClick={handleChangePerspective}
+                >
                     {isMissedListener ? 'user視点に戻す' : 'Bさんの視点に切り替える'}
-                </button>
+                </Button>
             </div>
         </section>
     );

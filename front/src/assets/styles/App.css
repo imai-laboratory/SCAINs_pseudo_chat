@@ -112,13 +112,25 @@
     flex-direction: column;
     gap: 16px;
     position: absolute;
-    top: 20%;
+    top: 10%;
     right: 10%;
+}
+
+.monitor-frame {
+    border: solid 3px black ;
+    padding: 16px;
 }
 
 .a-person{
     text-align: center;
     height: 180px;
+}
+
+.scains-btn {
+    width: 70%;
+    height: 80px;
+    background-color: #f3a823;
+    margin: auto;
 }
 
 /*フォントサイズクラス*/
