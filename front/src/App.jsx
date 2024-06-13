@@ -1,8 +1,12 @@
 import './assets/styles/App.css';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Chats, UserStatements } from "./components";
+import {Chats, Monitor, UserStatements} from "./components";
 import sampleData from "./assets/data/PP10.js";
 import axios from 'axios';
+import image_A from "./assets/images/A.jpg";
+import image_B from "./assets/images/B.jpg";
+import image_missing_B from "./assets/images/missing_B.jpg";
+import image_user from "./assets/images/sample_B.jpg";
 
 function App() {
     const [agent, setAgent] = useState('');
@@ -14,6 +18,7 @@ function App() {
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
     const [scains, setScains] = useState([]);
+    const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
     const [isMissedListener, setIsMissedListener] = useState(false);
@@ -105,6 +110,7 @@ function App() {
                             setIsFreeChatMode(true);
                             setButtonVisible(true);
                             setCurrentUserStatement(dataset.length);
+                            setSwitchMissedImage(true);
                         }
                     }, index * 1000);
                 });
@@ -141,6 +147,7 @@ function App() {
         setUserStatement(dataset[initUserIndex].content);
         setButtonVisible(true);
         setIsFreeChatMode(false);
+        setSwitchMissedImage(false);
     };
 
     const handleChangeMode = () => {
@@ -149,6 +156,7 @@ function App() {
 
     const handleChangePerspective = () => {
         setIsMissedListener(!isMissedListener);
+        setButtonVisible(!buttonVisible);
     };
 
     useEffect(() => {
@@ -157,7 +165,6 @@ function App() {
             const newOmittedChats = omittedChats.slice(0, chats.length);
             setDisplayChats(newOmittedChats);
         } else {
-            setButtonVisible(true);
             setDisplayChats(chats);
         }
     }, [isMissedListener, chats, omittedChats]);
@@ -185,13 +192,23 @@ function App() {
                     userStatement={userStatement}
                 />
             </div>
-            <button onClick={handleReset}>リセット</button>
-            <button onClick={handleChangeMode}>
-                {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-            </button>
-            <button onClick={handleChangePerspective}>
-                {isMissedListener ? 'user視点に戻す' : 'Bさんの視点に切り替える'}
-            </button>
+            <div className="monitor-container">
+                {/*<button onClick={handleReset}>リセット</button>*/}
+                <button onClick={handleChangeMode}>
+                    {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
+                </button>
+                <Monitor
+                    image_A={image_A}
+                    image_B={image_B}
+                    image_user={image_user}
+                    image_missing_B={image_missing_B}
+                    isMissedListener={isMissedListener}
+                    switchMissedImage={switchMissedImage}
+                />
+                <button onClick={handleChangePerspective}>
+                    {isMissedListener ? 'user視点に戻す' : 'Bさんの視点に切り替える'}
+                </button>
+            </div>
         </section>
     );
 }

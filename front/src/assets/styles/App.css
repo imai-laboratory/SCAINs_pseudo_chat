@@ -1,7 +1,9 @@
 .app-container {
-    position: relative;
+    /*position: relative;*/
     height: 100vh;
-    width: 70%;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
 }
 
 .chat-box-container {
@@ -12,13 +14,13 @@
     box-sizing: border-box;
     height: 90%;
     padding: 0 1rem;
-    width: 70%;
+    width: 50%;
     justify-content: center;
 
     /* Vertical and horizontal center alignment */
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 30%;
     transform: translate(-50%, -50%);
 }
 
@@ -103,6 +105,20 @@
     flex-direction: row-reverse;
     justify-content: flex-end;
     padding-right: 0 !important;
+}
+
+.monitor-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: absolute;
+    top: 20%;
+    right: 10%;
+}
+
+.a-person{
+    text-align: center;
+    height: 180px;
 }
 
 /*フォントサイズクラス*/
