@@ -18,10 +18,15 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Clear npm cache and reinstall dependencies
+      - name: Install dependencies
         run: |
           cd front
           npm install
+
+      - name: List files for debugging
+        run: |
+          cd front
+          ls -R
 
       - name: Build project
         run: |
