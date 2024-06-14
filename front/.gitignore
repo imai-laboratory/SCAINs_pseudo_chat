@@ -27,4 +27,3 @@ yarn-error.log*
 src/assets/data/*
 !src/assets/data/sample.js
 !src/assets/data/sampleData.txt
-src/assets/images/*.jpg

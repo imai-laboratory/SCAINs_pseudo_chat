@@ -6,7 +6,7 @@ import axios from 'axios';
 import image_A from "./assets/images/A.jpg";
 import image_B from "./assets/images/B.jpg";
 import image_missing_B from "./assets/images/missing_B.jpg";
-import image_user from "./assets/images/sample_B.jpg";
+import image_user from "./assets/images/user.jpg";
 import Button from "@mui/material/Button";
 
 function App() {
