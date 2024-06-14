@@ -13,11 +13,14 @@ from prompt import generate_answer
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+local_url = os.getenv("LOCAL_URL")
+prod_url = os.getenv("PROD_URL")
+
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[local_url, prod_url],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

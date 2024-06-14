@@ -26,11 +26,13 @@ function App() {
     const [isScainsMode, setIsScainsMode] = useState(false);
 
     const omittedChatsRef = useRef(omittedChats);
-
     useEffect(() => {
         setAgent('B');
         setDataset(sampleData);
-        setLlmUrl('http://localhost:8000/api/generate-response');
+        const localUrl = process.env.REACT_APP_LOCAL_URL;
+        const prodUrl = process.env.REACT_APP_PROD_URL;
+        const url = process.env.NODE_ENV === 'development' ? localUrl : prodUrl;
+        setLlmUrl(`${url}/api/generate-response`);
     }, []);
 
     // サンプルデータの初期値セット
