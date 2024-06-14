@@ -39,6 +39,5 @@ jobs:
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          user_name: github-actions
-          user_email: github-actions@github.com
+          GIT_USER: github-actions
+          GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
