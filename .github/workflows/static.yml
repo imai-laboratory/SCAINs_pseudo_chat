@@ -9,6 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    uses:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -40,3 +41,17 @@ jobs:
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get GitHub Pages URL
+        uses: actions/github-script@v6
+        id: get-url
+        with:
+          script: |
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+            const pages = await github.repos.getPages({ owner, repo });
+            return pages.data.html_url;
+
+      - name: Output GitHub Pages URL
+        run: |
+          echo "GitHub Pages URL: ${{ steps.get-url.outputs.result }}"
