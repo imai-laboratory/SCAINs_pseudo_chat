@@ -140,17 +140,6 @@ function App() {
         setUserStatement('');
     };
 
-    const handleReset = () => {
-        const initUserIndex = dataset.findIndex((data) => data.person === 'user');
-        const initChats = dataset.slice(0, initUserIndex);
-        setChats(initChats);
-        setCurrentUserStatement(initUserIndex);
-        setUserStatement(dataset[initUserIndex].content);
-        setButtonVisible(true);
-        setIsFreeChatMode(false);
-        setSwitchMissedImage(false);
-    };
-
     const handleChangeMode = () => {
         setIsScainsMode(!isScainsMode);
     };
@@ -196,7 +185,6 @@ function App() {
                 />
             </div>
             <div className="monitor-container">
-                {/*<button onClick={handleReset}>リセット</button>*/}
                 <button className="scains-btn text-bold md" onClick={handleChangeMode}>
                     {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
                 </button>
