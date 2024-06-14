@@ -1,7 +1,7 @@
 import './assets/styles/App.css';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {Chats, Monitor, UserStatements} from "./components";
-import sampleData from "./assets/data/PP10.js";
+import sampleData from "./assets/data/PP10";
 import axios from 'axios';
 import image_A from "./assets/images/A.jpg";
 import image_B from "./assets/images/B.jpg";

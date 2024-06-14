@@ -23,10 +23,10 @@ jobs:
           cd front
           npm install
 
-      - name: List files for debugging
+      - name: List files in src/assets/data for debugging
         run: |
-          cd front
-          ls -R
+          cd front/src/assets/data
+          ls -al
 
       - name: Build project
         run: |
