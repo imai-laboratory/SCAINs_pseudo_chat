@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "gh-pages -d build --user \"GitHub Actions <github-actions@github.com>\""
+    "deploy": "gh-pages -d build --user \"GitHub Actions <github-actions@github.com>\" --repo https://github.com/$GITHUB_REPOSITORY.git --token $GITHUB_TOKEN"
   },
   "eslintConfig": {
     "extends": [
