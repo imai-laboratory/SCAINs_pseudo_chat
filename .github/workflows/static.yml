@@ -18,22 +18,28 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Print current directory
+        run: pwd
+
       - name: Clear npm cache and reinstall dependencies
         run: |
-          cd front
-          rm -rf node_modules
-          rm -f package-lock.json
-          npm cache clean --force
+          cd ./front
           npm install
+
+      - name: Print current directory
+        run: pwd
 
       - name: Build project
         run: |
-          cd front
+          cd ./front
           npm run build
+
+      - name: Print current directory
+        run: pwd
 
       - name: Deploy to GitHub Pages
         run: |
-          cd front
+          cd ./front
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
