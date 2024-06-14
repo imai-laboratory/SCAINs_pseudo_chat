@@ -39,16 +39,3 @@ jobs:
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get GitHub Pages URL
-        id: get-url
-        run: |
-          repo=${{ github.repository }}
-          owner=${{ github.repository_owner }}
-          api_url="https://api.github.com/repos/${owner}/${repo}/pages"
-          pages_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" $api_url | jq -r .html_url)
-          echo "pages_url=$pages_url" >> $GITHUB_ENV
-
-      - name: Output GitHub Pages URL
-        run: |
-          echo "GitHub Pages URL: ${{ env.pages_url }}"
