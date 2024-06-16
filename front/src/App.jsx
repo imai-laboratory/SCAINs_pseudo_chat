@@ -127,7 +127,6 @@ function App() {
             conversation: omittedChatsRef.current,
             agent: agent
         };
-        console.log(payload);
         try {
             const response = await axios.post(llmUrl, payload);
             addChats({ index: chats.length + 2, person: agent, content: response.data.response });
