@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: fastapi-service
+    plan: free
+    buildCommand: "pip install -r ./docker/backend/requirements.txt && cd front && npm install && npm run build"
+    runtime: python
+    startCommand: "./start.sh"
