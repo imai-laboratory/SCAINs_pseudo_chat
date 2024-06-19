@@ -31,7 +31,6 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                 <Button
                     variant="contained"
                     color="info"
-                    size="large"
                     className="submit"
                     disabled={!buttonVisible}
                     onClick={handleSubmit}

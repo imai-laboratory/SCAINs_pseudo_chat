@@ -170,6 +170,9 @@ function App() {
 
     return (
         <section className="app-container">
+            <button className="scains-btn text-bold md" onClick={handleChangeMode}>
+                {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
+            </button>
             <div className="chat-box-container">
                 <Chats
                     agent={agent}
@@ -186,9 +189,6 @@ function App() {
                 />
             </div>
             <div className="monitor-container">
-                <button className="scains-btn text-bold md" onClick={handleChangeMode}>
-                    {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-                </button>
                 <Monitor
                     image_A={image_A}
                     image_B={image_B}
