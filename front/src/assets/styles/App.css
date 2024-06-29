@@ -113,8 +113,8 @@
     gap: 16px;
     position: absolute;
     top: 5%;
-    left: 30%;
-    width: 500px;
+    left: 5%;
+    width: 800px;
     @media (max-width: 1350px) {
         left: 20%;
     }
@@ -127,9 +127,16 @@
     }
 }
 
-.monitor-frame {
+.monitor-frames {
     border: solid 3px black ;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.upper-frames {
+    display: flex;
+    gap: 24px;
 }
 
 .a-person{
