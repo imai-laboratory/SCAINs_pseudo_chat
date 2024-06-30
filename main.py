@@ -40,7 +40,7 @@ async def serve_react_app():
     return FileResponse(index_file_path)
 
 
-@app.get("/admin", response_class=FileResponse)
+@app.get("/result", response_class=FileResponse)
 async def serve_react_app():
     index_file_path = "./front/build/index.html"
     return FileResponse(index_file_path)

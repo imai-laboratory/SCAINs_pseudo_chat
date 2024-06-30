@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from '@mui/material/Button';
-
+import SendIcon from '@mui/icons-material/Send'
 export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMessage, userStatement }) => {
     const [inputValue, setInputValue] = useState('');
 
@@ -31,7 +31,8 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                 <Button
                     variant="contained"
                     color="info"
-                    className="submit"
+                    endIcon={<SendIcon />}
+                    className="submit btn"
                     disabled={!buttonVisible}
                     onClick={handleSubmit}
                 >

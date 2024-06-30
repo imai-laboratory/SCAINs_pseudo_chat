@@ -1,0 +1,21 @@
+.result-container {
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+}
+
+.chats-history {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    height: 90vh;
+}
+
+.turn-1, .turn-2 {
+    display: flex;
+    width: 40%;
+    justify-content: center;
+    flex-direction: column;
+}

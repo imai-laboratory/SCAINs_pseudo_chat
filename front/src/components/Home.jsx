@@ -7,33 +7,52 @@ import image_B from "../assets/images/B.jpg";
 import image_missing_B from "../assets/images/missing_B.jpg";
 import image_user from "../assets/images/user.jpg";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
-function Home() {
+function Home({ isMissedListener }) {
     const [agent, setAgent] = useState('');
-    const [buttonVisible, setButtonVisible] = useState(true);
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
     const [displayChats, setDisplayChats] = useState([]);
+    const [history1, setHistory1] = useState([]);
+    const [history2, setHistory2] = useState([]);
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
+    const [rootUrl, setrootUrl] = useState('');
     const [scains, setScains] = useState([]);
     const [speaker, setSpeaker] = useState('');
+    const [showScainsButton, setShowScainsButton] = useState(false);
+    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
+    const [turn, setTurn] = useState(0);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
-    const [isMissedListener, setIsMissedListener] = useState(false);
     const [isScainsMode, setIsScainsMode] = useState(false);
 
+    const navigate = useNavigate();
     const omittedChatsRef = useRef(omittedChats);
+
+    //初期化
+    const init = () => {
+        const initUserIndex = dataset.findIndex((data) => data.person === 'user');
+        const initChats = dataset.slice(0, initUserIndex);
+        setChats(initChats);
+        setCurrentUserStatement(initUserIndex);
+        setUserStatement(dataset[initUserIndex].content);
+        setIsFreeChatMode(false);
+        setSwitchMissedImage(false);
+    };
+
     useEffect(() => {
         setAgent('B');
         setDataset(sampleData);
+        setTurn(1);
         const localUrl = process.env.REACT_APP_LOCAL_URL;
         const prodUrl = process.env.REACT_APP_PROD_URL;
-        const url = process.env.NODE_ENV === 'development' ? localUrl : prodUrl;
-        setLlmUrl(`${url}/api/generate-response`);
-    }, []);
+        setrootUrl(process.env.NODE_ENV === 'development' ? localUrl : prodUrl);
+        setLlmUrl(`${rootUrl}/api/generate-response`);
+    }, [rootUrl]);
 
     // サンプルデータの初期値セット
     useEffect(() => {
@@ -85,18 +104,18 @@ function Home() {
             const nextUserIndex = dataset.findIndex((data, index) =>
                 index > currentUserIndex && data.person === 'user'
             );
-            setButtonVisible(false);
+            setShowSubmitButton(false);
 
             if (nextUserIndex !== -1) {
                 // 次のユーザーのインデックスまでのチャットを取得
                 const partial_chats = dataset.slice(currentUserIndex, nextUserIndex);
                 // チャットを1秒ごとに追加していく
                 partial_chats.forEach((chat, index) => {
-                    setButtonVisible(false);
+                    setShowSubmitButton(false);
                     setTimeout(() => {
                         addChats(chat);
                         if (index === partial_chats.length - 1) {
-                            setButtonVisible(true);
+                            setShowSubmitButton(true);
                         }
                     }, index * 2500);
                 });
@@ -106,12 +125,12 @@ function Home() {
                 // データの最後まで表示
                 const partial_chats = dataset.slice(currentUserIndex);
                 partial_chats.forEach((chat, index) => {
-                    setButtonVisible(false);
+                    setShowSubmitButton(false);
                     setTimeout(() => {
                         addChats(chat);
                         if (index === partial_chats.length - 1) {
                             setIsFreeChatMode(true);
-                            setButtonVisible(true);
+                            setShowSubmitButton(true);
                             setCurrentUserStatement(dataset.length);
                             setSwitchMissedImage(true);
                         }
@@ -122,7 +141,7 @@ function Home() {
     };
 
     const handleFreeChat = async () => {
-        setButtonVisible(false);
+        setShowSubmitButton(false);
         const payload = {
             conversation: omittedChatsRef.current,
             agent: agent
@@ -137,7 +156,7 @@ function Home() {
             addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
             addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
         }
-        setButtonVisible(true);
+        setShowSubmitButton(true);
         setUserStatement('');
     };
 
@@ -145,14 +164,40 @@ function Home() {
         setIsScainsMode(!isScainsMode);
     };
 
-    const handleChangePerspective = () => {
-        setIsMissedListener(!isMissedListener);
-        setButtonVisible(!buttonVisible);
+    useEffect(() => {
+    }, [history1, turn]);
+
+    useEffect(() => {
+        if (turn === 3 && history2 !== null) {
+            init();
+            navigate('/result', {
+                state: {
+                    agent,
+                    history1,
+                    history2,
+                    omittedChats,
+                    scains,
+                    speaker,
+                }
+            });
+        }
+    }, [agent, history1, history2, init, navigate, omittedChats, scains, speaker, turn]);
+
+    const handleEndTurn = () => {
+        if (turn === 1) {
+            setTurn(turn + 1);
+            setShowScainsButton(true);
+            setHistory1(chats);
+            init();
+        } else if (turn === 2) {
+            setTurn(turn + 1);
+            setHistory2(chats);
+        }
     };
 
     useEffect(() => {
         if (isMissedListener) {
-            setButtonVisible(false);
+            setShowSubmitButton(false);
             const newOmittedChats = omittedChats.slice(0, chats.length);
             setDisplayChats(newOmittedChats);
         } else {
@@ -166,48 +211,66 @@ function Home() {
         if (scrollArea) {
             scrollArea.scrollTop = scrollArea.scrollHeight;
         }
-    });
+    }, [speaker]);
 
     return (
         <section className="app-container">
-            <button className="scains-btn text-bold md" onClick={handleChangeMode}>
-                {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-            </button>
-            <div className="chat-box-container">
-                <Chats
-                    agent={agent}
-                    chats={displayChats}
-                    isMissedListener={isMissedListener}
-                    isScainsMode={isScainsMode}
-                    onSpeakerChange={setSpeaker}
-                    scains={scains}
-                />
-                <UserStatements
-                    buttonVisible={buttonVisible}
-                    handleUserSendMessage={handleUserSendMessage}
-                    isFreeChatMode={isFreeChatMode}
-                    userStatement={userStatement}
-                />
-            </div>
-            <div className="monitor-container">
-                <Monitor
-                    image_A={image_A}
-                    image_B={image_B}
-                    image_user={image_user}
-                    image_missing_B={image_missing_B}
-                    isMissedListener={isMissedListener}
-                    speaker={speaker}
-                    switchMissedImage={switchMissedImage}
-                />
+            <div className="button-container">
                 <Button
                     variant="contained"
-                    color="success"
+                    color="error"
                     size="large"
+                    disabled={!showSubmitButton}
                     className="submit"
-                    onClick={handleChangePerspective}
+                    onClick={handleEndTurn}
                 >
-                    {isMissedListener ? 'user視点に戻す' : 'Bさんの視点に切り替える'}
+                    終了
                 </Button>
+                ターン{turn}
+            </div>
+            <div className="content">
+                <div className="monitor-container">
+                    <Monitor
+                        image_A={image_A}
+                        image_B={image_B}
+                        image_user={image_user}
+                        image_missing_B={image_missing_B}
+                        isMissedListener={isMissedListener}
+                        speaker={speaker}
+                        switchMissedImage={switchMissedImage}
+                    />
+                </div>
+                <div className="chats-content">
+                    <div className="scains-btn">
+                    {showScainsButton && (
+                        <Button
+                            variant="contained"
+                            color="warning"
+                            size="large"
+                            className="text-bold md"
+                            onClick={handleChangeMode}
+                        >
+                            {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
+                        </Button>
+                    )}
+                    </div>
+                    <div className="chat-box-container">
+                        <Chats
+                            agent={agent}
+                            chats={displayChats}
+                            isMissedListener={isMissedListener}
+                            isScainsMode={isScainsMode}
+                            onSpeakerChange={setSpeaker}
+                            scains={scains}
+                        />
+                        <UserStatements
+                            buttonVisible={showSubmitButton}
+                            handleUserSendMessage={handleUserSendMessage}
+                            isFreeChatMode={isFreeChatMode}
+                            userStatement={userStatement}
+                        />
+                    </div>
+                </div>
             </div>
         </section>
     );
