@@ -98,7 +98,7 @@ function Home() {
                         if (index === partial_chats.length - 1) {
                             setButtonVisible(true);
                         }
-                    }, index * 3000);
+                    }, index * 2500);
                 });
                 setCurrentUserStatement(nextUserIndex);
                 setUserStatement(dataset[nextUserIndex].content);
@@ -115,7 +115,7 @@ function Home() {
                             setCurrentUserStatement(dataset.length);
                             setSwitchMissedImage(true);
                         }
-                    }, index * 3000);
+                    }, index * 2500);
                 });
             }
         }
