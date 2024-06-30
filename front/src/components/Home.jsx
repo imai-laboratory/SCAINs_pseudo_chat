@@ -34,7 +34,7 @@ function Home({ isMissedListener }) {
     const omittedChatsRef = useRef(omittedChats);
 
     //初期化
-    const init = () => {
+    const init = useCallback(() => {
         const initUserIndex = dataset.findIndex((data) => data.person === 'user');
         const initChats = dataset.slice(0, initUserIndex);
         setChats(initChats);
@@ -42,7 +42,7 @@ function Home({ isMissedListener }) {
         setUserStatement(dataset[initUserIndex].content);
         setIsFreeChatMode(false);
         setSwitchMissedImage(false);
-    };
+    }, [dataset, setChats, setCurrentUserStatement, setUserStatement, setIsFreeChatMode, setSwitchMissedImage]);
 
     useEffect(() => {
         setAgent('B');
