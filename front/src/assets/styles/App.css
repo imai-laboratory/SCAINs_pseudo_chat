@@ -149,6 +149,10 @@
     height: auto;
 }
 
+.speaker {
+    border: solid 3px #9ae821;
+}
+
 .scains-btn {
     width: 200px;
     height: 40px;

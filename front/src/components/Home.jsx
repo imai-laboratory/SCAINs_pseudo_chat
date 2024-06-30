@@ -18,6 +18,7 @@ function Home() {
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
     const [scains, setScains] = useState([]);
+    const [speaker, setSpeaker] = useState('');
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
@@ -97,7 +98,7 @@ function Home() {
                         if (index === partial_chats.length - 1) {
                             setButtonVisible(true);
                         }
-                    }, index * 1000);
+                    }, index * 3000);
                 });
                 setCurrentUserStatement(nextUserIndex);
                 setUserStatement(dataset[nextUserIndex].content);
@@ -114,7 +115,7 @@ function Home() {
                             setCurrentUserStatement(dataset.length);
                             setSwitchMissedImage(true);
                         }
-                    }, index * 1000);
+                    }, index * 3000);
                 });
             }
         }
@@ -178,6 +179,7 @@ function Home() {
                     chats={displayChats}
                     isMissedListener={isMissedListener}
                     isScainsMode={isScainsMode}
+                    onSpeakerChange={setSpeaker}
                     scains={scains}
                 />
                 <UserStatements
@@ -194,6 +196,7 @@ function Home() {
                     image_user={image_user}
                     image_missing_B={image_missing_B}
                     isMissedListener={isMissedListener}
+                    speaker={speaker}
                     switchMissedImage={switchMissedImage}
                 />
                 <Button

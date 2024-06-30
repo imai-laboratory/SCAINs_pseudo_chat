@@ -1,12 +1,12 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import React from "react";
+import React, { useEffect } from 'react';
 import UserAvatar from "../assets/images/no-profile.png"
 import A_icon from "../assets/images/A_icon.png"
 import B_icon from "../assets/images/B_icon.png"
 
-export const Chat = ({agent, text, person, isMissedListener, isScains}) => {
+export const Chat = ({agent, text, person, isMissedListener, isScains, onSpeakerChange}) => {
     const isUser = (person === "user");
     const isAgent = (person === agent);
     let classes;
@@ -32,6 +32,10 @@ export const Chat = ({agent, text, person, isMissedListener, isScains}) => {
         icon = A_icon;
         speaker = 'Aさん';
     }
+
+    useEffect(() => {
+        onSpeakerChange(person);
+    }, [person, onSpeakerChange]);
 
     return (
         <ListItem className={classes}>
