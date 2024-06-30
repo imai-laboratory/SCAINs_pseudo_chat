@@ -7,7 +7,7 @@ function Monitor({ image_A, image_B, image_user, image_missing_B, switchMissedIm
         <div className="monitor-frames">
             <div className="persons">
                 <div className="a-person">
-                    <img src={image_A} alt={"A"} className="a-person-img"/>
+                    <img src={image_A} alt="A" className="a-person-img"/>
                     <div>Aさん</div>
                 </div>
                 <div className="a-person">

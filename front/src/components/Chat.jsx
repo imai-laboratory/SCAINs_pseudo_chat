@@ -6,14 +6,6 @@ import UserAvatar from "../assets/images/no-profile.png"
 import A_icon from "../assets/images/A_icon.png"
 import B_icon from "../assets/images/B_icon.png"
 
-function setAvatarColor(name) {
-    return {
-        sx: {
-            bgcolor: name === "A" ? "#C5E1C5" : "#F2C55C",
-        },
-    };
-}
-
 export const Chat = ({agent, text, person, isMissedListener, isScains}) => {
     const isUser = (person === "user");
     const isAgent = (person === agent);
@@ -33,12 +25,12 @@ export const Chat = ({agent, text, person, isMissedListener, isScains}) => {
     if (isUser) {
         icon = UserAvatar;
         speaker = 'あなた';
-    } else if (person === 'A') {
-        icon = A_icon;
-        speaker = 'Aさん';
-    } else if (person === agent) {
+    } else if (isAgent) {
         icon = B_icon;
         speaker = 'Bさん';
+    } else {
+        icon = A_icon;
+        speaker = 'Aさん';
     }
 
     return (
