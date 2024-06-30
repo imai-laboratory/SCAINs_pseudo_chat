@@ -115,6 +115,8 @@
     top: 5%;
     left: 5%;
     width: 54%;
+    align-items: center;
+    justify-content: center;
 }
 
 .monitor-frames {
@@ -138,13 +140,13 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 250px;
+    height: auto;
     width: 50%;
 }
 
 .a-person-img{
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .scains-btn {
