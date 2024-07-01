@@ -28,7 +28,7 @@ function Home({ isMissedListener }) {
     const [turn, setTurn] = useState(0);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
-    const [isScainsMode, setIsScainsMode] = useState(true);
+    const [isScainsMode, setIsScainsMode] = useState(false);
 
     const navigate = useNavigate();
     const omittedChatsRef = useRef(omittedChats);
