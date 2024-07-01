@@ -60,13 +60,13 @@ function Home({ isMissedListener }) {
             const datasetCopy = JSON.parse(JSON.stringify(dataset));
             const initUserIndex = dataset.findIndex((data) => data.person === 'user');
             const initChats = dataset.slice(0, initUserIndex);
-            const initScains = dataset.slice(dataset.length - 5, dataset.length - 3);
+            const initScains = dataset.slice(dataset.length - 4, dataset.length - 2);
             const part1 = datasetCopy.slice(0, 2);
-            const missing = datasetCopy.slice(2, datasetCopy.length - 3);
+            const missing = datasetCopy.slice(2, datasetCopy.length - 2);
             missing.forEach(data => {
                 data.content = '×'.repeat(data.content.length);
             });
-            const part2 = datasetCopy.slice(datasetCopy.length - 3, datasetCopy.length);
+            const part2 = datasetCopy.slice(datasetCopy.length - 2, datasetCopy.length);
             const initOmittedChats = part1.concat(missing).concat(part2);
             setScains(initScains);
             setChats(initChats);
