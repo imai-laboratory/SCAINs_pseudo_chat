@@ -26,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="./front/build/static"), name="static")
+app.mount("/", StaticFiles(directory="./front/build", html=True), name="build")
 
 
 class Conversation(BaseModel):
