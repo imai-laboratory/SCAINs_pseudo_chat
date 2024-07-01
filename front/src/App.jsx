@@ -1,7 +1,7 @@
 import './assets/styles/App.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, Result } from "./components";
+import { Header, Home, Result } from "./components";
 
 function App() {
     const [isMissedListener, setIsMissedListener] = useState(false);
@@ -12,6 +12,7 @@ function App() {
 
     return (
         <Router>
+            <Header/>
             <Routes>
                 <Route
                     path="/"

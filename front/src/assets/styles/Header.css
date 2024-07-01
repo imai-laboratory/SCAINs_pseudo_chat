@@ -1,0 +1,22 @@
+.header {
+  background-color: #11b2b8;
+  color: #fff;
+  padding: .3rem;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  height: 48px;
+}
+
+.logo {
+  display: flex;
+  height: 100%;
+}
+
+.header-logo {
+  width: auto;
+  height: 100%;
+}
+
