@@ -217,7 +217,7 @@ function Home({ isMissedListener }) {
         <section className="app-container">
             <div className="explanation-container">
                 <div className="xl text-bold step-text">
-                    { turn === 1 ? `手順${turn}：システム支援なしでの対話` : `手順${turn}：SCAINs表示によるシステム支援ありでの対話` }
+                    { turn === 1 ? `手順${turn}：システム支援（SCAINs表示）なし` : `手順${turn}：システム支援（SCAINs表示）あり` }
                 </div>
                 <div className="next-btn">
                     <Button
