@@ -70,11 +70,13 @@ function Result({ isMissedListener, handleChangePerspective }) {
                     >
                         <div className="sm">{isMissedListener ? 'あなたの視点に戻す' : 'Bさんの視点に切り替える'}</div>
                     </Button>
-                    <div className="perspective-text sm">
-                        ※視点を切り替えると、<br></br>
-                        聞き逃した部分が「X」で<br></br>
-                        表示されます
-                    </div>
+                    {!isMissedListener && (
+                        <div className="perspective-text sm">
+                            ※視点を切り替えると、<br />
+                            聞き逃した部分が「X」で<br />
+                            表示されます
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="chats-history">
