@@ -40,40 +40,48 @@ function Result({ isMissedListener, handleChangePerspective }) {
 
     return (
         <div className="result-container">
-            <div className="btn-container">
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="large"
-                    className="submit"
-                    onClick={handleBackToHome}
-                >
-                    戻る
-                </Button>
-                <Button
-                    variant="contained"
-                    color="success"
-                    size="large"
-                    className="submit"
-                    onClick={handleChangePerspective}
-                >
-                    {isMissedListener ? 'user視点に戻す' : 'Bさんの視点に切り替える'}
-                </Button>
-                <Button
-                    variant="contained"
-                    color="warning"
-                    size="large"
-                    className="text-bold md"
-                    onClick={handleChangeMode}
-                >
-                    {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-                </Button>
+            <div className="side-btn-container">
+                <div>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        size="large"
+                        onClick={handleBackToHome}
+                    >
+                        <div className="sm">戻る</div>
+                    </Button>
+                </div>
+                <div>
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        size="large"
+                        onClick={handleChangeMode}
+                    >
+                        <div className="sm">{isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}</div>
+                    </Button>
+                </div>
+                <div className="perspective-btn-container">
+                    <Button
+                        variant="contained"
+                        color="success"
+                        size="large"
+                        onClick={handleChangePerspective}
+                    >
+                        <div className="sm">{isMissedListener ? 'あなたの視点に戻す' : 'Bさんの視点に切り替える'}</div>
+                    </Button>
+                    <div className="perspective-text sm">
+                        ※視点を切り替えると、<br></br>
+                        聞き逃した部分が「X」で<br></br>
+                        表示されます
+                    </div>
+                </div>
             </div>
             <div className="chats-history">
                 <div className="turn-1">
                     <div className="xl text-bold title">1回目の対話履歴</div>
                     <div className="chat-box-container">
-                    <Chats
+                        <Chats
                             agent={agent}
                             chats={displayChats1}
                             isMissedListener={isMissedListener}

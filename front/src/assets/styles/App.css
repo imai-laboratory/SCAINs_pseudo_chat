@@ -185,11 +185,22 @@
     border: solid 3px #9ae821;
 }
 
-.btn-container {
+.side-btn-container {
     display: flex;
     gap: 16px;
     flex-direction: column;
-    width: 250px;
+    width: 260px;
+    padding: 8px;
+}
+
+.perspective-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.perspective-text {
+    padding: 4px 12px;
 }
 
 /*フォントサイズクラス*/
