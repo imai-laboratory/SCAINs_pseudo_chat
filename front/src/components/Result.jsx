@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import '../assets/styles/result.css'
+import '../assets/styles/Result.css'
 import '../assets/styles/App.css'
 import {Chats} from "./index";
 import {useLocation, useNavigate} from "react-router-dom";
