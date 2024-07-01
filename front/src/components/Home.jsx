@@ -28,7 +28,7 @@ function Home({ isMissedListener }) {
     const [turn, setTurn] = useState(0);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
-    const [isScainsMode, setIsScainsMode] = useState(false);
+    const [isScainsMode, setIsScainsMode] = useState(true);
 
     const navigate = useNavigate();
     const omittedChatsRef = useRef(omittedChats);
@@ -215,21 +215,24 @@ function Home({ isMissedListener }) {
 
     return (
         <section className="app-container">
-            <div className="button-container">
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="large"
-                    disabled={!showSubmitButton}
-                    className="submit"
-                    onClick={handleEndTurn}
-                >
-                    終了
-                </Button>
-                ターン{turn}
+            <div className="explanation-container">
+                <div className="xl text-bold step-text">
+                    { turn === 1 ? `手順${turn}：システム支援なしでの対話` : `手順${turn}：SCAINs表示によるシステム支援ありでの対話` }
+                </div>
+                <div className="next-btn">
+                    <Button
+                        variant="contained"
+                        color="error"
+                        size="large"
+                        disabled={!showSubmitButton}
+                        onClick={handleEndTurn}
+                    >
+                        { turn === 1 ? `手順${turn+1}に進む` : `手順${turn}を終了し、対話履歴を表示` }
+                    </Button>
+                </div>
             </div>
             <div className="content">
-                <div className="monitor-container">
+            <div className="monitor-container">
                     <Monitor
                         image_A={image_A}
                         image_B={image_B}
@@ -242,17 +245,17 @@ function Home({ isMissedListener }) {
                 </div>
                 <div className="chats-content">
                     <div className="scains-btn">
-                    {showScainsButton && (
-                        <Button
-                            variant="contained"
-                            color="warning"
-                            size="large"
-                            className="text-bold md"
-                            onClick={handleChangeMode}
-                        >
-                            {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-                        </Button>
-                    )}
+                        {showScainsButton && (
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                size="medium"
+                                className="text-bold md"
+                                onClick={handleChangeMode}
+                            >
+                                {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
+                            </Button>
+                        )}
                     </div>
                     <div className="chat-box-container">
                         <Chats

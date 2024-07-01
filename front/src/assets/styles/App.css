@@ -5,6 +5,18 @@
     flex-direction: column;
 }
 
+.explanation-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.step-text, .next-btn {
+    padding: 8px 24px;
+}
+
 .content {
     display: flex;
     width: 100%;
