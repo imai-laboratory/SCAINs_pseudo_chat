@@ -28,6 +28,7 @@ function App() {
                         <Result
                             handleChangePerspective={handleChangePerspective}
                             isMissedListener={isMissedListener}
+                            setIsMissedListener={setIsMissedListener}
                         />
                     }
                 />

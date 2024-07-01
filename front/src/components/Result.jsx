@@ -5,7 +5,7 @@ import {Chats} from "./index";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 
-function Result({ isMissedListener, handleChangePerspective }) {
+function Result({ isMissedListener, setIsMissedListener, handleChangePerspective }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { agent, history1, history2, omittedChats, scains, speaker } = location.state || {};
@@ -19,6 +19,7 @@ function Result({ isMissedListener, handleChangePerspective }) {
     }, [speaker]);
 
     const handleBackToHome = () => {
+        setIsMissedListener(false);
         navigate('/');
     };
 
