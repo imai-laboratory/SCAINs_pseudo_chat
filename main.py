@@ -33,19 +33,6 @@ class Conversation(BaseModel):
     conversation: list
     agent: str
 
-
-@app.get("/", response_class=FileResponse)
-async def serve_react_app():
-    index_file_path = "./front/build/index.html"
-    return FileResponse(index_file_path)
-
-
-@app.get("/result", response_class=FileResponse)
-async def serve_react_app():
-    index_file_path = "./front/build/index.html"
-    return FileResponse(index_file_path)
-
-
 @app.post("/api/generate-response")
 async def generate_response(request: Conversation):
     try:
