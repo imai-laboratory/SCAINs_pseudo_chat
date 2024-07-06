@@ -11,3 +11,5 @@ down:
 restart:
 	@make down
 	@make up
+app:
+	docker compose exec backend sh
