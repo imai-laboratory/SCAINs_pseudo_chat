@@ -25,7 +25,6 @@ function Home({ isMissedListener, rootURL }) {
     const [showSubmitButton, setShowSubmitButton] = useState(true);
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [turn, setTurn] = useState(0);
-    const [user, setUser] = useState(null);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
     const [isScainsMode, setIsScainsMode] = useState(false);
