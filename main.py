@@ -4,17 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import openai
-import os
-from dotenv import load_dotenv
 import re
 
 from prompt import generate_answer
+from core.config import get_settings
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-local_url = os.getenv("LOCAL_URL")
-prod_url = os.getenv("PROD_URL")
-
+settings = get_settings()
+local_url = settings.local_url
+prod_url = settings.prod_url
 
 app = FastAPI()
 app.add_middleware(
@@ -31,6 +28,7 @@ app.mount("/static", StaticFiles(directory="./front/build/static"), name="static
 class Conversation(BaseModel):
     conversation: list
     agent: str
+
 
 @app.post("/api/generate-response")
 async def generate_response(request: Conversation):

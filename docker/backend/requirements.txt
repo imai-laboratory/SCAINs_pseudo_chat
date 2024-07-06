@@ -2,6 +2,7 @@ fastapi
 numpy
 openai==0.28.0
 pydantic
+pydantic-settings
 python-dotenv
 uvicorn
 sqlalchemy
