@@ -1,8 +1,7 @@
 import './assets/styles/App.css';
 import React, {useEffect, useState} from 'react';
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import { Header, Home, Login, Result } from "./components";
-import sampleData from "./assets/data/PP10";
+import { Header, Home, Login, PrivateRoute, Result } from "./components";
 
 function App() {
     const [isMissedListener, setIsMissedListener] = useState(false);
@@ -26,20 +25,24 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        <Home
-                            isMissedListener={isMissedListener}
-                            rootURL={rootUrl}
-                        />
+                        <PrivateRoute>
+                            <Home
+                                isMissedListener={isMissedListener}
+                                rootURL={rootUrl}
+                            />
+                        </PrivateRoute>
                     }
                 />
                 <Route
                     path="/result"
                     element={
-                        <Result
-                            handleChangePerspective={handleChangePerspective}
-                            isMissedListener={isMissedListener}
-                            setIsMissedListener={setIsMissedListener}
-                        />
+                        <PrivateRoute>
+                            <Result
+                                handleChangePerspective={handleChangePerspective}
+                                isMissedListener={isMissedListener}
+                                setIsMissedListener={setIsMissedListener}
+                            />
+                        </PrivateRoute>
                     }
                 />
             </Routes>
