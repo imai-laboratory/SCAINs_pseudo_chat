@@ -8,15 +8,16 @@ import re
 
 from prompt import generate_answer
 from core.config import get_settings
+from database.database import SessionLocal, engine, Base
+
+Base.metadata.create_all(bind=engine)
 
 settings = get_settings()
-local_url = settings.local_url
-prod_url = settings.prod_url
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[local_url, prod_url],
+    allow_origins=[settings.local_url, settings.prod_url],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +29,14 @@ app.mount("/static", StaticFiles(directory="./front/build/static"), name="static
 class Conversation(BaseModel):
     conversation: list
     agent: str
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.post("/api/generate-response")
