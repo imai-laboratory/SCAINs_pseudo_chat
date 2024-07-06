@@ -7,7 +7,7 @@ init:
 stop:
 	docker compose stop
 down:
-	docker compose down --remove-orphans
+	docker compose down -v
 restart:
 	@make down
 	@make up
