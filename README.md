@@ -38,6 +38,16 @@ DBへの接続はenvファイルを参照してください。
 
 # 以下参考
 
+## デプロイ
+```
+cd front
+npm run build
+npm run deploy
+```
+フロント側をGithubPagesでデプロイしている。
+DBに存在するユーザのみログイン可能
+<p><a href="https://www.ailab.ics.keio.ac.jp/SCAINs_pseudo_chat/" target="_blank">https://www.ailab.ics.keio.ac.jp/SCAINs_pseudo_chat/</a></p>
+
 ## initial
 日本語ペルソナチャットデータセットからSCAINsの判定
 
@@ -53,3 +63,4 @@ DBへの接続はenvファイルを参照してください。
 
 ## main
 - FastAPIを使用
+- 各種APIが含まれている
