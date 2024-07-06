@@ -1,0 +1,50 @@
+.fsize{
+  font-size: 24px;
+  text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+form {
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e3e3e3; /* バックグラウンド色の設定 */
+    padding: 20px;
+    border-radius: 1px; /* 角を丸める */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+}
+
+input[type="text"] {
+  width: 93%;
+  padding: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error {
+    background-color: rgba(250, 20, 105, 0.46);
+    border-radius: 4px;
+    padding: 8px 16px;
+}

@@ -17,6 +17,7 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):
@@ -31,3 +32,9 @@ class TokenData(BaseModel):
 class UserLogin(BaseModel):
     name: str
     email: EmailStr
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse

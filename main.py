@@ -1,7 +1,8 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends, Request, status
+from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import openai
@@ -16,7 +17,7 @@ from database.models import User
 from prompt import generate_answer
 from core.config import get_settings
 from database.database import SessionLocal, engine, Base
-from database.schemas import UserCreate, UserResponse, Token, UserLogin
+from database.schemas import UserCreate, UserResponse, Token, UserLogin, LoginResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -47,6 +48,9 @@ def get_db():
         db.close()
 
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
 @app.post("/user/create", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
@@ -55,9 +59,9 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@app.post("/login", response_model=Token)
-def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = crud.authenticate_user(db, user.name, user.email)
+@app.post("/login", response_model=LoginResponse)
+def login_for_access_token(name: str = Form(...), email: str = Form(...), db: Session = Depends(get_db)):
+    db_user = crud.authenticate_user(db, name, email)
     if not db_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -65,7 +69,8 @@ def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(data={"sub": db_user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
+    user_response = UserResponse.from_orm(db_user)
+    return {"access_token": access_token, "token_type": "bearer", "user": user_response}
 
 
 @app.post("/api/generate-response")

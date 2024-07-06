@@ -9,7 +9,7 @@ import image_user from "../assets/images/user.jpg";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-function Home({ isMissedListener }) {
+function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
@@ -19,13 +19,13 @@ function Home({ isMissedListener }) {
     const [history2, setHistory2] = useState([]);
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
-    const [rootUrl, setrootUrl] = useState('');
     const [scains, setScains] = useState([]);
     const [speaker, setSpeaker] = useState('');
     const [showScainsButton, setShowScainsButton] = useState(false);
     const [showSubmitButton, setShowSubmitButton] = useState(true);
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [turn, setTurn] = useState(0);
+    const [user, setUser] = useState(null);
     const [userStatement, setUserStatement] = useState('');
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
     const [isScainsMode, setIsScainsMode] = useState(false);
@@ -48,11 +48,8 @@ function Home({ isMissedListener }) {
         setAgent('B');
         setDataset(sampleData);
         setTurn(1);
-        const localUrl = process.env.REACT_APP_LOCAL_URL;
-        const prodUrl = process.env.REACT_APP_PROD_URL;
-        setrootUrl(process.env.NODE_ENV === 'development' ? localUrl : prodUrl);
-        setLlmUrl(`${rootUrl}/api/generate-response`);
-    }, [rootUrl]);
+        setLlmUrl(`${rootURL}/api/generate-response`);
+    }, [rootURL]);
 
     // サンプルデータの初期値セット
     useEffect(() => {
@@ -134,7 +131,7 @@ function Home({ isMissedListener }) {
                             setCurrentUserStatement(dataset.length);
                             setSwitchMissedImage(true);
                         }
-                    }, index * 2500);
+                    }, index * 2000);
                 });
             }
         }
