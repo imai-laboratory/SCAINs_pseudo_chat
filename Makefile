@@ -21,3 +21,6 @@ endif
 
 migrate:
 	docker compose run backend alembic upgrade head
+
+drop:
+	docker compose run backend alembic downgrade -1
