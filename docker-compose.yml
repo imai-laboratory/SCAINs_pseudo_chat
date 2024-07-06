@@ -1,6 +1,15 @@
-version: '3'
-
 services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbname
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   frontend:
     build:
       context: .
@@ -20,3 +29,8 @@ services:
       - .:/backend
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
