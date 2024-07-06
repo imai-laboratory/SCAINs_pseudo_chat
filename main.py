@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -11,11 +11,12 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from database import crud
+from database.auth import create_access_token
 from database.models import User
 from prompt import generate_answer
 from core.config import get_settings
 from database.database import SessionLocal, engine, Base
-from database.schemas import UserCreate, UserResponse
+from database.schemas import UserCreate, UserResponse, Token, UserLogin
 
 Base.metadata.create_all(bind=engine)
 
@@ -52,6 +53,19 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
+
+
+@app.post("/login", response_model=Token)
+def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = crud.authenticate_user(db, user.name, user.email)
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid name or email",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = create_access_token(data={"sub": db_user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @app.post("/api/generate-response")

@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     postgres_password: str
     postgres_db: str
 
+    SECRET_KEY: str
+
     class Config:
         env_file = os.path.join(PROJECT_ROOT, '..', '.env')
 

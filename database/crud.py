@@ -11,3 +11,11 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+# ログイン
+def authenticate_user(db: Session, name: str, email: str):
+    user = db.query(User).filter(User.email == email, User.name == name).first()
+    if not user:
+        return False
+    return user
