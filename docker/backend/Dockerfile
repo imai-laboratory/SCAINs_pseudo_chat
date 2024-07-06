@@ -1,7 +1,7 @@
 FROM python:latest
 WORKDIR /backend
 
-COPY /docker/backend/requirements.txt .
+COPY requirements.txt .
 COPY main.py .
 COPY database .
 
