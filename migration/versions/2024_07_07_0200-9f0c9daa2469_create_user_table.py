@@ -1,8 +1,8 @@
 """create user table
 
-Revision ID: 452dabc3aed9
+Revision ID: 9f0c9daa2469
 Revises: 
-Create Date: 2024-07-07 01:13:24.088993+09:00
+Create Date: 2024-07-07 02:00:28.454959+09:00
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '452dabc3aed9'
+revision: str = '9f0c9daa2469'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,7 +28,7 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
-    op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)
+    op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=True)
     op.create_index(op.f('ix_users_name'), 'users', ['name'], unique=False)
     # ### end Alembic commands ###
 
