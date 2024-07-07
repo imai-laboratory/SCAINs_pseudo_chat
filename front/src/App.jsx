@@ -11,11 +11,15 @@ function App() {
         const localUrl = process.env.REACT_APP_LOCAL_URL;
         const prodUrl = process.env.REACT_APP_PROD_URL;
         setrootUrl(process.env.NODE_ENV === 'development' ? localUrl : prodUrl);
-    }, [rootUrl]);
+    }, []);
 
     const handleChangePerspective = () => {
         setIsMissedListener(!isMissedListener);
     };
+
+    if (!rootUrl) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Router>
