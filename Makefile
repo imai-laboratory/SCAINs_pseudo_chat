@@ -20,8 +20,9 @@ migration:
 		echo "Error: name argument is required"; \
 		exit 1; \
 	fi
-	docker compose run backend alembic revision --autogenerate -m "$(name)"
+	docker compose run backend alembic revision -m "$(name)"
 migrate:
 	docker compose run backend alembic upgrade head
 drop:
-	docker compose run backend alembic downgrade -1
+	docker compose exec db psql -U postgres -d scains-db -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+	docker compose exec db psql -U postgres -d scains-db -c "DROP TABLE IF EXISTS alembic_version;"
