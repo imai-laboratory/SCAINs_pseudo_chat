@@ -79,7 +79,12 @@ def login_for_access_token(name: str = Form(...), email: str = Form(...), db: Se
     return {"access_token": access_token, "token_type": "bearer", "user": user_response}
 
 
-@app.post("/conversations/create", response_model=ConversationResponse)
+@app.get("/conversation/list", response_model=List[ConversationResponse])
+def list_conversations(db: Session = Depends(get_db)):
+    return crud.list_conversations(db=db)
+
+
+@app.post("/conversation/create", response_model=ConversationResponse)
 def create_conversation(conversation: ConversationCreate, db: Session = Depends(get_db)):
     return crud.create_conversation(db=db, conversation=conversation)
 

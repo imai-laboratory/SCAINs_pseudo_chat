@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 
 function Admin({ rootURL }) {
+    const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '', role: '' });
     const [newConversation, setNewConversation] = useState({ name: '' });
@@ -23,15 +24,28 @@ function Admin({ rootURL }) {
         }
         try {
             const response = await axios.get(`${rootURL}/user/list`);
-            console.log(response.data);
             setUsers(response.data);
         } catch (error) {
-            console.error("ユーザーの取得に失敗しました", error);
+            window.alert("ユーザーの取得に失敗しました");
+        }
+    };
+
+    const fetchConversations = async () => {
+        if (!rootURL) {
+            console.error("rootURL is not defined");
+            return;
+        }
+        try {
+            const response = await axios.get(`${rootURL}/conversation/list`);
+            setConversations(response.data);
+        } catch (error) {
+            window.alert("対話一覧の取得に失敗しました");
         }
     };
 
     useEffect(() => {
         fetchUsers();
+        fetchConversations();
     }, []);
 
     const handleUserAdd = async () => {
@@ -51,7 +65,7 @@ function Admin({ rootURL }) {
 
     const handleConversationAdd = async () => {
         try {
-            const response = await axios.post(`${rootURL}/conversations/create`, newConversation);
+            const response = await axios.post(`${rootURL}/conversation/create`, newConversation);
             alert('対話'+ response.data.name + 'が追加されました');
             setNewConversation({ name: '' });
         } catch (error) {
@@ -64,13 +78,13 @@ function Admin({ rootURL }) {
     };
 
     return (
-        <div className="container">
+        <div className="admin-container">
             <h1>管理画面</h1>
-            <div>
+            <div className="user-list">
                 <h2>ユーザーリスト</h2>
                 <ul>
                     {users.map(user => (
-                        <li key={user.email}>{user.name}</li>
+                        <li key={user.id}>{user.name}</li>
                     ))}
                 </ul>
             </div>
@@ -98,6 +112,14 @@ function Admin({ rootURL }) {
                     placeholder="権限"
                 />
                 <button onClick={handleUserAdd}>ユーザを追加</button>
+            </div>
+            <div className="user-list">
+                <h2>対話リスト</h2>
+                <ul>
+                    {conversations.map(conversation => (
+                        <li key={conversation.id}>{conversation.name}</li>
+                    ))}
+                </ul>
             </div>
             <div>
                 <h2>対話の追加</h2>
