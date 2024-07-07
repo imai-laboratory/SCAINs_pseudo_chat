@@ -11,7 +11,7 @@ from sqlalchemy import pool
 
 from alembic import context
 from database import Base
-from database.models import User
+from database.models import *
 
 settings = get_settings()
 

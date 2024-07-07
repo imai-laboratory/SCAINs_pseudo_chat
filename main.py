@@ -4,7 +4,6 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
 import openai
 import re
 
@@ -13,11 +12,11 @@ from starlette.responses import JSONResponse
 
 from database import crud
 from database.auth import create_access_token
-from database.models import User
+from database.models import *
 from prompt import generate_answer
 from core.config import get_settings
 from database.database import SessionLocal, engine, Base
-from database.schemas import UserCreate, UserResponse, Token, UserLogin, LoginResponse
+from database.schemas import *
 
 Base.metadata.create_all(bind=engine)
 
@@ -71,6 +70,16 @@ def login_for_access_token(name: str = Form(...), email: str = Form(...), db: Se
     access_token = create_access_token(data={"sub": db_user.email})
     user_response = UserResponse.from_orm(db_user)
     return {"access_token": access_token, "token_type": "bearer", "user": user_response}
+
+
+@app.post("/conversations/create", response_model=ConversationResponse)
+def create_conversation(conversation: ConversationCreate, db: Session = Depends(get_db)):
+    return crud.create_conversation(db=db, conversation=conversation)
+
+
+@app.post("/chat-message-history/create", response_model=ChatMessageHistoryResponse)
+def create_chat_message_history(chat_message_history: ChatMessageHistoryCreate, db: Session = Depends(get_db)):
+    return crud.create_chat_message_history(db=db, chat_message_history=chat_message_history)
 
 
 @app.post("/api/generate-response")
