@@ -5,7 +5,7 @@ from database.schemas import UserCreate
 
 # ユーザ作成
 def create_user(db: Session, user: UserCreate):
-    db_user = User(name=user.name, email=user.email)
+    db_user = User(name=user.name, email=user.email, role=user.role)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
