@@ -13,14 +13,15 @@ restart:
 	@make up
 app:
 	docker compose exec backend sh
-migration:
-ifndef name
-	$(error message is undefined. Usage: make migration message=\"<migration name>\")
-endif
-	docker compose run backend alembic revision --autogenerate -m "$(name)"
 
+.PHONY: migration
+migration:
+	@if [ "$(name)" = "" ]; then \
+		echo "Error: name argument is required"; \
+		exit 1; \
+	fi
+	docker compose run backend alembic revision --autogenerate -m "$(name)"
 migrate:
 	docker compose run backend alembic upgrade head
-
 drop:
 	docker compose run backend alembic downgrade -1
