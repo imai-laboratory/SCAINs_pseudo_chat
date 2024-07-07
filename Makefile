@@ -26,3 +26,13 @@ migrate:
 drop:
 	docker compose exec db psql -U postgres -d scains-db -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 	docker compose exec db psql -U postgres -d scains-db -c "DROP TABLE IF EXISTS alembic_version;"
+current:
+	docker compose run backend alembic current
+history:
+	docker compose run backend alembic history
+downgrade:
+	@if [ "$(n)" = "" ]; then \
+		echo "Error: name argument is required"; \
+		exit 1; \
+	fi
+	docker compose run backend alembic downgrade "$(n)"
