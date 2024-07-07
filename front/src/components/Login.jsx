@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {AuthForm} from "./";
+import {useNavigate} from "react-router-dom";
 
 function Login({ rootURL }) {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
@@ -21,7 +23,7 @@ function Login({ rootURL }) {
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             setError('');
-            window.location.href = '/';
+            navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError('ログインに失敗しました。ユーザー名またはメールアドレスが間違っています。');
