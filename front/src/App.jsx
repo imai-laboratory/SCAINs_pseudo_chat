@@ -26,7 +26,7 @@ function App() {
                     path="/admin"
                     element={
                         <AdminRoute>
-                            <Admin />
+                            <Admin rootURL={rootUrl} />
                         </AdminRoute>
                     }
                 />
