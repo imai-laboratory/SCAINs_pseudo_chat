@@ -24,7 +24,7 @@ def upgrade():
         sa.Column('id', sa.Integer, primary_key=True, unique=True, index=True),
         sa.Column('name', sa.String, index=True, nullable=False),
         sa.Column('email', sa.String, unique=True, index=True, nullable=False),
-        sa.Column('role', sa.String, nullable=False, server_default='user'),
+        sa.Column('role', sa.Integer, nullable=False, server_default='1'),
         sa.Column('created_at', sa.DateTime, default=sa.func.current_timestamp())
     )
 
