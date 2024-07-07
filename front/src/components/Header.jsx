@@ -76,7 +76,7 @@ function Header() {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        { user.role === 'admin' && (
+                        { user.role === 0 && (
                             <MenuItem onClick={handleAdmin}>管理画面</MenuItem>
                         )}
                         <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
