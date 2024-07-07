@@ -1,65 +1,109 @@
 import './assets/styles/App.css';
-import React, {useEffect, useState} from 'react';
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import React, {useContext, useState} from 'react';
+import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import {Admin, AdminRoute, Header, Home, Login, PrivateRoute, Result} from "./components";
+import { UserProvider, UserContext } from './context/UserContext';
 
 function App() {
-    const [isMissedListener, setIsMissedListener] = useState(false);
-    const [rootUrl, setrootUrl] = useState('');
+    return (
+        <UserProvider>
+            <Router>
+                <HeaderWrapper />
+                <Routes>
+                    <Route path="/login" element={<LoginWrapper />} />
+                    <Route
+                        path="/admin"
+                        element={
+                            <AdminRouteWrapper>
+                                <AdminWrapper />
+                            </AdminRouteWrapper>
+                        }
+                    />
+                    <Route
+                        path="/"
+                        element={
+                            <PrivateRouteWrapper>
+                                <HomeWrapper />
+                            </PrivateRouteWrapper>
+                        }
+                    />
+                    <Route
+                        path="/result"
+                        element={
+                            <PrivateRouteWrapper>
+                                <ResultWrapper />
+                            </PrivateRouteWrapper>
+                        }
+                    />
+                    <Route path="*" element={<Navigate to="/login" />} />
+                </Routes>
+            </Router>
+        </UserProvider>
+    );
+}
 
-    useEffect(() => {
-        const localUrl = process.env.REACT_APP_LOCAL_URL;
-        const prodUrl = process.env.REACT_APP_PROD_URL;
-        setrootUrl(process.env.NODE_ENV === 'development' ? localUrl : prodUrl);
-    }, []);
+const HeaderWrapper = () => {
+    const { user, setUser } = useContext(UserContext);
+    return <Header user={user} setUser={setUser} />;
+};
+
+const LoginWrapper = () => {
+    const { rootUrl, setUser, setLoading } = useContext(UserContext);
+    return <Login rootURL={rootUrl} setUser={setUser} setLoading={setLoading} />;
+};
+
+const AdminRouteWrapper = ({ children }) => {
+    const { user, loading } = useContext(UserContext);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+    return <AdminRoute user={user}>{children}</AdminRoute>;
+};
+
+const PrivateRouteWrapper = ({ children }) => {
+    const { user, loading } = useContext(UserContext);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+    return <PrivateRoute user={user}>{children}</PrivateRoute>;
+};
+
+const AdminWrapper = () => {
+    const { rootUrl } = useContext(UserContext);
+    return <Admin rootURL={rootUrl} />;
+};
+
+const HomeWrapper = () => {
+    const { rootUrl } = useContext(UserContext);
+    const [isMissedListener, setIsMissedListener] = useState(false);
 
     const handleChangePerspective = () => {
         setIsMissedListener(!isMissedListener);
     };
 
-    if (!rootUrl) {
-        return <div>Loading...</div>;
-    }
+    return (
+        <Home
+            isMissedListener={isMissedListener}
+            rootURL={rootUrl}
+            handleChangePerspective={handleChangePerspective}
+        />
+    );
+};
+
+const ResultWrapper = () => {
+    const [isMissedListener, setIsMissedListener] = useState(false);
+
+    const handleChangePerspective = () => {
+        setIsMissedListener(!isMissedListener);
+    };
 
     return (
-        <Router>
-            <Header/>
-            <Routes>
-                <Route path="/login" element={<Login rootURL={rootUrl} />} />
-                <Route
-                    path="/admin"
-                    element={
-                        <AdminRoute>
-                            <Admin rootURL={rootUrl} />
-                        </AdminRoute>
-                    }
-                />
-                <Route
-                    path="/"
-                    element={
-                        <PrivateRoute>
-                            <Home
-                                isMissedListener={isMissedListener}
-                                rootURL={rootUrl}
-                            />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/result"
-                    element={
-                        <PrivateRoute>
-                            <Result
-                                handleChangePerspective={handleChangePerspective}
-                                isMissedListener={isMissedListener}
-                                setIsMissedListener={setIsMissedListener}
-                            />
-                        </PrivateRoute>
-                    }
-                />
-            </Routes>
-        </Router>
+        <Result
+            handleChangePerspective={handleChangePerspective}
+            isMissedListener={isMissedListener}
+            setIsMissedListener={setIsMissedListener}
+        />
     );
-}
+};
 
 export default App;

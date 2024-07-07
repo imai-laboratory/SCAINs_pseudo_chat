@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {useState, useCallback, useEffect, useRef, useContext} from 'react';
 import {Chats, Monitor, UserStatements} from "./";
 import sampleData from "../assets/data/PP10";
 import axios from 'axios';
@@ -8,8 +8,10 @@ import image_missing_B from "../assets/images/missing_B.jpg";
 import image_user from "../assets/images/user.jpg";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import {UserContext} from "../context/UserContext";
 
-function Home({ isMissedListener, rootURL }) {
+function Home({ isMissedListener }) {
+    const { rootURL } = useContext(UserContext);
     const [agent, setAgent] = useState('');
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
