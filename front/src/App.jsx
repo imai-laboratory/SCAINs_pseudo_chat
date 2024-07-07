@@ -1,7 +1,7 @@
 import './assets/styles/App.css';
 import React, {useContext, useState} from 'react';
 import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
-import {Admin, AdminRoute, Header, Home, Login, PrivateRoute, Result} from "./components";
+import {Admin, AdminRoute, Header, Home, Loading, Login, PrivateRoute, Result} from "./components";
 import { UserProvider, UserContext } from './context/UserContext';
 
 function App() {
@@ -55,7 +55,7 @@ const LoginWrapper = () => {
 const AdminRouteWrapper = ({ children }) => {
     const { user, loading } = useContext(UserContext);
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
     return <AdminRoute user={user}>{children}</AdminRoute>;
 };
@@ -63,7 +63,7 @@ const AdminRouteWrapper = ({ children }) => {
 const PrivateRouteWrapper = ({ children }) => {
     const { user, loading } = useContext(UserContext);
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
     return <PrivateRoute user={user}>{children}</PrivateRoute>;
 };
