@@ -32,6 +32,10 @@ function Header() {
         setAnchorEl(null);
     };
 
+    const handleAdmin = () => {
+        navigate('/admin');
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('token'); // トークンを削除
         localStorage.removeItem('user'); // ユーザー情報を削除
@@ -70,6 +74,9 @@ function Header() {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
+                        { user.role === 'admin' && (
+                            <MenuItem onClick={handleAdmin}>管理画面</MenuItem>
+                        )}
                         <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
                     </Menu>
                 </div>

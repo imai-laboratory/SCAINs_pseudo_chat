@@ -1,3 +1,5 @@
+export {default as Admin} from './Admin'
+export {default as AdminRoute} from './AdminRoute'
 export {default as AuthForm} from './AuthForm'
 export {default as Chat} from './Chat'
 export {default as Chats} from './Chats'

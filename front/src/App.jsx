@@ -1,7 +1,7 @@
 import './assets/styles/App.css';
 import React, {useEffect, useState} from 'react';
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import { Header, Home, Login, PrivateRoute, Result } from "./components";
+import {Admin, AdminRoute, Header, Home, Login, PrivateRoute, Result} from "./components";
 
 function App() {
     const [isMissedListener, setIsMissedListener] = useState(false);
@@ -22,6 +22,14 @@ function App() {
             <Header/>
             <Routes>
                 <Route path="/login" element={<Login rootURL={rootUrl} />} />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
+                            <Admin />
+                        </AdminRoute>
+                    }
+                />
                 <Route
                     path="/"
                     element={
