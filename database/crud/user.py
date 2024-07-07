@@ -3,6 +3,12 @@ from database.models import *
 from database.schemas import UserCreate
 
 
+# ユーザ一覧
+def list_users(db: Session):
+    users = db.query(User).all()
+    return users
+
+
 # ユーザ作成
 def create_user(db: Session, user: UserCreate):
     db_user = User(name=user.name, email=user.email, role=user.role)

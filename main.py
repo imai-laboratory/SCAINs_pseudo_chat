@@ -1,3 +1,5 @@
+from typing import List
+
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
 from fastapi.exceptions import RequestValidationError
@@ -48,6 +50,11 @@ def get_db():
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
+@app.get("/user/list", response_model=List[UserBase])
+def list_users(db: Session = Depends(get_db)):
+    return crud.list_users(db=db)
 
 
 @app.post("/user/create", response_model=UserResponse)
