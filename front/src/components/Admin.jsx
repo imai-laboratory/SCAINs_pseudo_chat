@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import '../assets/styles/Admin.css';
@@ -38,7 +38,7 @@ function Admin({ rootURL }) {
         setNewConversation({ ...newConversation, [name]: value });
     };
 
-    const fetchUsers = async () => {
+    const fetchUsers = useCallback(async () => {
         if (!rootURL) {
             console.error("rootURL is not defined");
             return;
@@ -49,9 +49,9 @@ function Admin({ rootURL }) {
         } catch (error) {
             window.alert("ユーザーの取得に失敗しました");
         }
-    };
+    }, [rootURL]);
 
-    const fetchConversations = async () => {
+    const fetchConversations = useCallback(async () => {
         if (!rootURL) {
             console.error("rootURL is not defined");
             return;
@@ -62,12 +62,12 @@ function Admin({ rootURL }) {
         } catch (error) {
             window.alert("対話一覧の取得に失敗しました");
         }
-    };
+    }, [rootURL]);
 
     useEffect(() => {
         fetchUsers();
         fetchConversations();
-    }, []);
+    }, [fetchConversations, fetchUsers]);
 
     const handleUserAdd = async () => {
         try {
