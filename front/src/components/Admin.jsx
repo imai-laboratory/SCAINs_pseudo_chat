@@ -1,5 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import '../assets/styles/Admin.css';
+import '../enums/UserRole';
+import { userRoleLabels } from "../enums/UserRole";
+
+const userColumns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 200 },
+    { field: 'email', headerName: 'Email', width: 400 },
+    {
+        field: 'role',
+        headerName: 'Role',
+        width: 200,
+        renderCell: (params) => userRoleLabels[params.value],
+    },
+];
+
+const conversationColumns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 130 },
+];
 
 function Admin({ rootURL }) {
     const [conversations, setConversations] = useState([]);
@@ -54,6 +75,7 @@ function Admin({ rootURL }) {
             alert('新しいユーザーが追加されました');
             setUsers([...users, response.data]);
             setNewUser({ id: '', name: '', email: '', role: '' });
+            fetchUsers();
         } catch (error) {
             if (error.response && error.response.status === 422) {
                 alert('入力に誤りがあります。再確認してください。');
@@ -68,6 +90,7 @@ function Admin({ rootURL }) {
             const response = await axios.post(`${rootURL}/conversation/create`, newConversation);
             alert('対話'+ response.data.name + 'が追加されました');
             setNewConversation({ name: '' });
+            fetchConversations();
         } catch (error) {
             if (error.response && error.response.status === 422) {
                 alert('入力に誤りがあります。再確認してください。');
@@ -80,15 +103,22 @@ function Admin({ rootURL }) {
     return (
         <div className="admin-container">
             <h1>管理画面</h1>
-            <div className="user-list">
+            <div className="sub-container">
                 <h2>ユーザーリスト</h2>
-                <ul>
-                    {users.map(user => (
-                        <li key={user.id}>{user.name}</li>
-                    ))}
-                </ul>
+                <DataGrid
+                    className="table"
+                    rows={users}
+                    columns={userColumns}
+                    initialState={{
+                        pagination: {
+                          paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
             </div>
-            <div>
+            <div className="sub-container">
                 <h2>新しいユーザーの追加</h2>
                 <input
                     type="text"
@@ -109,19 +139,26 @@ function Admin({ rootURL }) {
                     name="role"
                     value={newUser.role}
                     onChange={handleNewUserChange}
-                    placeholder="権限"
+                    placeholder="権限 (0:admin, 1:user)"
                 />
                 <button onClick={handleUserAdd}>ユーザを追加</button>
             </div>
-            <div className="user-list">
+            <div className="sub-container">
                 <h2>対話リスト</h2>
-                <ul>
-                    {conversations.map(conversation => (
-                        <li key={conversation.id}>{conversation.name}</li>
-                    ))}
-                </ul>
+                <DataGrid
+                    className="table"
+                    rows={conversations}
+                    columns={conversationColumns}
+                    initialState={{
+                        pagination: {
+                          paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
             </div>
-            <div>
+            <div className="sub-container">
                 <h2>対話の追加</h2>
                 <input
                     type="text"
