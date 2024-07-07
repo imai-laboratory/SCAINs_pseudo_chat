@@ -8,10 +8,8 @@ import image_missing_B from "../assets/images/missing_B.jpg";
 import image_user from "../assets/images/user.jpg";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import {UserContext} from "../context/UserContext";
 
-function Home({ isMissedListener }) {
-    const { rootURL } = useContext(UserContext);
+function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);

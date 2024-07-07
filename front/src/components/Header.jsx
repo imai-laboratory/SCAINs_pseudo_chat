@@ -1,10 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../assets/styles/Header.css";
 import header_logo from "../assets/images/header_logo.jpg"
 import { Button, Menu, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {UserContext} from "../context/UserContext";
 
 const CustomButton = styled(Button)({
     backgroundColor: '#ffffff', // 背景色の設定
@@ -15,8 +14,7 @@ const CustomButton = styled(Button)({
     },
 });
 
-function Header() {
-    const { user, setUser } = useContext(UserContext);
+function Header({ user, setUser}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
 

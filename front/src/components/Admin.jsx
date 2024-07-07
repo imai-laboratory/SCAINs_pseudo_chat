@@ -1,10 +1,9 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import '../assets/styles/Admin.css';
 import '../enums/UserRole';
 import { userRoleLabels } from "../enums/UserRole";
-import {UserContext} from "../context/UserContext";
 
 const userColumns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -23,8 +22,7 @@ const conversationColumns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 130 },
 ];
 
-function Admin() {
-    const { rootUrl } = useContext(UserContext);
+function Admin({rootURL}) {
     const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '', role: '' });
@@ -41,30 +39,30 @@ function Admin() {
     };
 
     const fetchUsers = useCallback(async () => {
-        if (!rootUrl) {
-            console.error("rootUrl is not defined");
+        if (!rootURL) {
+            console.error("rootURL is not defined");
             return;
         }
         try {
-            const response = await axios.get(`${rootUrl}/user/list`);
+            const response = await axios.get(`${rootURL}/user/list`);
             setUsers(response.data);
         } catch (error) {
             window.alert("ユーザーの取得に失敗しました");
         }
-    }, [rootUrl]);
+    }, [rootURL]);
 
     const fetchConversations = useCallback(async () => {
-        if (!rootUrl) {
-            console.error("rootUrl is not defined");
+        if (!rootURL) {
+            console.error("rootURL is not defined");
             return;
         }
         try {
-            const response = await axios.get(`${rootUrl}/conversation/list`);
+            const response = await axios.get(`${rootURL}/conversation/list`);
             setConversations(response.data);
         } catch (error) {
             window.alert("対話一覧の取得に失敗しました");
         }
-    }, [rootUrl]);
+    }, [rootURL]);
 
     useEffect(() => {
         fetchUsers();
@@ -73,7 +71,7 @@ function Admin() {
 
     const handleUserAdd = async () => {
         try {
-            const response = await axios.post(`${rootUrl}/user/create`, newUser);
+            const response = await axios.post(`${rootURL}/user/create`, newUser);
             alert('新しいユーザーが追加されました');
             setUsers([...users, response.data]);
             setNewUser({ id: '', name: '', email: '', role: '' });
@@ -89,7 +87,7 @@ function Admin() {
 
     const handleConversationAdd = async () => {
         try {
-            const response = await axios.post(`${rootUrl}/conversation/create`, newConversation);
+            const response = await axios.post(`${rootURL}/conversation/create`, newConversation);
             alert('対話'+ response.data.name + 'が追加されました');
             setNewConversation({ name: '' });
             await fetchConversations();

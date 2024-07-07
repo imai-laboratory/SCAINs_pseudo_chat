@@ -1,20 +1,18 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import {AuthForm} from "./";
 import {useNavigate} from "react-router-dom";
-import {UserContext} from "../context/UserContext";
 
-function Login() {
+function Login({ setUser, setLoading, rootURL }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-    const { setUser, setLoading, rootUrl } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-          const response = await axios.post(`${rootUrl}/login`, new URLSearchParams({
+          const response = await axios.post(`${rootURL}/login`, new URLSearchParams({
             name: username,
             email: email
           }), {
