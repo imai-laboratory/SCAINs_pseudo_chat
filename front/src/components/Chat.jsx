@@ -6,7 +6,7 @@ import UserAvatar from "../assets/images/no-profile.png"
 import A_icon from "../assets/images/A_icon.png"
 import B_icon from "../assets/images/B_icon.png"
 
-export const Chat = ({agent, text, person, isMissedListener, isScains, onSpeakerChange}) => {
+export const Chat = ({agent, text, person, isCoreStatementSpoken, isMissedListener, isScains, onSpeakerChange}) => {
     const isUser = (person === "user");
     const isAgent = (person === agent);
     let classes;
@@ -16,10 +16,10 @@ export const Chat = ({agent, text, person, isMissedListener, isScains, onSpeaker
 
     if (isMissedListener) {
         classes = isAgent ? 'right-chat' : 'left-chat'
-        textClass = isScains ? 'scains-text md text-bold' : isAgent ? 'chat-user-text sm' : 'chat-text sm';
+        textClass = isScains && isCoreStatementSpoken ? 'scains-text md text-bold' : isAgent ? 'chat-user-text sm' : 'chat-text sm';
     } else {
         classes = isUser ? 'right-chat' : 'left-chat'
-        textClass = isScains ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
+        textClass = isScains && isCoreStatementSpoken ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
     }
 
     if (isUser) {

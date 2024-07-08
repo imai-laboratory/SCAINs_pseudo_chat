@@ -26,6 +26,7 @@ function Home({ isMissedListener, rootURL }) {
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [turn, setTurn] = useState(0);
     const [userStatement, setUserStatement] = useState('');
+    const [isCoreStatementSpoken, setIsCoreStatementSpoken] = useState(false);
     const [isFreeChatMode, setIsFreeChatMode] = useState(false);
     const [isScainsMode, setIsScainsMode] = useState(false);
 
@@ -120,6 +121,9 @@ function Home({ isMissedListener, rootURL }) {
             } else {
                 // データの最後まで表示
                 const partial_chats = dataset.slice(currentUserIndex);
+                if (currentUserIndex === 11) {
+                    setIsCoreStatementSpoken(true);
+                }
                 partial_chats.forEach((chat, index) => {
                     setShowSubmitButton(false);
                     setTimeout(() => {
@@ -172,6 +176,7 @@ function Home({ isMissedListener, rootURL }) {
     useEffect(() => {
         if (turn === 3 && history2 !== null) {
             init();
+            setIsCoreStatementSpoken(true);
             navigate('/result', {
                 state: {
                     agent,
@@ -190,6 +195,7 @@ function Home({ isMissedListener, rootURL }) {
             setTurn(turn + 1);
             setShowScainsButton(true);
             setHistory1(chats);
+            setIsCoreStatementSpoken(false);
             init();
         } else if (turn === 2) {
             setTurn(turn + 1);
@@ -263,6 +269,7 @@ function Home({ isMissedListener, rootURL }) {
                         <Chats
                             agent={agent}
                             chats={displayChats}
+                            isCoreStatementSpoken={isCoreStatementSpoken}
                             isMissedListener={isMissedListener}
                             isScainsMode={isScainsMode}
                             onSpeakerChange={setSpeaker}

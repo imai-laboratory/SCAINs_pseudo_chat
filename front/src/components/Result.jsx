@@ -5,7 +5,7 @@ import {Chats} from "./index";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 
-function Result({ isMissedListener, setIsMissedListener, handleChangePerspective }) {
+function Result({ isMissedListener, setIsMissedListener, handleChangePerspective}) {
     const navigate = useNavigate();
     const location = useLocation();
     const { agent, history1, history2, omittedChats, scains, speaker } = location.state || {};
@@ -87,6 +87,7 @@ function Result({ isMissedListener, setIsMissedListener, handleChangePerspective
                         <Chats
                             agent={agent}
                             chats={displayChats1}
+                            isCoreStatementSpoken={true}
                             isMissedListener={isMissedListener}
                             isScainsMode={isScainsMode}
                             onSpeakerChange={setSpeaker}
@@ -101,6 +102,7 @@ function Result({ isMissedListener, setIsMissedListener, handleChangePerspective
                         <Chats
                             agent={agent}
                             chats={displayChats2}
+                            isCoreStatementSpoken={true}
                             isMissedListener={isMissedListener}
                             isScainsMode={isScainsMode}
                             onSpeakerChange={setSpeaker}

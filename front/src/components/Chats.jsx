@@ -12,7 +12,7 @@ const ChatsContainer = styled('div')({
 });
 
 
-export const Chats = ({ agent, chats, isMissedListener, isScainsMode, onSpeakerChange, scains }) => {
+export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, isScainsMode, onSpeakerChange, scains }) => {
 
     return (
         <div className="chats-container">
@@ -27,6 +27,7 @@ export const Chats = ({ agent, chats, isMissedListener, isScainsMode, onSpeakerC
                                 text={chat.content}
                                 person={chat.person}
                                 key={index.toString()}
+                                isCoreStatementSpoken={isCoreStatementSpoken}
                                 isMissedListener={isMissedListener}
                                 isScains={isScainsIndex}
                                 onSpeakerChange={onSpeakerChange}
