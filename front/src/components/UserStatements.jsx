@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send'
 export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMessage, userStatement }) => {
     const [inputValue, setInputValue] = useState('');
+    const [isShownButton, setIsShownButton] = useState(false);
 
     const handleChange = (event) => {
         setInputValue(event.target.value);
@@ -12,6 +13,14 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
         handleUserSendMessage(inputValue);
         setInputValue('');
     };
+
+    useEffect(() => {
+        if (isFreeChatMode) {
+            setIsShownButton(buttonVisible && inputValue !== '');
+        } else {
+            setIsShownButton(buttonVisible && userStatement !== null && userStatement !== '');
+        }
+    }, [buttonVisible, inputValue, isFreeChatMode, userStatement]);
 
     return (
         <div className="user-statements-container">
@@ -33,7 +42,7 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                     color="info"
                     endIcon={<SendIcon />}
                     className="submit btn"
-                    disabled={!buttonVisible}
+                    disabled={!isShownButton}
                     onClick={handleSubmit}
                 >
                     送信
