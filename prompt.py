@@ -6,7 +6,7 @@ def generate_answer(dialogue, agent):
 
         # Join the dialogue entries into a single string
         joined_dialogue = "\n".join([f"{entry['person']}: {entry['content']}" for entry in dialogue])
-        prompt = f"以下の会話文に続くように{agent}として発言をしてください。\nただし×で示されたセリフは{agent}が聞き逃した発言とする。\n\n会話文：{joined_dialogue}"
+        prompt = f"以下の会話文に続くように{agent}として発言をしてください。\n\n会話文：{joined_dialogue}"
         return prompt
     except Exception as e:
         raise

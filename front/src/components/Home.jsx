@@ -139,7 +139,7 @@ function Home({ isMissedListener, rootURL }) {
     const handleFreeChat = async () => {
         setShowSubmitButton(false);
         const payload = {
-            conversation: omittedChatsRef.current,
+            conversation: cutMissing(omittedChatsRef.current),
             agent: agent
         };
         try {
@@ -154,6 +154,12 @@ function Home({ isMissedListener, rootURL }) {
         }
         setShowSubmitButton(true);
         setUserStatement('');
+    };
+
+    const cutMissing = (conv) => {
+        const part1 = conv.slice(0, 2);
+        const part2 = conv.slice(11, conv.length);
+        return part1.concat(part2);
     };
 
     const handleChangeMode = () => {
