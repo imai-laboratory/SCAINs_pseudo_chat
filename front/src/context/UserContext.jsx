@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         setLoading(true);
+        setLoading(false);
         const localUrl = process.env.REACT_APP_LOCAL_URL;
         const prodUrl = process.env.REACT_APP_PROD_URL;
         const storedUser = localStorage.getItem('user');
