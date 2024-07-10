@@ -1,42 +1,47 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {AuthForm} from "./";
-import {useNavigate} from "react-router-dom";
+import { AuthForm } from './';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ setUser, setLoading, rootURL }) {
+function Login({ setUser, setLoading, rootURL, user }) {
     const [loginId, setLoginId] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (user) {
+            navigate('/'); // ユーザー情報が取得された後にリダイレクト
+        }
+    }, [user, navigate]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         try {
-          const response = await axios.post(`${rootURL}/login`, new URLSearchParams({
-            login_id: loginId,
-          }), {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          });
-          localStorage.setItem('token', response.data.access_token);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          setError('');
-          setUser(response.data.user);
-          setLoading(false);
-          navigate('/');
+            const response = await axios.post(`${rootURL}/login`, new URLSearchParams({
+                login_id: loginId,
+            }), {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            setError('');
+            setUser(response.data.user);
         } catch (error) {
-          if (error.response && error.response.status === 401) {
-            setError('ログインに失敗しました。ログインIDが間違っています。');
-          } else {
-            setError('ログイン中にエラーが発生しました。もう一度お試しください。');
-          }
+            if (error.response && error.response.status === 401) {
+                setError('ログインに失敗しました。ログインIDが間違っています。');
+            } else {
+                setError('ログイン中にエラーが発生しました。もう一度お試しください。');
+            }
+            setLoading(false);
         }
     };
 
     const handleFieldChange = (index, value) => {
         if (index === 0) setLoginId(value);
     };
-
 
     return (
         <AuthForm
