@@ -9,12 +9,14 @@ class UserBase(BaseModel):
     name: str
     email: str
     role: int
+    login_id: str
 
 
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     role: int
+    login_id: str
 
 
 class UserResponse(BaseModel):
@@ -22,6 +24,7 @@ class UserResponse(BaseModel):
     name: str
     email: EmailStr
     role: int
+    login_id: str
     created_at: datetime
 
     class Config:
@@ -39,8 +42,7 @@ class TokenData(BaseModel):
 
 
 class UserLogin(BaseModel):
-    name: str
-    email: EmailStr
+    login_id: str
 
 
 class LoginResponse(BaseModel):

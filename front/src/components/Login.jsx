@@ -4,8 +4,7 @@ import {AuthForm} from "./";
 import {useNavigate} from "react-router-dom";
 
 function Login({ setUser, setLoading, rootURL }) {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    const [loginId, setLoginId] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -13,8 +12,7 @@ function Login({ setUser, setLoading, rootURL }) {
         event.preventDefault();
         try {
           const response = await axios.post(`${rootURL}/login`, new URLSearchParams({
-            name: username,
-            email: email
+            login_id: loginId,
           }), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -28,7 +26,7 @@ function Login({ setUser, setLoading, rootURL }) {
           navigate('/');
         } catch (error) {
           if (error.response && error.response.status === 401) {
-            setError('ログインに失敗しました。ユーザー名またはメールアドレスが間違っています。');
+            setError('ログインに失敗しました。ログインIDが間違っています。');
           } else {
             setError('ログイン中にエラーが発生しました。もう一度お試しください。');
           }
@@ -36,8 +34,7 @@ function Login({ setUser, setLoading, rootURL }) {
     };
 
     const handleFieldChange = (index, value) => {
-        if (index === 0) setUsername(value);
-        if (index === 1) setEmail(value);
+        if (index === 0) setLoginId(value);
     };
 
 
@@ -46,8 +43,7 @@ function Login({ setUser, setLoading, rootURL }) {
             btnText="ログイン"
             title="ログイン画面"
             fields={[
-                { type: 'text', value: username, placeholder: 'ユーザ名' },
-                { type: 'text', value: email, placeholder: 'Email' },
+                { type: 'text', value: loginId, placeholder: 'ログインID' },
             ]}
             onSubmit={handleSubmit}
             error={error}

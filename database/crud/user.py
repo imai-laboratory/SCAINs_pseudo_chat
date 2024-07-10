@@ -11,7 +11,7 @@ def list_users(db: Session):
 
 # ユーザ作成
 def create_user(db: Session, user: UserCreate):
-    db_user = User(name=user.name, email=user.email, role=user.role)
+    db_user = User(name=user.name, email=user.email, role=user.role, login_id=user.login_id)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -19,8 +19,8 @@ def create_user(db: Session, user: UserCreate):
 
 
 # ログイン
-def authenticate_user(db: Session, name: str, email: str):
-    user = db.query(User).filter(User.email == email, User.name == name).first()
+def authenticate_user(db: Session, login_id: str):
+    user = db.query(User).filter(User.login_id == login_id).first()
     if not user:
         return False
     return user

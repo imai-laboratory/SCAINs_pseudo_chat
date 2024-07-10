@@ -13,5 +13,6 @@ class User(Base):
     name = Column(String, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     role = Column(Integer, index=True, nullable=False)
+    login_id = Column(String, index=True, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     chat_message_history = relationship("ChatMessageHistory", back_populates="user")

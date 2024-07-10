@@ -30,6 +30,8 @@ current:
 	docker compose exec backend alembic current
 history:
 	docker compose exec backend alembic history
+reset-migrate:
+	docker compose exec backend alembic stamp head
 downgrade:
 	@if [ "$(n)" = "" ]; then \
 		echo "Error: name argument is required"; \

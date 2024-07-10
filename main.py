@@ -59,22 +59,22 @@ def list_users(db: Session = Depends(get_db)):
 
 @app.post("/user/create", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.email == user.email).first()
+    db_user = db.query(User).filter(User.login_id == user.login_id).first()
     if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail="User already registered")
     return crud.create_user(db=db, user=user)
 
 
 @app.post("/login", response_model=LoginResponse)
-def login_for_access_token(name: str = Form(...), email: str = Form(...), db: Session = Depends(get_db)):
-    db_user = crud.authenticate_user(db, name, email)
+def login_for_access_token(login_id: str = Form(...), db: Session = Depends(get_db)):
+    db_user = crud.authenticate_user(db, login_id)
     if not db_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid name or email",
+            detail="Invalid login_id",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={"sub": db_user.email})
+    access_token = create_access_token(data={"sub": db_user.login_id})
     user_response = UserResponse.from_orm(db_user)
     return {"access_token": access_token, "token_type": "bearer", "user": user_response}
 
