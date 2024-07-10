@@ -53,9 +53,7 @@ DBに存在するユーザのみログイン可能
 
 ## front
 - チャットアプリのフロント部分
-
-- App.jsxの```import sampleData from "./assets/data/sample.js";```の```sample.js```の部分を、参照したいjsファイルに変えてください
-  - この時Json形式のデータを```front/src/assets/data```の中に配置してください。
+- 事前対話はJs形式のデータを```front/src/assets/data```の中に配置してください。
 
 [こちら][]のリポジトリからForkできるのでご自由にお使いください
 

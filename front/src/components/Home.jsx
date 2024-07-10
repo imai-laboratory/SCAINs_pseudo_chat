@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {Chats, Monitor, UserStatements} from "./";
-import sampleData from "../assets/data/PP10";
+import initData from "../assets/data/PP10";
 import axios from 'axios';
 import image_A from "../assets/images/A.jpg";
 import image_B from "../assets/images/B.jpg";
@@ -8,12 +8,16 @@ import image_missing_B from "../assets/images/missing_B.jpg";
 import image_user from "../assets/images/user.jpg";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import Select from 'react-select'
+const context = require.context('../assets/data', false, /\.js$/);
+const files = context.keys().map(context);
 
 function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
+    const [datasetList, setDatasetList] = useState([]);
     const [displayChats, setDisplayChats] = useState([]);
     const [history1, setHistory1] = useState([]);
     const [history2, setHistory2] = useState([]);
@@ -46,7 +50,9 @@ function Home({ isMissedListener, rootURL }) {
 
     useEffect(() => {
         setAgent('B');
-        setDataset(sampleData);
+        setDataset(initData);
+        const datasets = files.map(file => file.default);
+        setDatasetList(datasets);
         setTurn(1);
         setLlmUrl(`${rootURL}/api/generate-response`);
     }, [rootURL]);
@@ -221,12 +227,22 @@ function Home({ isMissedListener, rootURL }) {
         }
     }, [speaker]);
 
+    const handleDatasetChange = (selectedOption) => {
+        setDataset(datasetList[selectedOption.value]);
+    };
+
+    const options = datasetList.map((data, index) => ({
+        value: index,
+        label: `対話${index + 1}`
+    }));
+
     return (
         <section className="app-container">
             <div className="explanation-container">
                 <div className="xl text-bold step-text">
-                    { turn === 1 ? `手順${turn}：システム支援（SCAINs表示）なし` : `手順${turn}：システム支援（SCAINs表示）あり` }
+                    {turn === 1 ? `手順${turn}：システム支援（SCAINs表示）なし` : `手順${turn}：システム支援（SCAINs表示）あり`}
                 </div>
+                <Select options={options} placeholder="対話文を選択してください" onChange={handleDatasetChange} />
                 <div className="next-btn">
                     <Button
                         variant="contained"
@@ -235,12 +251,12 @@ function Home({ isMissedListener, rootURL }) {
                         disabled={!showSubmitButton}
                         onClick={handleEndTurn}
                     >
-                        { turn === 1 ? `手順${turn+1}に進む` : `手順${turn}を終了し、対話履歴を表示` }
+                        {turn === 1 ? `手順${turn + 1}に進む` : `手順${turn}を終了し、対話履歴を表示`}
                     </Button>
                 </div>
             </div>
             <div className="content">
-            <div className="monitor-container">
+                <div className="monitor-container">
                     <Monitor
                         image_A={image_A}
                         image_B={image_B}
