@@ -2,43 +2,41 @@ import './assets/styles/App.css';
 import React, {useContext, useState} from 'react';
 import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import {Admin, AdminRoute, Header, Home, Loading, Login, PrivateRoute, Result} from "./components";
-import { UserProvider, UserContext } from './context/UserContext';
+import { UserContext } from './context/UserContext';
 
 function App() {
     return (
-        <UserProvider>
-            <Router>
-                <HeaderWrapper />
-                <Routes>
-                    <Route path="/login" element={<LoginWrapper />} />
-                    <Route
-                        path="/admin"
-                        element={
-                            <AdminRouteWrapper>
-                                <AdminWrapper />
-                            </AdminRouteWrapper>
-                        }
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            <PrivateRouteWrapper>
-                                <HomeWrapper />
-                            </PrivateRouteWrapper>
-                        }
-                    />
-                    <Route
-                        path="/result"
-                        element={
-                            <PrivateRouteWrapper>
-                                <ResultWrapper />
-                            </PrivateRouteWrapper>
-                        }
-                    />
-                    <Route path="*" element={<Navigate to="/login" />} />
-                </Routes>
-            </Router>
-        </UserProvider>
+        <Router>
+            <HeaderWrapper />
+            <Routes>
+                <Route path="/login" element={<LoginWrapper />} />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRouteWrapper>
+                            <AdminWrapper />
+                        </AdminRouteWrapper>
+                    }
+                />
+                <Route
+                    path="/"
+                    element={
+                        <PrivateRouteWrapper>
+                            <HomeWrapper />
+                        </PrivateRouteWrapper>
+                    }
+                />
+                <Route
+                    path="/result"
+                    element={
+                        <PrivateRouteWrapper>
+                            <ResultWrapper />
+                        </PrivateRouteWrapper>
+                    }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+        </Router>
     );
 }
 
