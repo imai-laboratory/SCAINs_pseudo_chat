@@ -229,6 +229,7 @@ function Home({ isMissedListener, rootURL }) {
 
     const handleDatasetChange = (selectedOption) => {
         setDataset(datasetList[selectedOption.value]);
+        init();
     };
 
     const options = datasetList.map((data, index) => ({
@@ -242,7 +243,9 @@ function Home({ isMissedListener, rootURL }) {
                 <div className="xl text-bold step-text">
                     {turn === 1 ? `手順${turn}：システム支援（SCAINs表示）なし` : `手順${turn}：システム支援（SCAINs表示）あり`}
                 </div>
-                <Select options={options} placeholder="対話文を選択してください" onChange={handleDatasetChange} />
+                { turn === 1 && (
+                    <Select options={options} placeholder="対話文を変更できます" onChange={handleDatasetChange} />
+                )}
                 <div className="next-btn">
                     <Button
                         variant="contained"
