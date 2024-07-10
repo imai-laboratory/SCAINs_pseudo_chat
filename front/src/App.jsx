@@ -51,23 +51,23 @@ const LoginWrapper = () => {
 };
 
 const AdminRouteWrapper = ({ children }) => {
-    const { user, loading, sessionExpired } = useContext(UserContext);
+    const { user, loading, sessionExpired, setSessionExpired } = useContext(UserContext);
     if (loading) {
         return <Loading />;
     }
     if (sessionExpired) {
-        return <SessionExpired />;
+        return <SessionExpired setSessionExpired={setSessionExpired}/>;
     }
     return <AdminRoute user={user}>{children}</AdminRoute>;
 };
 
 const PrivateRouteWrapper = ({ children }) => {
-    const { user, loading, sessionExpired } = useContext(UserContext);
+    const { user, loading, sessionExpired, setSessionExpired } = useContext(UserContext);
     if (loading) {
         return <Loading />;
     }
     if (sessionExpired) {
-        return <SessionExpired />;
+        return <SessionExpired setSessionExpired={setSessionExpired}/>;
     }
     return <PrivateRoute user={user}>{children}</PrivateRoute>;
 };
