@@ -2,17 +2,9 @@ import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../assets/styles/Header.css";
 import header_logo from "../assets/images/header_logo.jpg"
-import { Button, Menu, MenuItem } from '@mui/material';
+import {Button, IconButton, Menu, MenuItem} from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-const CustomButton = styled(Button)({
-    backgroundColor: '#ffffff', // 背景色の設定
-    color: 'rgba(27,159,241,0.76)', // テキストの色
-    textTransform: 'none', // テキストを小文字にする
-    '&:hover': {
-        backgroundColor: '#c8e2e4', // ホバー時の背景色
-    },
-});
+import {AccountCircle} from "@mui/icons-material";
 
 function Header({ user, setUser}) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -47,14 +39,16 @@ function Header({ user, setUser}) {
             </Link>
             {user && (
                 <div className="account">
-                    <CustomButton
+                    <IconButton
+                        size="large"
+                        aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
                         onClick={handleMenu}
-                        variant="contained"
-                    >
-                        <span className="lg text-bold">{user.name}さん</span>
-                    </CustomButton>
+                        color="inherit"
+                      >
+                        <AccountCircle sx={{ fontSize: 36 }} />
+                    </IconButton>
                     <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
