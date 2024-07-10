@@ -5,7 +5,7 @@ import header_logo from "../assets/images/header_logo.jpg"
 import {IconButton, Menu, MenuItem} from '@mui/material';
 import {AccountCircle} from "@mui/icons-material";
 
-function Header({ user, setUser}) {
+function Header({ user, setUser }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
 
