@@ -142,13 +142,6 @@ function Admin({rootURL}) {
                     onChange={handleNewUserChange}
                     placeholder="権限 (0:admin, 1:user)"
                 />
-                <input
-                    type="text"
-                    name="role"
-                    value={newUser.login_id}
-                    onChange={handleNewUserChange}
-                    placeholder="ログインID"
-                />
                 <button onClick={handleUserAdd}>ユーザを追加</button>
             </div>
             <div className="sub-container">

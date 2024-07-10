@@ -59,7 +59,7 @@ def list_users(db: Session = Depends(get_db)):
 
 @app.post("/user/create", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.login_id == user.login_id).first()
+    db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="User already registered")
     return crud.create_user(db=db, user=user)
