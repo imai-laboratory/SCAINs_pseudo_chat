@@ -16,7 +16,6 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     role: int
-    login_id: str
 
 
 class UserResponse(BaseModel):
