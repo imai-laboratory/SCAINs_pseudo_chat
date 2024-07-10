@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../assets/styles/Header.css";
 import header_logo from "../assets/images/header_logo.jpg"
-import {Button, IconButton, Menu, MenuItem} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {IconButton, Menu, MenuItem} from '@mui/material';
 import {AccountCircle} from "@mui/icons-material";
 
 function Header({ user, setUser}) {
