@@ -1,7 +1,7 @@
 import './assets/styles/App.css';
 import React, {useContext, useState} from 'react';
 import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
-import {Admin, AdminRoute, Header, Home, Loading, Login, PrivateRoute, Result} from "./components";
+import {Admin, AdminRoute, Header, Home, Loading, Login, PrivateRoute, Result, SessionExpired} from "./components";
 import { UserContext } from './context/UserContext';
 
 function App() {
@@ -46,22 +46,28 @@ const HeaderWrapper = () => {
 };
 
 const LoginWrapper = () => {
-    const { rootUrl, setUser, setLoading } = useContext(UserContext);
-    return <Login rootURL={rootUrl} setUser={setUser} setLoading={setLoading} />;
+    const { rootUrl, setUser, setLoading, user } = useContext(UserContext);
+    return <Login rootURL={rootUrl} setUser={setUser} setLoading={setLoading} user={user} />;
 };
 
 const AdminRouteWrapper = ({ children }) => {
-    const { user, loading } = useContext(UserContext);
+    const { user, loading, sessionExpired } = useContext(UserContext);
     if (loading) {
         return <Loading />;
+    }
+    if (sessionExpired) {
+        return <SessionExpired />;
     }
     return <AdminRoute user={user}>{children}</AdminRoute>;
 };
 
 const PrivateRouteWrapper = ({ children }) => {
-    const { user, loading } = useContext(UserContext);
+    const { user, loading, sessionExpired } = useContext(UserContext);
     if (loading) {
         return <Loading />;
+    }
+    if (sessionExpired) {
+        return <SessionExpired />;
     }
     return <PrivateRoute user={user}>{children}</PrivateRoute>;
 };

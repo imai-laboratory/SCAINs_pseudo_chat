@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     postgres_db: str
 
     SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     class Config:
         env_file = os.path.join(PROJECT_ROOT, '..', '.env')

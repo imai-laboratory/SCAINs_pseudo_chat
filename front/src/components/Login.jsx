@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { AuthForm } from './';
 import { useNavigate } from 'react-router-dom';
@@ -7,12 +7,6 @@ function Login({ setUser, setLoading, rootURL, user }) {
     const [loginId, setLoginId] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (user) {
-            navigate('/'); // ユーザー情報が取得された後にリダイレクト
-        }
-    }, [user, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,6 +23,8 @@ function Login({ setUser, setLoading, rootURL, user }) {
             localStorage.setItem('user', JSON.stringify(response.data.user));
             setError('');
             setUser(response.data.user);
+            setLoading(false);
+            navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError('ログインに失敗しました。ログインIDが間違っています。');

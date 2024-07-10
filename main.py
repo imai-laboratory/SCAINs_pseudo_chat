@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import List
 
 import uvicorn
@@ -13,7 +14,8 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from database import crud
-from database.auth import create_access_token
+from database.auth import create_access_token, verify_token
+from database.crud import authenticate_user
 from database.models import *
 from prompt import generate_answer
 from core.config import get_settings
@@ -23,6 +25,8 @@ from database.schemas import *
 Base.metadata.create_all(bind=engine)
 
 settings = get_settings()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 app.add_middleware(
@@ -49,9 +53,6 @@ def get_db():
         db.close()
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-
 @app.get("/user/list", response_model=List[UserBase])
 def list_users(db: Session = Depends(get_db)):
     return crud.list_users(db=db)
@@ -74,9 +75,30 @@ def login_for_access_token(login_id: str = Form(...), db: Session = Depends(get_
             detail="Invalid login_id",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={"sub": db_user.login_id})
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": db_user.login_id}, expires_delta=access_token_expires
+    )
     user_response = UserResponse.from_orm(db_user)
     return {"access_token": access_token, "token_type": "bearer", "user": user_response}
+
+
+@app.get("/user/me", response_model=UserResponse)
+def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    token_data = verify_token(token, credentials_exception)
+    user = authenticate_user(db, login_id=token_data.login_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
 
 
 @app.get("/conversation/list", response_model=List[ConversationResponse])
