@@ -15,6 +15,7 @@ const userColumns: GridColDef[] = [
         width: 200,
         renderCell: (params) => userRoleLabels[params.value],
     },
+     { field: 'login_id', headerName: 'Login Id', width: 400 },
 ];
 
 const conversationColumns: GridColDef[] = [
@@ -25,7 +26,7 @@ const conversationColumns: GridColDef[] = [
 function Admin({rootURL}) {
     const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({ name: '', email: '', role: '' });
+    const [newUser, setNewUser] = useState({ name: '', email: '', role: '', login_id: '' });
     const [newConversation, setNewConversation] = useState({ name: '' });
 
     const handleNewUserChange = (e) => {
@@ -74,7 +75,7 @@ function Admin({rootURL}) {
             const response = await axios.post(`${rootURL}/user/create`, newUser);
             alert('新しいユーザーが追加されました');
             setUsers([...users, response.data]);
-            setNewUser({ id: '', name: '', email: '', role: '' });
+            setNewUser({ id: '', name: '', email: '', role: '', login_id: '' });
             await fetchUsers();
         } catch (error) {
             if (error.response && error.response.status === 422) {
@@ -140,6 +141,13 @@ function Admin({rootURL}) {
                     value={newUser.role}
                     onChange={handleNewUserChange}
                     placeholder="権限 (0:admin, 1:user)"
+                />
+                <input
+                    type="text"
+                    name="role"
+                    value={newUser.login_id}
+                    onChange={handleNewUserChange}
+                    placeholder="ログインID"
                 />
                 <button onClick={handleUserAdd}>ユーザを追加</button>
             </div>
