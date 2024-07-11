@@ -14,6 +14,7 @@ const files = context.keys().map(context);
 
 function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
+    const [coreIndex, setCoreIndex] = useState(0);
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
@@ -61,15 +62,18 @@ function Home({ isMissedListener, rootURL }) {
     useEffect(() => {
         if (dataset.length > 0) {
             const datasetCopy = JSON.parse(JSON.stringify(dataset));
+            const scainIndexes = datasetCopy.filter(item => item.role === "scain").map(item => item.index);
+            const coreIndex = datasetCopy.find(item => item.role === "core").index;
+            setCoreIndex(coreIndex);
             const initUserIndex = dataset.findIndex((data) => data.person === 'user');
             const initChats = dataset.slice(0, initUserIndex);
-            const initScains = dataset.slice(dataset.length - 4, dataset.length - 2);
-            const part1 = datasetCopy.slice(0, 2);
-            const missing = datasetCopy.slice(2, datasetCopy.length - 2);
+            const initScains = dataset.slice(scainIndexes[0] - 1, scainIndexes[1]);
+            const part1 = datasetCopy.slice(0, 4);
+            const missing = datasetCopy.slice(4, coreIndex - 1);
             missing.forEach(data => {
                 data.content = '×'.repeat(data.content.length);
             });
-            const part2 = datasetCopy.slice(datasetCopy.length - 2, datasetCopy.length);
+            const part2 = datasetCopy.slice(coreIndex - 1, datasetCopy.length);
             const initOmittedChats = part1.concat(missing).concat(part2);
             setScains(initScains);
             setChats(initChats);
@@ -127,7 +131,7 @@ function Home({ isMissedListener, rootURL }) {
             } else {
                 // データの最後まで表示
                 const partial_chats = dataset.slice(currentUserIndex);
-                if (currentUserIndex === 11) {
+                if (currentUserIndex === coreIndex - 1) {
                     setIsCoreStatementSpoken(true);
                 }
                 partial_chats.forEach((chat, index) => {
@@ -152,6 +156,7 @@ function Home({ isMissedListener, rootURL }) {
             conversation: cutMissing(omittedChatsRef.current),
             agent: agent
         };
+        console.log(payload);
         try {
             const response = await axios.post(llmUrl, payload);
             addChats({ index: chats.length + 2, person: agent, content: response.data.response });
@@ -167,8 +172,8 @@ function Home({ isMissedListener, rootURL }) {
     };
 
     const cutMissing = (conv) => {
-        const part1 = conv.slice(0, 2);
-        const part2 = conv.slice(11, conv.length);
+        const part1 = conv.slice(0, 4);
+        const part2 = conv.slice(coreIndex - 1, conv.length);
         return part1.concat(part2);
     };
 
