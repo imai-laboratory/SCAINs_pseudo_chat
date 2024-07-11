@@ -15,10 +15,9 @@ const fileNames = context.keys().map(file => {
     return file.replace('./', '').replace('.js', '');
 });
 
-function Home({ isMissedListener, rootURL }) {
+function Home({ isMissedListener, rootURL, user }) {
     const [agent, setAgent] = useState('');
     const [coreIndex, setCoreIndex] = useState(0);
-    const [conversationList, setConversationList] = useState([]);
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
@@ -29,6 +28,7 @@ function Home({ isMissedListener, rootURL }) {
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
     const [options, setOptions] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(1);
     const [scains, setScains] = useState([]);
     const [speaker, setSpeaker] = useState('');
     const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -64,8 +64,9 @@ function Home({ isMissedListener, rootURL }) {
             .catch(error => console.error('Error:', error));
         axios.get(`${rootURL}/conversation/list`)
             .then(response => {
-                setConversationList(response.data)
-                setOptions(response.data.map(conversation => ({ value: conversation.id, label: conversation.name })));
+                const option = response.data.map(conversation => ({ value: conversation.id, label: conversation.name }));
+                setOptions(option);
+                setSelectedOption(option[0]);
             })
             .catch(error => console.error('Error:', error));
     }, [rootURL]);
@@ -168,7 +169,6 @@ function Home({ isMissedListener, rootURL }) {
             conversation: cutMissing(omittedChatsRef.current),
             agent: agent
         };
-        console.log(payload);
         try {
             const response = await axios.post(llmUrl, payload);
             addChats({ index: chats.length + 2, person: agent, content: response.data.response });
@@ -190,9 +190,24 @@ function Home({ isMissedListener, rootURL }) {
     };
 
     useEffect(() => {
-        console.log(history1, conversationList);
-
-    }, [history1, turn]);
+        if (turn === 3 && history1 && history2) {
+            const chatMessageHistories = [
+                {
+                    conversation_id: selectedOption.value,
+                    user_id: user.id,
+                    message_number: 1,
+                    content: history1,
+                },
+                {
+                    conversation_id: selectedOption.value,
+                    user_id: user.id,
+                    message_number: 2,
+                    content: history2,
+                }
+            ];
+            console.log(chatMessageHistories);
+        }
+    }, [history1, history2, rootURL, selectedOption, turn, user.id]);
 
     useEffect(() => {
         if (turn === 3 && history2 !== null) {
@@ -244,6 +259,7 @@ function Home({ isMissedListener, rootURL }) {
 
     const handleDatasetChange = (selectedOption) => {
         setDataset(datasetList[selectedOption.value - 1]);
+        setSelectedOption(selectedOption.value);
         init();
     };
 
