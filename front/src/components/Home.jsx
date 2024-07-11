@@ -59,7 +59,6 @@ function Home({ isMissedListener, rootURL }) {
         setTurn(1);
         setLlmUrl(`${rootURL}/api/generate-response`);
         axios.post(`${rootURL}/conversation/create`, { fileNames })
-            .then(response => console.log('Success:', response.data))
             .catch(error => console.error('Error:', error));
     }, [rootURL]);
 
