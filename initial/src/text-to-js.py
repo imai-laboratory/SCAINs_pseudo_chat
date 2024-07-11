@@ -3,10 +3,11 @@ import json
 # 話者user
 username = "B"
 # ファイル名
-filename = "PP2"
+filename = "PP59"
 
 txt_file = "./dat/" + filename + ".txt"
 js_file = "../front/src/assets/data/" + filename + ".js"
+
 
 def txt_to_js(txt_file, js_file):
     with open(txt_file, "r", encoding="utf-8") as file:
@@ -29,6 +30,7 @@ def txt_to_js(txt_file, js_file):
         file.write("const sampleData = ")
         file.write(json.dumps(js_data, ensure_ascii=False, indent=4))
         file.write("\n\nexport default sampleData")
+
 
 # テキストをJavaScript配列に変換して保存
 txt_to_js(txt_file, js_file)
