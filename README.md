@@ -50,6 +50,11 @@ DBに存在するユーザのみログイン可能
 
 ## initial
 日本語ペルソナチャットデータセットからSCAINsの判定
+```
+cd initial
+pipenv run text2js
+```
+上記のコマンドでtxtデータからjsファイルに変換可能。
 
 ## front
 - チャットアプリのフロント部分
