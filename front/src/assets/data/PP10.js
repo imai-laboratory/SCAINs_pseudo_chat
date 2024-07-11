@@ -1,4 +1,4 @@
-const sampleData = [
+const PP10 = [
     {
         "index": 1,
         "content": "こんにちは。お話して大丈夫ですか？",
@@ -64,6 +64,6 @@ const sampleData = [
         "content": "ああ、そうですね。私も以前、熱帯魚を飼っていたことがあります。特にエンゼルフィッシュが好きでした。最近は忙しくて飼えなくなってしまいましたが、また機会があれば飼いたいと思っています。",
         "person": "B"
     },
-]
+];
 
-export default sampleData
+export default PP10;

@@ -1,4 +1,4 @@
-const sampleData = [
+const PP2 = [
     {
         "index": 1,
         "content": "こんにちは。お元気でしたか？",
@@ -74,6 +74,6 @@ const sampleData = [
         "content": "ぜひ、よろしくお願いします。",
         "person": "A"
     }
-]
+];
 
-export default sampleData
+export default PP2;

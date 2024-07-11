@@ -49,6 +49,6 @@ const PP59 = [
         "content": "全然できてないよー。Bさんはしてる？",
         "person": "user"
     },
-]
+];
 
-export default PP59
+export default PP59;

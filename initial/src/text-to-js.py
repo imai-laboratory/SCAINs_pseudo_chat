@@ -28,8 +28,8 @@ def txt_to_js():
 
     with open(js_file, "w", encoding="utf-8") as file:
         file.write(f"const {filename} = ")
-        file.write(json.dumps(js_data, ensure_ascii=False, indent=4))
-        file.write(f"\n\nexport default {filename}")
+        file.write(json.dumps(js_data, ensure_ascii=False, indent=4) + ";")
+        file.write(f"\n\nexport default {filename};")
 
 
 # テキストをJavaScript配列に変換して保存
