@@ -60,8 +60,12 @@ function Home({ isMissedListener, rootURL, user }) {
         setDatasetList(datasets);
         setTurn(1);
         setLlmUrl(`${rootURL}/api/generate-response`);
-        axios.post(`${rootURL}/conversation/create`, { fileNames })
-            .catch(error => console.error('Error:', error));
+        const isFirstLogin = localStorage.getItem('isFirstLogin');
+        if (isFirstLogin === null) {
+            axios.post(`${rootURL}/conversation/create`, { fileNames })
+                .catch(error => console.error('Error:', error));
+            localStorage.setItem('isFirstLogin', 'false');
+        }
         axios.get(`${rootURL}/conversation/list`)
             .then(response => {
                 const option = response.data.map(conversation => ({ value: conversation.id, label: conversation.name }));

@@ -24,6 +24,7 @@ function Header({ user, setUser }) {
 
     const handleLogout = () => {
         handleClose();
+        localStorage.removeItem('isFirstLogin');
         localStorage.removeItem('token'); // トークンを削除
         localStorage.removeItem('user'); // ユーザー情報を削除
         setUser(null); // 状態を更新してユーザー情報を削除
