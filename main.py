@@ -106,9 +106,11 @@ def list_conversations(db: Session = Depends(get_db)):
     return crud.list_conversations(db=db)
 
 
-@app.post("/conversation/create", response_model=ConversationResponse)
-def create_conversation(conversation: ConversationCreate, db: Session = Depends(get_db)):
-    return crud.create_conversation(db=db, conversation=conversation)
+@app.post("/conversation/create")
+def create_conversation(file_names: FileNames, db: Session = Depends(get_db)):
+    for file_name in file_names.fileNames:
+        crud.get_or_create_conversation(db, file_name)
+    return {"message": "File names saved successfully"}
 
 
 @app.post("/chat-message-history/create", response_model=ChatMessageHistoryResponse)

@@ -16,3 +16,12 @@ def create_conversation(db: Session, conversation: ConversationCreate):
     db.commit()
     db.refresh(db_conversation)
     return db_conversation
+
+
+# 対話自動登録
+def get_or_create_conversation(db: Session, name: str):
+    conversation = db.query(Conversation).filter_by(name=name).first()
+    if not conversation:
+        conversation_create = ConversationCreate(name=name)
+        conversation = create_conversation(db, conversation_create)
+    return conversation

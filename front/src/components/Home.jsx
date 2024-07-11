@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import Select from 'react-select'
 const context = require.context('../assets/data', false, /\.js$/);
 const files = context.keys().map(context);
+const fileNames = context.keys().map(file => {
+    return file.replace('./', '').replace('.js', '');
+});
 
 function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
@@ -26,7 +29,6 @@ function Home({ isMissedListener, rootURL }) {
     const [omittedChats, setOmittedChats] = useState([]);
     const [scains, setScains] = useState([]);
     const [speaker, setSpeaker] = useState('');
-    const [showScainsButton, setShowScainsButton] = useState(false);
     const [showSubmitButton, setShowSubmitButton] = useState(true);
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
     const [turn, setTurn] = useState(0);
@@ -56,6 +58,9 @@ function Home({ isMissedListener, rootURL }) {
         setDatasetList(datasets);
         setTurn(1);
         setLlmUrl(`${rootURL}/api/generate-response`);
+        axios.post(`${rootURL}/conversation/create`, { fileNames })
+            .then(response => console.log('Success:', response.data))
+            .catch(error => console.error('Error:', error));
     }, [rootURL]);
 
     // サンプルデータの初期値セット
@@ -177,10 +182,6 @@ function Home({ isMissedListener, rootURL }) {
         return part1.concat(part2);
     };
 
-    const handleChangeMode = () => {
-        setIsScainsMode(!isScainsMode);
-    };
-
     useEffect(() => {
     }, [history1, turn]);
 
@@ -204,8 +205,8 @@ function Home({ isMissedListener, rootURL }) {
     const handleEndTurn = () => {
         if (turn === 1) {
             setTurn(turn + 1);
-            setShowScainsButton(true);
             setHistory1(chats);
+            setIsScainsMode(true);
             setIsCoreStatementSpoken(false);
             init();
         } else if (turn === 2) {
@@ -276,19 +277,6 @@ function Home({ isMissedListener, rootURL }) {
                     />
                 </div>
                 <div className="chats-content">
-                    <div className="scains-btn">
-                        {showScainsButton && (
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                size="medium"
-                                className="text-bold md"
-                                onClick={handleChangeMode}
-                            >
-                                {isScainsMode ? 'SCAINsを非表示にする' : 'SCAINsを表示する'}
-                            </Button>
-                        )}
-                    </div>
                     <div className="chat-box-container">
                         <Chats
                             agent={agent}

@@ -27,16 +27,10 @@ function Admin({rootURL}) {
     const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '', role: '', login_id: '' });
-    const [newConversation, setNewConversation] = useState({ name: '' });
 
     const handleNewUserChange = (e) => {
         const { name, value } = e.target;
         setNewUser({ ...newUser, [name]: value });
-    };
-
-    const handleNewConversation = (e) => {
-        const { name, value } = e.target;
-        setNewConversation({ ...newConversation, [name]: value });
     };
 
     const fetchUsers = useCallback(async () => {
@@ -82,21 +76,6 @@ function Admin({rootURL}) {
                 alert('入力に誤りがあります。再確認してください。');
             } else {
                 alert('ユーザーの追加に失敗しました。');
-            }
-        }
-    };
-
-    const handleConversationAdd = async () => {
-        try {
-            const response = await axios.post(`${rootURL}/conversation/create`, newConversation);
-            alert('対話'+ response.data.name + 'が追加されました');
-            setNewConversation({ name: '' });
-            await fetchConversations();
-        } catch (error) {
-            if (error.response && error.response.status === 422) {
-                alert('入力に誤りがあります。再確認してください。');
-            } else {
-                alert('対話の追加に失敗しました。');
             }
         }
     };
@@ -158,17 +137,6 @@ function Admin({rootURL}) {
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
                 />
-            </div>
-            <div className="sub-container">
-                <h2>対話の追加</h2>
-                <input
-                    type="text"
-                    name="name"
-                    value={newConversation.name}
-                    onChange={handleNewConversation}
-                    placeholder="対話データ名"
-                />
-                <button onClick={handleConversationAdd}>対話追加</button>
             </div>
         </div>
     );
