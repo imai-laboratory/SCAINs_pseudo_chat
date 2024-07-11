@@ -8,5 +8,9 @@ class ConversationResponse(BaseModel):
     name: str
 
 
+class ConversationCreate(BaseModel):
+    name: str
+
+
 class FileNames(BaseModel):
     fileNames: list[str]
