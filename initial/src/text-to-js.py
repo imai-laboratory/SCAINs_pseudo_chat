@@ -9,7 +9,7 @@ txt_file = "./dat/" + filename + ".txt"
 js_file = "../front/src/assets/data/" + filename + ".js"
 
 
-def txt_to_js(txt_file, js_file):
+def txt_to_js():
     with open(txt_file, "r", encoding="utf-8") as file:
         lines = file.readlines()
         js_data = []
@@ -27,10 +27,10 @@ def txt_to_js(txt_file, js_file):
                 js_data.append(data)
 
     with open(js_file, "w", encoding="utf-8") as file:
-        file.write("const sampleData = ")
+        file.write(f"const {filename} = ")
         file.write(json.dumps(js_data, ensure_ascii=False, indent=4))
-        file.write("\n\nexport default sampleData")
+        file.write(f"\n\nexport default {filename}")
 
 
 # テキストをJavaScript配列に変換して保存
-txt_to_js(txt_file, js_file)
+txt_to_js()
