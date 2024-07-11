@@ -18,6 +18,7 @@ const fileNames = context.keys().map(file => {
 function Home({ isMissedListener, rootURL }) {
     const [agent, setAgent] = useState('');
     const [coreIndex, setCoreIndex] = useState(0);
+    const [conversationList, setConversationList] = useState([]);
     const [chats, setChats] = useState([]);
     const [currentUserIndex, setCurrentUserStatement] = useState(0);
     const [dataset, setDataset] = useState([]);
@@ -27,6 +28,7 @@ function Home({ isMissedListener, rootURL }) {
     const [history2, setHistory2] = useState([]);
     const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
+    const [options, setOptions] = useState([]);
     const [scains, setScains] = useState([]);
     const [speaker, setSpeaker] = useState('');
     const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -59,6 +61,12 @@ function Home({ isMissedListener, rootURL }) {
         setTurn(1);
         setLlmUrl(`${rootURL}/api/generate-response`);
         axios.post(`${rootURL}/conversation/create`, { fileNames })
+            .catch(error => console.error('Error:', error));
+        axios.get(`${rootURL}/conversation/list`)
+            .then(response => {
+                setConversationList(response.data)
+                setOptions(response.data.map(conversation => ({ value: conversation.id, label: conversation.name })));
+            })
             .catch(error => console.error('Error:', error));
     }, [rootURL]);
 
@@ -182,6 +190,8 @@ function Home({ isMissedListener, rootURL }) {
     };
 
     useEffect(() => {
+        console.log(history1, conversationList);
+
     }, [history1, turn]);
 
     useEffect(() => {
@@ -233,14 +243,9 @@ function Home({ isMissedListener, rootURL }) {
     }, [speaker]);
 
     const handleDatasetChange = (selectedOption) => {
-        setDataset(datasetList[selectedOption.value]);
+        setDataset(datasetList[selectedOption.value - 1]);
         init();
     };
-
-    const options = datasetList.map((data, index) => ({
-        value: index,
-        label: `対話${index + 1}`
-    }));
 
     return (
         <section className="app-container">
@@ -249,7 +254,12 @@ function Home({ isMissedListener, rootURL }) {
                     {turn === 1 ? `手順${turn}：システム支援（SCAINs表示）なし` : `手順${turn}：システム支援（SCAINs表示）あり`}
                 </div>
                 { turn === 1 && (
-                    <Select options={options} placeholder="対話文を変更できます" onChange={handleDatasetChange} />
+                    <Select
+                        options={options}
+                        placeholder="対話文を変更できます"
+                        isDisabled={!showSubmitButton}
+                        onChange={handleDatasetChange}
+                    />
                 )}
                 <div className="next-btn">
                     <Button
