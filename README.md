@@ -55,6 +55,7 @@ cd initial
 pipenv run text2js
 ```
 上記のコマンドでtxtデータからjsファイルに変換可能。
+その後isScainを付与してscainsの位置を事前設定。
 
 ## front
 - チャットアプリのフロント部分
