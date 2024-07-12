@@ -9,7 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = '4d80f791e7d5'
@@ -25,7 +25,7 @@ def upgrade():
         sa.Column('conversation_id', sa.Integer, sa.ForeignKey('conversations.id')),
         sa.Column('user_id', sa.Integer, sa.ForeignKey('users.id')),
         sa.Column('message_number', sa.Integer),
-        sa.Column('content', sa.JSON),
+        sa.Column('content', postgresql.JSONB, server_default='[]'),
         sa.Column('created_at', sa.DateTime, default=sa.func.current_timestamp())
     )
 

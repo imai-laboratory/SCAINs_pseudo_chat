@@ -209,7 +209,8 @@ function Home({ isMissedListener, rootURL, user }) {
                     content: history2,
                 }
             ];
-            console.log(chatMessageHistories);
+            axios.post(`${rootURL}/chat-message-history/batch-create`, chatMessageHistories)
+                .catch(error => console.error('Error:', error));
         }
     }, [history1, history2, rootURL, selectedOption, turn, user.id]);
 
@@ -261,9 +262,9 @@ function Home({ isMissedListener, rootURL, user }) {
         }
     }, [speaker]);
 
-    const handleDatasetChange = (selectedOption) => {
-        setDataset(datasetList[selectedOption.value - 1]);
-        setSelectedOption(selectedOption.value);
+    const handleDatasetChange = (op) => {
+        setDataset(datasetList[op.value - 1]);
+        setSelectedOption(op);
         init();
     };
 

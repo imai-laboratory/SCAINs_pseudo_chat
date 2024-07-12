@@ -78,7 +78,7 @@ const AdminWrapper = () => {
 };
 
 const HomeWrapper = () => {
-    const { rootUrl } = useContext(UserContext);
+    const { rootUrl, user } = useContext(UserContext);
     const [isMissedListener, setIsMissedListener] = useState(false);
 
     const handleChangePerspective = () => {
@@ -89,6 +89,7 @@ const HomeWrapper = () => {
         <Home
             isMissedListener={isMissedListener}
             rootURL={rootUrl}
+            user={user}
             handleChangePerspective={handleChangePerspective}
         />
     );

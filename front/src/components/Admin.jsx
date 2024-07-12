@@ -23,7 +23,16 @@ const conversationColumns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 130 },
 ];
 
+const chatMessageHistoryColumns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'conversation_id', headerName: 'ConversationId', width: 130 },
+    { field: 'user_id', headerName: 'UserId', width: 130 },
+    { field: 'message_number', headerName: 'MessageNumber', width: 130 },
+    { field: 'content', headerName: 'Content', width: 400 },
+];
+
 function Admin({rootURL}) {
+    const [chatMessageHistory, setChatMessageHistory] = useState([]);
     const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({ name: '', email: '', role: '', login_id: '' });
@@ -59,10 +68,24 @@ function Admin({rootURL}) {
         }
     }, [rootURL]);
 
+    const fetchChatMessageHistory = useCallback(async () => {
+        if (!rootURL) {
+            console.error("rootURL is not defined");
+            return;
+        }
+        try {
+            const response = await axios.get(`${rootURL}/chat-message-history/list`);
+            setChatMessageHistory(response.data);
+        } catch (error) {
+            window.alert("対話履歴一覧の取得に失敗しました");
+        }
+    }, [rootURL]);
+
     useEffect(() => {
         fetchUsers();
         fetchConversations();
-    }, [fetchConversations, fetchUsers]);
+        fetchChatMessageHistory()
+    }, [fetchChatMessageHistory, fetchConversations, fetchUsers]);
 
     const handleUserAdd = async () => {
         try {
@@ -91,7 +114,7 @@ function Admin({rootURL}) {
                     columns={userColumns}
                     initialState={{
                         pagination: {
-                          paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: {page: 0, pageSize: 5},
                         },
                     }}
                     pageSizeOptions={[5, 10]}
@@ -131,7 +154,22 @@ function Admin({rootURL}) {
                     columns={conversationColumns}
                     initialState={{
                         pagination: {
-                          paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: {page: 0, pageSize: 5},
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
+            </div>
+            <div className="sub-container">
+                <h2>対話履歴</h2>
+                <DataGrid
+                    className="table"
+                    rows={chatMessageHistory}
+                    columns={chatMessageHistoryColumns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {page: 0, pageSize: 5},
                         },
                     }}
                     pageSizeOptions={[5, 10]}

@@ -113,9 +113,26 @@ def create_conversation(file_names: FileNames, db: Session = Depends(get_db)):
     return {"message": "File names saved successfully"}
 
 
+# 未使用
 @app.post("/chat-message-history/create", response_model=ChatMessageHistoryResponse)
 def create_chat_message_history(chat_message_history: ChatMessageHistoryCreate, db: Session = Depends(get_db)):
     return crud.create_chat_message_history(db=db, chat_message_history=chat_message_history)
+
+
+# まとめて対話履歴保存
+@app.post("/chat-message-history/batch-create")
+def create_chat_message_history(chat_message_histories: List[ChatMessageHistoryCreate], db: Session = Depends(get_db)):
+    try:
+        return crud.batch_create_chat_message_history(db, chat_message_histories)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/chat-message-history/list", response_model=List[ChatMessageHistoryResponse])
+def list_chat_message_histories(db: Session = Depends(get_db)):
+    return crud.list_chat_message_histories(db=db)
 
 
 @app.post("/api/generate-response")
