@@ -25,10 +25,23 @@ const conversationColumns: GridColDef[] = [
 
 const chatMessageHistoryColumns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'conversation_id', headerName: 'ConversationId', width: 130 },
-    { field: 'user_id', headerName: 'UserId', width: 130 },
-    { field: 'message_number', headerName: 'MessageNumber', width: 130 },
-    { field: 'content', headerName: 'Content', width: 400 },
+    { field: 'conversation_id', headerName: 'ConversationId', width: 70 },
+    { field: 'user_id', headerName: 'UserId', width: 70 },
+    { field: 'message_number', headerName: 'MessageNumber', width: 70 },
+    {
+        field: 'content',
+        headerName: 'Content',
+        width: 800,
+        renderCell: (params) => (
+          <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
+            {params.value.map((item, index) => (
+              <div key={index}>
+                <strong>{item.index}行目</strong>, {item.person}：{item.content} (<strong>Role:</strong> {item.role}),
+              </div>
+            ))}
+          </div>
+        ),
+    },
 ];
 
 function Admin({rootURL}) {
