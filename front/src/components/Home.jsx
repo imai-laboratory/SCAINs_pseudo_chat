@@ -68,7 +68,7 @@ function Home({ isMissedListener, rootURL, user }) {
         }
         axios.get(`${rootURL}/conversation/list`)
             .then(response => {
-                const option = response.data.map(conversation => ({ value: conversation.id, label: conversation.name }));
+                const option = response.data.map(conversation => ({ value: conversation.id, label: `対話文${conversation.id}`}));
                 setOptions(option);
                 setSelectedOption(option[0]);
             })
