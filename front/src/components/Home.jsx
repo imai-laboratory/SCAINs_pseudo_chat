@@ -120,8 +120,8 @@ function Home({ isMissedListener, rootURL, user }) {
 
     const handleUserSendMessage = async (inputValue) => {
         if (isFreeChatMode) {
-            await addChats({ index: chats.length + 1, content: inputValue, person: 'user' });
-            await addChatsToOmitted({ index: chats.length + 1, content: inputValue, person: 'user' });
+            await addChats({ index: chats.length + 1, content: inputValue, person: 'user', role: 'normal' });
+            await addChatsToOmitted({ index: chats.length + 1, content: inputValue, person: 'user', role: 'normal' });
             setUserStatement(inputValue);
             await handleFreeChat(inputValue);
         } else {
