@@ -6,9 +6,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.staticfiles import StaticFiles
-import openai
-import re
-
+from tasks import fetch_openai_data
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -138,20 +136,21 @@ def list_chat_message_histories(db: Session = Depends(get_db)):
 async def generate_response(request: Conversation):
     try:
         prompt = generate_answer(request.conversation, request.agent)
-
-        response = openai.ChatCompletion.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=200,
-            temperature=0,
-            stop=["\n"],
-        )
-        content = response['choices'][0]['message']['content']
-        # 「B: 」などを除く
-        cleaned_content = re.sub(r'^.*?: ', '', content)
-        return {"response": cleaned_content}
+        task = fetch_openai_data.delay(prompt)
+        return {"task_id": task.id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/generate-response/result/{task_id}")
+async def get_generate_response_result(task_id: str):
+    task = fetch_openai_data.AsyncResult(task_id)
+    if task.state == 'PENDING':
+        return {"state": task.state, "result": None}
+    elif task.state != 'FAILURE':
+        return {"state": task.state, "result": task.result}
+    else:
+        return {"state": task.state, "result": str(task.info)}
 
 
 @app.exception_handler(RequestValidationError)
