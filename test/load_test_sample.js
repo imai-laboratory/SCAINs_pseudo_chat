@@ -5,7 +5,7 @@ import { check, sleep } from 'k6';
 const BASE_URL = 'http://localhost:8000';
 
 export let options = {
-scenarios: {
+    scenarios: {
         generate_response: {
             executor: 'constant-arrival-rate',
             rate: 600, // 1分間に600リクエスト（1秒に10回）
