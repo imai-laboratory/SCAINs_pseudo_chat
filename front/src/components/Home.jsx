@@ -25,7 +25,6 @@ function Home({ isMissedListener, rootURL, user }) {
     const [displayChats, setDisplayChats] = useState([]);
     const [history1, setHistory1] = useState([]);
     const [history2, setHistory2] = useState([]);
-    const [llmUrl, setLlmUrl] = useState('');
     const [omittedChats, setOmittedChats] = useState([]);
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState(1);
@@ -59,7 +58,6 @@ function Home({ isMissedListener, rootURL, user }) {
         const datasets = files.map(file => file.default);
         setDatasetList(datasets);
         setTurn(1);
-        setLlmUrl(`${rootURL}/api/generate-response`);
         const isFirstLogin = localStorage.getItem('isFirstLogin');
         if (isFirstLogin === null) {
             axios.post(`${rootURL}/conversation/create`, { fileNames })
@@ -167,6 +165,22 @@ function Home({ isMissedListener, rootURL, user }) {
         }
     };
 
+    const pollResult = async (taskId) => {
+        try {
+            const result = await axios.get(`${rootURL}/api/generate-response/result/${taskId}`);
+            if (result.data.state === 'PENDING') {
+                setTimeout(() => pollResult(taskId), 1000); // 1秒後に再度リクエスト
+            } else {
+                addChats({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
+                addChatsToOmitted({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
+            }
+        } catch (error) {
+            console.error('Error fetching result:', error);
+            addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
+        }
+    };
+
     const handleFreeChat = async () => {
         setShowSubmitButton(false);
         const payload = {
@@ -174,9 +188,9 @@ function Home({ isMissedListener, rootURL, user }) {
             agent: agent
         };
         try {
-            const response = await axios.post(llmUrl, payload);
-            addChats({ index: chats.length + 2, person: agent, content: response.data.response, role: 'free' });
-            addChatsToOmitted({ index: chats.length + 2, person: agent, content: response.data.response, role: 'free' });
+            const response = await axios.post(`${rootURL}/api/generate-response`, payload);
+            const taskId = response.data.task_id;
+            await pollResult(taskId);
         } catch (error) {
             console.error('Error with ChatGPT API:', error);
             console.error('Error details:', error.response ? error.response.data : error.message);
