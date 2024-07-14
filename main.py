@@ -1,5 +1,4 @@
 from datetime import timedelta
-from typing import List
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends, Request, status, Form
