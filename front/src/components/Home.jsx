@@ -120,8 +120,8 @@ function Home({ isMissedListener, rootURL, user }) {
 
     const handleUserSendMessage = async (inputValue) => {
         if (isFreeChatMode) {
-            await addChats({ index: chats.length + 1, content: inputValue, person: 'user', role: 'normal' });
-            await addChatsToOmitted({ index: chats.length + 1, content: inputValue, person: 'user', role: 'normal' });
+            await addChats({ index: chats.length + 1, content: inputValue, person: 'user', role: 'free' });
+            await addChatsToOmitted({ index: chats.length + 1, content: inputValue, person: 'user', role: 'free' });
             setUserStatement(inputValue);
             await handleFreeChat(inputValue);
         } else {
@@ -175,13 +175,13 @@ function Home({ isMissedListener, rootURL, user }) {
         };
         try {
             const response = await axios.post(llmUrl, payload);
-            addChats({ index: chats.length + 2, person: agent, content: response.data.response });
-            addChatsToOmitted({ index: chats.length + 2, person: agent, content: response.data.response });
+            addChats({ index: chats.length + 2, person: agent, content: response.data.response, role: 'free' });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: response.data.response, role: 'free' });
         } catch (error) {
             console.error('Error with ChatGPT API:', error);
             console.error('Error details:', error.response ? error.response.data : error.message);
-            addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
-            addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。' });
+            addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
         }
         setShowSubmitButton(true);
         setUserStatement('');
@@ -195,6 +195,7 @@ function Home({ isMissedListener, rootURL, user }) {
 
     useEffect(() => {
         if (turn === 3 && history1 && history2) {
+            console.log(history1);
             const chatMessageHistories = [
                 {
                     conversation_id: selectedOption.value,
