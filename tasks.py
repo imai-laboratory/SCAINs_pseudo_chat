@@ -5,8 +5,9 @@ from core.config import get_settings
 
 settings = get_settings()
 
-broker_url = f'redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/0'
-celery_app = Celery('tasks', broker=broker_url)
+redis_url = f'redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/0'
+
+celery_app = Celery('tasks', broker=redis_url, backend=redis_url)
 
 
 @celery_app.task(bind=True, max_retries=3)
