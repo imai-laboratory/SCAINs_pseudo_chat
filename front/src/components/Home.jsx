@@ -195,7 +195,6 @@ function Home({ isMissedListener, rootURL, user }) {
 
     useEffect(() => {
         if (turn === 3 && history1 && history2) {
-            console.log(history1);
             const chatMessageHistories = [
                 {
                     conversation_id: selectedOption.value,
