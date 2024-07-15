@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_PASSWORD: str
+
     class Config:
         env_file = os.path.join(PROJECT_ROOT, '..', '.env')
 

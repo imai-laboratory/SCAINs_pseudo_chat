@@ -12,3 +12,5 @@ alembic
 python-jose[cryptography]
 jose
 passlib[bcrypt]
+redis
+celery
