@@ -26,10 +26,8 @@ make init
 ```
 make migrate
 ```
-PostgreSQLを使用している。
-
-マイグレーション実行してテーブルを作成してください。
-
+PostgreSQLを使用している。\
+マイグレーション実行してテーブルを作成してください。\
 DBへの接続はenvファイルを参照してください。
 
 ### 4. ローカルで動かす
@@ -44,18 +42,22 @@ cd front
 npm run build
 npm run deploy
 ```
-フロント側をGithubPagesでデプロイしている。
+フロント側はGithubPagesでデプロイしている。
 DBに存在するユーザのみログイン可能
 <p><a href="https://www.ailab.ics.keio.ac.jp/SCAINs_pseudo_chat/" target="_blank">https://www.ailab.ics.keio.ac.jp/SCAINs_pseudo_chat/</a></p>
 
+（ちなみにRender.comでDB, Redis, バックエンドはデプロイした）
 ## initial
 日本語ペルソナチャットデータセットからSCAINsの判定
 ```
 cd initial
 pipenv run text2js
 ```
-上記のコマンドでtxtデータからjsファイルに変換可能。
-その後isScainを付与してscainsの位置を事前設定。
+上記のコマンドでtxtデータからjsファイルに変換可能。\
+その後`role`を付与して発言の種類を指定。\
+Scains、コア発言、（普通の文、エラー文）など。\
+`scains`,`core`の位置を事前設定。
+
 
 ## front
 - チャットアプリのフロント部分
@@ -68,3 +70,13 @@ pipenv run text2js
 ## main
 - FastAPIを使用
 - 各種APIが含まれている
+
+## Celery & Redis
+- 同時接続対応のため、ボトルネックになっているOpenAIの処理をタスク化して並列処理している
+### flowerによってタスクを監視する方法
+```
+pip install flower # 必要なら
+celery -A tasks flower
+```
+上記のコマンド実行後以下のリンクで監視。
+<p><a href="http://localhost:5555/" target="_blank">http://localhost:5555/</a></p>
