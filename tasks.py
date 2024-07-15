@@ -8,11 +8,7 @@ settings = get_settings()
 redis_url = f'rediss://{settings.REDIS_USER}:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}?ssl_cert_reqs=CERT_NONE'
 
 celery_app = Celery('tasks', broker=redis_url, backend=redis_url)
-celery_app.conf.update(
-    task_annotations={
-        'tasks.fetch_openai_data': {'rate_limit': '300/m'}
-    }
-)
+celery_app.config_from_object('core.celery_config')
 
 
 @celery_app.task(bind=True, max_retries=3)
