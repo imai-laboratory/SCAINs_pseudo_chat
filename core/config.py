@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     REDIS_HOST: str
+    REDIS_USER: str
     REDIS_PORT: int
     REDIS_PASSWORD: str
 

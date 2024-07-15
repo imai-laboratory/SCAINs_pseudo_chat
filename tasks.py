@@ -6,7 +6,7 @@ from core.config import get_settings
 
 settings = get_settings()
 
-redis_url = f'redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/0'
+redis_url = f'rediss://{settings.REDIS_USER}:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}?ssl_cert_reqs=CERT_NONE'
 
 celery_app = Celery('tasks', broker=redis_url, backend=redis_url)
 celery_app.conf.update(
