@@ -165,38 +165,16 @@ function Home({ isMissedListener, rootURL, user }) {
         }
     };
 
-    const MAX_RETRIES = 5; // 最大リトライ回数を設定
-    let retryCount = 0;
     const pollResult = async (taskId) => {
         try {
             const result = await axios.get(`${rootURL}/api/generate-response/result/${taskId}`);
-
             if (result && result.data) {
-                console.log('Result data:', result.data);
-
                 if (result.data.state === 'PENDING' || result.data.state === 'RETRY') {
-                    if (retryCount < MAX_RETRIES) {
-                        retryCount++;
-                        setTimeout(() => pollResult(taskId), 3000); // 1秒後に再度リクエスト
-                            if (result.data.message) {
-                                console.log(result.data.message);
-                            }
-                    } else {
-                        console.log('Maximum retries reached.');
-                        addChats({ index: chats.length + 2, person: agent, content: 'アクセスが集中しています。しばらくしてから再試行してください。', role: 'error' });
-                        addChatsToOmitted({ index: chats.length + 2, person: agent, content: 'アクセスが集中しています。しばらくしてから再試行してください。', role: 'error' });
-                    }
+                    setTimeout(() => pollResult(taskId), 2000); // 3秒後に再度リクエスト
                 } else if (result.data.result) {
-                    retryCount = 0; // 成功した場合、リトライカウントをリセット
                     addChats({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
                     addChatsToOmitted({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
-                } else if (result.data.error) {
-                    retryCount = 0; // エラーの場合もリトライカウントをリセット
-                    addChats({ index: chats.length + 2, person: agent, content: `エラー: ${result.data.error}`, role: 'error' });
-                    addChatsToOmitted({ index: chats.length + 2, person: agent, content: `エラー: ${result.data.error}`, role: 'error' });
                 } else {
-                    retryCount = 0; // 想定外の結果の場合もリトライカウントをリセット
-                    console.error('Unexpected result structure:', result.data);
                     addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
                     addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
                 }
@@ -204,24 +182,9 @@ function Home({ isMissedListener, rootURL, user }) {
                 throw new Error('Result or result.data is null or undefined');
             }
         } catch (error) {
-            retryCount = 0; // キャッチされたエラーの場合もリトライカウントをリセット
-            console.error('Error fetching result:', error);
-
-            if (error.response) {
-                // サーバーからのレスポンスが返ってきたがエラーステータスの場合
-                addChats({ index: chats.length + 2, person: agent, content: `サーバーエラー: ${error.response.data.message || '不明なエラー'}`, role: 'error' });
-                addChatsToOmitted({ index: chats.length + 2, person: agent, content: `サーバーエラー: ${error.response.data.message || '不明なエラー'}`, role: 'error' });
-            } else if (error.request) {
-                // リクエストが送信されたが、レスポンスが受信されなかった場合
-                addChats({ index: chats.length + 2, person: agent, content: 'ネットワークエラー: サーバーに接続できませんでした。', role: 'error' });
-                addChatsToOmitted({ index: chats.length + 2, person: agent, content: 'ネットワークエラー: サーバーに接続できませんでした。', role: 'error' });
-            } else {
-                // その他のエラー
-                addChats({ index: chats.length + 2, person: agent, content: `エラー: ${error.message}`, role: 'error' });
-                addChatsToOmitted({ index: chats.length + 2, person: agent, content: `エラー: ${error.message}`, role: 'error' });
-            }
+            addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
+            addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
         }
-
     };
 
     const handleFreeChat = async () => {
