@@ -1,4 +1,3 @@
-import time
 from celery import Celery
 import openai
 import re
