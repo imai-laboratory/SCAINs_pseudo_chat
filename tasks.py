@@ -1,3 +1,4 @@
+import time
 from celery import Celery
 import openai
 import re
@@ -8,6 +9,11 @@ settings = get_settings()
 redis_url = f'redis://:{settings.REDIS_PASSWORD}@{settings.REDIS_HOST}:{settings.REDIS_PORT}/0'
 
 celery_app = Celery('tasks', broker=redis_url, backend=redis_url)
+celery_app.conf.update(
+    task_annotations={
+        'tasks.fetch_openai_data': {'rate_limit': '300/m'}  # 例として1分間に10回
+    }
+)
 
 
 @celery_app.task(bind=True, max_retries=3)
