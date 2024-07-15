@@ -170,9 +170,12 @@ function Home({ isMissedListener, rootURL, user }) {
             const result = await axios.get(`${rootURL}/api/generate-response/result/${taskId}`);
             if (result.data.state === 'PENDING') {
                 setTimeout(() => pollResult(taskId), 1000); // 1秒後に再度リクエスト
-            } else {
+            } else if (result.data.state === 'SUCCESS'){
                 addChats({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
                 addChatsToOmitted({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
+            } else if (result.data.state === 'RETRY'){
+                addChats({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
+                addChatsToOmitted({ index: chats.length + 2, person: agent, content: '申し訳ありません。現在応答できません。', role: 'error' });
             }
         } catch (error) {
             console.error('Error fetching result:', error);
