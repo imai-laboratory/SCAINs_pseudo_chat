@@ -22,8 +22,11 @@ data = fetch_chat_message_history(url)
 for item in data:
     item['created_at'] = datetime.fromisoformat(item['created_at'])
 
+# user_id=1のものを除去
+filtered_data = [item for item in data if item['user_id'] != 1]
+
 # ソート
-data_sorted = sorted(data, key=lambda x: x['created_at'])
+data_sorted = sorted(filtered_data, key=lambda x: x['created_at'])
 
 csv_directory = "data/"
 os.makedirs(csv_directory, exist_ok=True)  # ディレクトリが存在しない場合は作成
