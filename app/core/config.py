@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
 
     class Config:
-        env_file = os.path.join(PROJECT_ROOT, '..', '.env')
+        env_file = os.path.join('.env')
 
 
 @lru_cache

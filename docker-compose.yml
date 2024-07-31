@@ -33,14 +33,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/backend
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_USER=${REDIS_USER}
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - .:/app
+    env_file:
+      - .env
     depends_on:
       - db
       - redis
@@ -49,16 +44,11 @@ services:
     build:
       context: .
       dockerfile: docker/backend/Dockerfile
-    command: celery -A tasks worker --loglevel=info
+    command: celery -A app.tasks worker --loglevel=info
     volumes:
-      - .:/backend
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_USER=${REDIS_USER}
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - .:/app
+    env_file:
+      - .env
     depends_on:
       - db
       - redis

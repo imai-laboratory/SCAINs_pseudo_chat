@@ -1,8 +1,9 @@
 from typing import List
 
 from sqlalchemy.orm import Session
-from database.models import *
-from database.schemas import ChatMessageHistoryCreate
+
+from app.database.models import ChatMessageHistory
+from app.database.schemas import ChatMessageHistoryCreate
 
 
 # 対話履歴一覧
