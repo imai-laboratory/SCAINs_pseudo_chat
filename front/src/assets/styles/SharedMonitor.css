@@ -1,0 +1,51 @@
+.shared-monitor {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.left-images {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+    flex: 1;
+}
+
+.left-image {
+    height: auto;
+    width: 100%;
+}
+
+.right-images {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 0;
+    gap: 24px;
+    flex: 1;
+}
+
+.right-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: auto;
+    width: 60%;
+}
+
+.right-item:last-child {
+    margin-bottom: 0;
+}
+
+.right-image {
+    width: 100%;
+    height: auto;
+    margin-right: 10px;
+}
+
+.speaker {
+    border: solid 3px #9ae821;
+}
