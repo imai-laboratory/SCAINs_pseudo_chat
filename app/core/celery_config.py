@@ -1,4 +1,4 @@
-from core.config import get_settings
+from app.core.config import get_settings
 
 settings = get_settings()
 
@@ -7,5 +7,5 @@ result_backend = broker_url
 worker_concurrency = 10  # 初期設定として10に設定
 
 task_annotations = {
-    'tasks.fetch_openai_data': {'rate_limit': '300/m'}  # タスクごとのレートリミット
+    'app.tasks.fetch_openai_data': {'rate_limit': '300/m'}  # タスクごとのレートリミット
 }

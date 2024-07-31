@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from jose import JWTError, jwt
-from database.schemas import TokenData
-from core.config import get_settings
+from app.database.schemas import TokenData
+from app.core.config import get_settings
 
 settings = get_settings()
 
