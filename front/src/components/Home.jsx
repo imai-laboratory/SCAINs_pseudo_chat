@@ -53,25 +53,32 @@ function Home({ isMissedListener, rootURL, user }) {
     }, [dataset, setChats, setCurrentUserStatement, setUserStatement, setIsFreeChatMode, setSwitchMissedImage]);
 
     useEffect(() => {
-        setAgent('B');
-        setDataset(initData);
-        const datasets = files.map(file => file.default);
-        setDatasetList(datasets);
-        setTurn(1);
-        const isFirstLogin = localStorage.getItem('isFirstLogin');
-        if (isFirstLogin === null) {
-            axios.post(`${rootURL}/conversation/create`, { fileNames })
-                .catch(error => console.error('Error:', error));
-            localStorage.setItem('isFirstLogin', 'false');
-        }
-        axios.get(`${rootURL}/conversation/list`)
-            .then(response => {
+        const initialize = async () => {
+            try {
+                setAgent('B');
+                setDataset(initData);
+                const datasets = files.map(file => file.default);
+                setDatasetList(datasets);
+                setTurn(1);
+
+                const isFirstLogin = localStorage.getItem('isFirstLogin');
+                if (isFirstLogin === null) {
+                    await axios.post(`${rootURL}/conversation/create`, { fileNames });
+                    localStorage.setItem('isFirstLogin', 'false');
+                }
+
+                const response = await axios.get(`${rootURL}/conversation/list`);
                 const option = response.data.map(conversation => ({ value: conversation.id, label: `対話文${conversation.id}`}));
                 setOptions(option);
                 setSelectedOption(option[0]);
-            })
-            .catch(error => console.error('Error:', error));
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        initialize();
     }, [rootURL]);
+
 
     // サンプルデータの初期値セット
     useEffect(() => {

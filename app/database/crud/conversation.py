@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from database.models import *
-from database.schemas import ConversationCreate
+
+from app.database.models import Conversation
+from app.database.schemas import ConversationCreate
 
 
 # 対話一覧

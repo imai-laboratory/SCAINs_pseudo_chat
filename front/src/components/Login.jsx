@@ -12,7 +12,7 @@ function Login({ setUser, setLoading, rootURL, user }) {
         event.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post(`${rootURL}/login`, new URLSearchParams({
+            const response = await axios.post(`${rootURL}/auth/login`, new URLSearchParams({
                 login_id: loginId,
             }), {
                 headers: {

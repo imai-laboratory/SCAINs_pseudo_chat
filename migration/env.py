@@ -2,7 +2,7 @@ import sys
 sys.path = ['', '..'] + sys.path[1:]
 
 import os
-from core.config import PROJECT_ROOT, get_settings
+from app.core.config import PROJECT_ROOT, get_settings
 from dotenv import load_dotenv
 from logging.config import fileConfig
 
@@ -10,8 +10,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from database.database import Base
-from database.models import *
+from app.database.database import Base
 
 settings = get_settings()
 
