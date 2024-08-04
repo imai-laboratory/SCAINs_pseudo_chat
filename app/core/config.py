@@ -27,6 +27,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = os.path.join('.env')
+        from_attributes = True
 
 
 @lru_cache
