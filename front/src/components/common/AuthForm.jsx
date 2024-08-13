@@ -1,5 +1,5 @@
 import React from 'react';
-import "../assets/styles/AuthForm.css"
+import "../../assets/styles/AuthForm.css"
 
 function AuthForm({ btnText, title, fields, onSubmit, error, onChange }) {
     return (

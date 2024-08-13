@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {Chats, Monitor, UserStatements} from "./";
+import {Chats, Monitor, UserStatements} from "../components";
 import initData from "../assets/data/PP10";
 import axios from 'axios';
 import image_A from "../assets/images/A.jpg";

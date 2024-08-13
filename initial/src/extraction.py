@@ -18,9 +18,9 @@ class Params:
     GPT_MODEL_COMPLETION = "gpt-3.5-turbo"
     #GPT_MODEL_COMPLETION = "text-davinci-003"
     GPT_MODEL_EMBEDDING = "text-embedding-ada-002"
-    DIALOGUE_PATH = "./dat/"
+    DIALOGUE_PATH = "./dat/20240723/"
     DIALOGUE_FILENAME = "PP"
-    FILENAME = "PP2.txt"
+    FILENAME = "1-3.txt"
     FILEPATH = DIALOGUE_PATH + FILENAME
     SPEAKERS = ["A: ", "B: "]
     DIALOGUE_START = 0
@@ -83,8 +83,8 @@ def process_file_list():
         # Save results for each dialogue
         dt_now = datetime.datetime.now()
         results_filename = params.RESULTS_PATH + dt_now.strftime("%Y%m%d_%H%M%S") + ".csv"
-        with open(results_filename, "w") as f:
-            writer = csv.writer(f)
+        with open(results_filename, "w", newline='', encoding='utf-8-sig') as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
             writer.writerows(ex.results)
 
         logger.info("------ number of total tokens: {}".format(sum(n_tokens)))

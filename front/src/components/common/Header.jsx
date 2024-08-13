@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import "../assets/styles/Header.css";
-import header_logo from "../assets/images/header_logo.jpg"
+import "../../assets/styles/Header.css";
+import header_logo from "../../assets/images/header_logo.jpg"
 import {IconButton, Menu, MenuItem} from '@mui/material';
 import {AccountCircle} from "@mui/icons-material";
 

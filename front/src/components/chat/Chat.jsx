@@ -2,9 +2,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import React, { useEffect } from 'react';
-import UserAvatar from "../assets/images/no-profile.png"
-import A_icon from "../assets/images/A_icon.png"
-import B_icon from "../assets/images/B_icon.png"
+import UserAvatar from "../../assets/images/no-profile.png"
+import A_icon from "../../assets/images/A_icon.png"
+import B_icon from "../../assets/images/B_icon.png"
 
 export const Chat = ({agent, text, person, isCoreStatementSpoken, isMissedListener, isScains, onSpeakerChange}) => {
     const isUser = (person === "user");

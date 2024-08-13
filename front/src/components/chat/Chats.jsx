@@ -1,5 +1,5 @@
 import React from "react";
-import {Chat} from "./index";
+import {Chat} from "../index";
 import List from "@mui/material/List";
 import { styled } from '@mui/material/styles';
 
@@ -19,8 +19,8 @@ export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, i
             <ChatsContainer id={"scroll-area"}>
                 <List>
                     {chats.map((chat, index) => {
-                        const isScainsIndex = isScainsMode && scains.some(s => s.index === chat.index);
-
+                        // const isScainsIndex = isScainsMode && scains.some(s => s.index === chat.index);
+                        const isScainsIndex = scains.some(s => s.index === chat.index);
                         return (
                             <Chat
                                 agent={agent}

@@ -97,7 +97,7 @@ class SCAINExtractor(Extractor):
     # D-SCAINs
     def distance_extract(self):
         relative_position = 4
-        row = 13
+        row = 6
         self.results.append([self.dialogue_id])
         for idx, sentence in enumerate(self.dialogue):
             if idx <= row - 2:
@@ -124,21 +124,23 @@ class SCAINExtractor(Extractor):
                 logger.debug("------ omitted summary: ")
                 logger.debug(omitted_summary)
                 similarity = self.calc_similarity(full_summary, omitted_summary)
+                result = [self.dialogue_id, idx+1, full_summary, omitted_summary, similarity]
+                self.results.append(result)
                 time.sleep(3)
 
-                if similarity < min_similarity:
-                    min_similarity = similarity
-                    min_similarity_index = j
-
-            omitted_dialogue = self.dialogue[:idx - min_similarity_index - 2] + self.dialogue[idx - min_similarity_index:idx + 1]
-            result = ["相対位置：" + str(min_similarity_index + 1), idx + 1, full_summary, omitted_summary, min_similarity]
-            self.results.append(result)
-
-            if min_similarity < 0.90:
-                opinion_in_omitted = ["omitted_op: ", self.opinon(omitted_dialogue, core_sentence)]
-                opinion_in_full = ["full_op: ", self.opinon(full_dialogue, core_sentence)]
-                self.results.append(opinion_in_omitted)
-                self.results.append(opinion_in_full)
+            #     if similarity < min_similarity:
+            #         min_similarity = similarity
+            #         min_similarity_index = j
+            #
+            # omitted_dialogue = self.dialogue[:idx - min_similarity_index - 2] + self.dialogue[idx - min_similarity_index:idx + 1]
+            # result = ["相対位置：" + str(min_similarity_index + 1), idx + 1, full_summary, omitted_summary, min_similarity]
+            # self.results.append(result)
+            #
+            # if min_similarity < 0.90:
+            #     opinion_in_omitted = ["omitted_op: ", self.opinon(omitted_dialogue, core_sentence)]
+            #     opinion_in_full = ["full_op: ", self.opinon(full_dialogue, core_sentence)]
+            #     self.results.append(opinion_in_omitted)
+            #     self.results.append(opinion_in_full)
 
         return self.n_total_token
 

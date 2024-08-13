@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { AuthForm } from './';
+import { AuthForm } from '../components';
 import { useNavigate } from 'react-router-dom';
 
 function Login({ setUser, setLoading, rootURL, user }) {

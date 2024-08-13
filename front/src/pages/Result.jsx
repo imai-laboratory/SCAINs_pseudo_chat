@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../assets/styles/Result.css'
 import '../assets/styles/App.css'
-import {Chats} from "./index";
+import {Chats} from "../components";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 

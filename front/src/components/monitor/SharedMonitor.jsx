@@ -1,5 +1,5 @@
 import React from 'react';
-import "../assets/styles/SharedMonitor.css"
+import "../../assets/styles/SharedMonitor.css"
 
 function SharedMonitor({ image_A, image_B, image_user, image_missing_B, sharedImg, speaker, switchMissedImage }) {
     const imageUrl = switchMissedImage ? image_B : image_missing_B;
