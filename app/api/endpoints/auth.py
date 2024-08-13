@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.database import crud
-from app.database.auth import create_access_token, verify_token
+from app.auth import create_access_token, verify_token
 from app.database.crud import authenticate_user
 from app.core.config import get_settings
 from app.database.database import SessionLocal
