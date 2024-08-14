@@ -14,6 +14,14 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
         setInputValue('');
     };
 
+    const handleKeyDown = (event) => {
+        if (isShownButton && event.key === 'Enter' && event.metaKey) {
+            event.preventDefault();
+            setIsShownButton(false);
+            handleSubmit();
+        }
+    };
+
     useEffect(() => {
         if (isFreeChatMode) {
             setIsShownButton(buttonVisible && inputValue !== '');
@@ -29,6 +37,7 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                     ? <textarea
                         className="user-statement"
                         value={inputValue}
+                        onKeyDown={handleKeyDown}
                         onChange={handleChange}
                     />
                     : <textarea
