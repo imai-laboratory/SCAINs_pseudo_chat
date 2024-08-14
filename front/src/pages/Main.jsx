@@ -44,7 +44,7 @@ function Main({ isMissedListener, rootURL, user }) {
         try {
             const scainsPromise = checkScains(rootURL, currentChatHistroy).then(result => {
                 if (result.data) {
-                    addScains({ person: 'A', content: result.data });
+                    addScains(result.data);
                 }
             }).catch(error => {
                 console.error('Error in checkScains:', error.response ? error.response.data : error.message);
