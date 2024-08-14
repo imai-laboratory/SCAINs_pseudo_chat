@@ -14,6 +14,7 @@ function Main({ isMissedListener, rootURL }) {
         { person: 'A', content: "なんで2人が話していると思う？" }
     ]);
     const [scains, setScains] = useState([]);
+    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const [speaker, setSpeaker] = useState('');
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
 
@@ -32,6 +33,7 @@ function Main({ isMissedListener, rootURL }) {
     };
 
     const handleUserSendMessage = async (inputValue) => {
+        setShowSubmitButton(false);
         const userStatement = { person: 'user', content: inputValue };
         const currentChatHistroy = await addChatHistroy(userStatement);
         const imageName = 'topic1.JPG';
@@ -53,15 +55,17 @@ function Main({ isMissedListener, rootURL }) {
             const llmResponse = await generateImageTask(rootURL, payload);
             const taskId = llmResponse.data.task_id;
 
-            await pollResult(rootURL, taskId, async (result) => {
+            const pollResultPromise = pollResult(rootURL, taskId, async (result) => {
                 await addChatHistroy({ person: 'A', content: result });
             }, async (errorMessage) => {
                 await addChatHistroy({ person: 'A', content: errorMessage });
             });
 
-            await scainsPromise;
+            await Promise.all([scainsPromise, pollResultPromise]);
         } catch (error) {
             console.error('Error in handleUserSendMessage:', error);
+        } finally {
+            setShowSubmitButton(true);
         }
     };
 
@@ -100,7 +104,7 @@ function Main({ isMissedListener, rootURL }) {
                             scains={scains}
                         />
                         <UserStatements
-                            buttonVisible={true}
+                            buttonVisible={showSubmitButton}
                             handleUserSendMessage={handleUserSendMessage}
                             isFreeChatMode={true}
                         />
