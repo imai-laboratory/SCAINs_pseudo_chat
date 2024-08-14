@@ -94,6 +94,17 @@
     word-break: break-word;
 }
 
+.core-sentence-text {
+    background-color: #f178c7;
+    color: black;
+    border-radius: 4px;
+    padding: .5rem;
+    margin-right: 1rem;
+    max-width: 80%;
+    width: auto;
+    word-break: break-word;
+}
+
 .scains-btn{
     display: flex;
     justify-content: center;

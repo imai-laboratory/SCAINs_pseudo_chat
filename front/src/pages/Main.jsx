@@ -97,8 +97,8 @@ function Main({ isMissedListener, rootURL, user }) {
                         <Chats
                             agent={'B'}
                             chats={chatHistory}
-                            isCoreStatementSpoken={true}
-                            isMissedListener={isMissedListener}
+                            isCoreStatementSpoken={false}
+                            isMissedListener={false}
                             isScainsMode={true}
                             onSpeakerChange={setSpeaker}
                             scains={scains}

@@ -6,21 +6,22 @@ import UserAvatar from "../../assets/images/no-profile.png"
 import A_icon from "../../assets/images/A_icon.png"
 import B_icon from "../../assets/images/B_icon.png"
 
-export const Chat = ({agent, text, person, isCoreStatementSpoken, isMissedListener, isScains, onSpeakerChange}) => {
+export const Chat = ({agent, text, person, textClass, isCoreStatementSpoken, isMissedListener, isScainsIndex, onSpeakerChange, onSelectCore}) => {
     const isUser = (person === "user");
     const isAgent = (person === agent);
-    let classes;
-    let textClass;
+    // let textClass;
     let icon;
     let speaker;
+    const classes = isUser ? 'right-chat' : 'left-chat'
 
-    if (isMissedListener) {
-        classes = isAgent ? 'right-chat' : 'left-chat'
-        textClass = isScains && isCoreStatementSpoken ? 'scains-text md text-bold' : isAgent ? 'chat-user-text sm' : 'chat-text sm';
-    } else {
-        classes = isUser ? 'right-chat' : 'left-chat'
-        textClass = isScains && isCoreStatementSpoken ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
-    }
+    // 負債：Homeでしか使わない
+    // if (isMissedListener) {
+    //     classes = isAgent ? 'right-chat' : 'left-chat'
+    //     textClass = isScainsIndex && isCoreStatementSpoken ? 'scains-text md text-bold' : isAgent ? 'chat-user-text sm' : 'chat-text sm';
+    // } else {
+    //     classes = isUser ? 'right-chat' : 'left-chat'
+    //     textClass = isScainsIndex && isCoreStatementSpoken ? 'scains-text md text-bold' : isUser ? 'chat-user-text sm' : 'chat-text sm';
+    // }
 
     if (isUser) {
         icon = UserAvatar;
@@ -38,7 +39,7 @@ export const Chat = ({agent, text, person, isCoreStatementSpoken, isMissedListen
     }, [person, onSpeakerChange]);
 
     return (
-        <ListItem className={classes}>
+        <ListItem className={classes} onClick={onSelectCore}>
             <ListItemAvatar>
                 <Avatar alt={person} src={icon}/>
                 <div className="sm">{speaker}</div>
