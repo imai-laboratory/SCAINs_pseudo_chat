@@ -9,7 +9,7 @@ import image_user from "../assets/images/user.jpg";
 import image_missing_B from "../assets/images/missing_B.jpg";
 import sharedImg from "../assets/images/topic1.JPG";
 
-function Main({ isMissedListener, rootURL, user }) {
+function Main({ isMissedListener, rootURL }) {
     const [chatHistory, setChatHistory] = useState([
         { person: 'A', content: "なんで2人が話していると思う？" }
     ]);
@@ -72,10 +72,6 @@ function Main({ isMissedListener, rootURL, user }) {
             scrollArea.scrollTop = scrollArea.scrollHeight;
         }
     }, [speaker]);
-
-    useEffect(() => {
-        console.log(scains);
-    }, [scains]);
 
     return (
         <section className="app-container">

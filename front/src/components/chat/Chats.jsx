@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Chat} from "../index";
 import List from "@mui/material/List";
 import { styled } from '@mui/material/styles';
@@ -15,21 +15,34 @@ const ChatsContainer = styled('div')({
 export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, isScainsMode, onSpeakerChange, scains }) => {
     const [highlightedIndices, setHighlightedIndices] = useState({});
     const [selectedCoreIndex, setSelectedCoreIndex] = useState('');
-    const handleSelectCore = (index) => {
-        const selectedIndex = index + 1;
-        const selectedScain = scains.find(scain => scain.core_index === selectedIndex);
-        if (selectedScain) {
-            setSelectedCoreIndex(selectedIndex);
+
+    const updateTextClasses = useCallback((selectedIndex = null) => {
+        const targetScain = selectedIndex
+            ? scains.find(scain => scain.core_index === selectedIndex)
+            : scains.length > 0 ? scains[scains.length - 1] : null;
+
+        if (targetScain) {
+            setSelectedCoreIndex(targetScain.core_index);
+
             const newHighlightedIndices = {};
-            selectedScain.scains_index.forEach(index => {
-                newHighlightedIndices[index] = 'scains-text md text-bold';
+            targetScain.scains_index.forEach(idx => {
+                newHighlightedIndices[idx] = 'scains-text md text-bold';
             });
             setHighlightedIndices(newHighlightedIndices);
         } else {
             setSelectedCoreIndex(null);
             setHighlightedIndices({});
         }
+    }, [scains]);
+
+    const handleSelectCore = (index) => {
+        const selectedIndex = index + 1;
+        updateTextClasses(selectedIndex);
     };
+
+    useEffect(() => {
+        updateTextClasses();
+    }, [scains, updateTextClasses]);
 
     return (
         <div className="chats-container">
