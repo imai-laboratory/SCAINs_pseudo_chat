@@ -17,8 +17,6 @@ function Main({ isMissedListener, rootURL, user }) {
     const [speaker, setSpeaker] = useState('');
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
 
-    const scrollAreaRef = useRef(null);
-
     const addChatHistroy = (currentStatement) => {
         return new Promise((resolve) => {
             setChatHistory((prevChatHistory) => {
@@ -67,9 +65,11 @@ function Main({ isMissedListener, rootURL, user }) {
         }
     };
 
+    // スクロール位置の設定
     useEffect(() => {
-        if (scrollAreaRef.current) {
-            scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+        const scrollArea = document.getElementById('scroll-area');
+        if (scrollArea) {
+            scrollArea.scrollTop = scrollArea.scrollHeight;
         }
     }, [speaker]);
 
@@ -93,7 +93,7 @@ function Main({ isMissedListener, rootURL, user }) {
                     />
                 </div>
                 <div className="chats-content">
-                    <div className="chat-box-container" ref={scrollAreaRef} id="scroll-area">
+                    <div className="chat-box-container">
                         <Chats
                             agent={'B'}
                             chats={chatHistory}
