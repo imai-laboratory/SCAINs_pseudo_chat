@@ -3,3 +3,5 @@
 test/
 !test/load_test_sample.js
 csv/data
+app/scains_algorism/logs
+!app/scains_algorism/logs/.gitkeep
