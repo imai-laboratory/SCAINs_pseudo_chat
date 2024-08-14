@@ -5,6 +5,7 @@ from celery import Celery
 import openai
 import re
 from app.core.config import get_settings
+from app.utils.params import DefaultParams
 
 settings = get_settings()
 
@@ -15,16 +16,18 @@ if settings.REDIS_PASSWORD:
 celery_app = Celery('tasks', broker=redis_url, backend=redis_url)
 celery_app.config_from_object('app.core.celery_config')
 
+params = DefaultParams()
+
 
 @celery_app.task(bind=True, max_retries=3)
 def fetch_openai_data(self, prompt):
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model=params.GPT_MODEL,
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=200,
-            temperature=0,
-            stop=["\n"],
+            max_tokens=params.MAX_OUTPUT_TOKENS,
+            temperature=params.TEMPERATURE,
+            stop=params.STOP_WORDS,
         )
         content = response['choices'][0]['message']['content']
         cleaned_content = re.sub(r'^.*?: ', '', content)
@@ -40,7 +43,7 @@ def fetch_openai_data_with_image(self, image_name, prompt):
         abs_image_path = os.path.join(project_root, 'front/src/assets/images', image_name)
         base64_image = encode_image(abs_image_path)
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model=params.GPT_MODEL,
             messages=[
                 {
                     "role": "user",
@@ -58,9 +61,9 @@ def fetch_openai_data_with_image(self, image_name, prompt):
                     ]
                 }
             ],
-            max_tokens=300,
-            temperature=0,
-            stop=["\n"],
+            max_tokens=params.MAX_OUTPUT_TOKENS + 100,
+            temperature=params.TEMPERATURE,
+            stop=params.STOP_WORDS,
         )
         content = response['choices'][0]['message']['content']
         cleaned_content = re.sub(r'^.*?: ', '', content)
