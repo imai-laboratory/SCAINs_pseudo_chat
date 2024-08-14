@@ -6,6 +6,6 @@ class DefaultParams:
         self.TEMPERATURE = 0
         self.STOP_WORDS = "\n"
         self.SCAIN_THRESHOLD = 0.90
-        self.RELATIVE_POSITION = 2
+        self.RELATIVE_POSITION = 4
         self.SPEAKERS = ["user: "]  # 基本的にはuserのみ
         return
