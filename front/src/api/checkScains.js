@@ -1,6 +1,7 @@
 import createAxiosClient from "./axiosClient";
 
-export const checkScains = (rootUrl) => {
+export const checkScains = (rootUrl, conversation) => {
     const axiosClient = createAxiosClient(rootUrl);
-    return axiosClient.post('/api/generate-response/check-scains');
+    console.log('conversation:', conversation);
+    return axiosClient.post('/api/generate-response/check-scains', conversation);
 };

@@ -2,10 +2,12 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.database import SessionLocal
-from app.prompt import *
+from app.utils.prompt import *
 from app.tasks import *
+import app.scains_algorism.scains_core as scains_core
 
 router = APIRouter()
+params = DefaultParams()
 
 
 # schemasではあるが、少し特殊なためこのファイルで明示
@@ -17,6 +19,11 @@ class Conversation(BaseModel):
 class ImageChatPayload(BaseModel):
     chat_history: list
     image_name: str
+
+
+class Dialogue(BaseModel):
+    person: str
+    content: str
 
 
 def get_db():
@@ -72,5 +79,19 @@ async def get_generate_response_result_with_image(task_id: str):
 
 
 @router.post("/check-scains")
-async def check_scains():
-    return [1, 3]
+async def check_scains(request: list[Dialogue]):
+    """
+    コア発言の行数と、SCAINSの行数を返す
+    SCAINSが存在しなかったらnull
+    :param request:
+    :return:
+    {
+        "core_index": 6,
+        "scains_index": [2, 3, 4]
+    }
+    """
+    if len(request) >= params.RELATIVE_POSITION + 2:
+        joined_dialogue = [f"{entry.person}: {entry.content}" for entry in request]
+        SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue)
+        return SCAINExtractor.distance_extract()
+    return

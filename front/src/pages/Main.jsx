@@ -44,7 +44,7 @@ function Main({ isMissedListener, rootURL, user }) {
         };
 
         try {
-            const scainsPromise = checkScains(rootURL).then(result => {
+            const scainsPromise = checkScains(rootURL, currentChatHistroy).then(result => {
                 if (result.data) {
                     addScains({ person: 'A', content: result.data });
                 }
@@ -72,6 +72,10 @@ function Main({ isMissedListener, rootURL, user }) {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
         }
     }, [speaker]);
+
+    useEffect(() => {
+        console.log(scains);
+    }, [scains]);
 
     return (
         <section className="app-container">
