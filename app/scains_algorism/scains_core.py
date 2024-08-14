@@ -1,5 +1,8 @@
 import concurrent
 import concurrent.futures as futures
+import logging
+import os
+from datetime import datetime
 
 import openai
 
@@ -9,12 +12,27 @@ from app.utils.params import DefaultParams
 
 
 class ScainsCore:
-    def __init__(self, dialogue):
+    def __init__(self, dialogue, session_id: str):
         self.params = DefaultParams()
         self.dialogue = dialogue
-        self.results = {}
-        return
+        self.session_id = session_id
 
+        # ログディレクトリを指定
+        project_root = os.path.abspath(os.path.dirname(__file__))
+        log_dir = os.path.join(project_root, "logs", session_id)
+        os.makedirs(log_dir, exist_ok=True)  # ログディレクトリが存在しない場合は作成
+        current_time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".txt"
+        log_file = os.path.join(log_dir, current_time_str)
+
+        self.logger = logging.getLogger(session_id)  # セッションIDに基づいて一意のロガーを作成
+        self.logger.setLevel(logging.INFO)
+        # ログ設定
+        if not self.logger.hasHandlers():
+            file_handler = logging.FileHandler(log_file)
+            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            file_handler.setFormatter(formatter)
+            self.logger.addHandler(file_handler)
+        
     def openai_api_completion(self, prompt):
         params = self.params
         completion = openai.ChatCompletion.create(
@@ -36,14 +54,13 @@ class SCAINExtractor(ScainsCore):
             full_dialogue = self.dialogue
             core_sentence = None
             full_dialogue_idx = len(self.dialogue)
-            print("full_dialogue_idx:", full_dialogue_idx)
             for speaker in self.params.SPEAKERS:
                 if self.dialogue[-1].startswith(speaker):
                     core_sentence = self.dialogue[-1].removeprefix(speaker)
                     break
-            print("core_sentence", core_sentence)
+            self.logger.info(f"（{full_dialogue_idx}行目）コア発言: {core_sentence}")
             full_summary = self.rephrasing(full_dialogue, core_sentence)
-            print("full_summary", full_summary)
+            self.logger.info(f"完全対話文での言い換え文: {full_summary}")
             # 並列処理で省略されたダイアログを処理
             for j in range(self.params.RELATIVE_POSITION):
                 omitted_dialogue = self.dialogue[:- j - 3] + self.dialogue[-1 - j:]
@@ -58,6 +75,7 @@ class SCAINExtractor(ScainsCore):
                 result = future.result()
                 if result is not None:
                     scains_indexes.extend(result)
+            self.logger.info("\n")
             scains_indexes = sorted(set(scains_indexes), reverse=False)
 
             if not scains_indexes:
@@ -78,8 +96,8 @@ class SCAINExtractor(ScainsCore):
     def process_omitted_dialogue(self, full_dialogue_idx, idx, full_summary, omitted_dialogue, core_sentence):
         omitted_summary = self.rephrasing(omitted_dialogue, core_sentence)
         similarity = self.calc_similarity(full_summary, omitted_summary)
-        print("omitted_summary", omitted_summary)
-        print("similarity", similarity)
+        self.logger.info(f"（時間相対位置{idx+1}）不完全対話文: {omitted_summary}")
+        self.logger.info(f"（時間相対位置{idx+1}）類似度: {similarity}")
         if similarity < self.params.SCAIN_THRESHOLD:
             return [full_dialogue_idx - idx - 2, full_dialogue_idx - idx - 1]
 

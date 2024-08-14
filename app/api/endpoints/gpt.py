@@ -26,6 +26,11 @@ class Dialogue(BaseModel):
     content: str
 
 
+class CheckScainsRequest(BaseModel):
+    conversation: list[Dialogue]
+    sessionId: str
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -79,10 +84,10 @@ async def get_generate_response_result_with_image(task_id: str):
 
 
 @router.post("/check-scains")
-async def check_scains(request: list[Dialogue]):
+async def check_scains(request: CheckScainsRequest):
     """
     コア発言の行数と、SCAINSの行数を返す
-    SCAINSが存在しなかったらnull
+    SCAINSが存在しなかったら何も返さない
     :param request:
     :return:
     {
@@ -90,8 +95,8 @@ async def check_scains(request: list[Dialogue]):
         "scains_index": [2, 3, 4]
     }
     """
-    if len(request) >= params.RELATIVE_POSITION + 2:
-        joined_dialogue = [f"{entry.person}: {entry.content}" for entry in request]
-        SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue)
+    if len(request.conversation) >= params.RELATIVE_POSITION + 2:
+        joined_dialogue = [f"{entry.person}: {entry.content}" for entry in request.conversation]
+        SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue, request.sessionId)
         return SCAINExtractor.distance_extract()
     return
