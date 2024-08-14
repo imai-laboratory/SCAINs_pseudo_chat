@@ -47,7 +47,6 @@ class SCAINExtractor(ScainsCore):
             # 並列処理で省略されたダイアログを処理
             for j in range(self.params.RELATIVE_POSITION):
                 omitted_dialogue = self.dialogue[:- j - 3] + self.dialogue[-1 - j:]
-                print(j, "omitted_dialogue", omitted_dialogue)
                 futures.append(
                     executor.submit(self.process_omitted_dialogue, full_dialogue_idx, j, full_summary, omitted_dialogue, core_sentence)
                 )
@@ -81,7 +80,6 @@ class SCAINExtractor(ScainsCore):
         similarity = self.calc_similarity(full_summary, omitted_summary)
         print("omitted_summary", omitted_summary)
         print("similarity", similarity)
-        print("full_dialogue_idx - idx", [full_dialogue_idx - idx - 2, full_dialogue_idx - idx - 1])
         if similarity < self.params.SCAIN_THRESHOLD:
             return [full_dialogue_idx - idx - 2, full_dialogue_idx - idx - 1]
 
