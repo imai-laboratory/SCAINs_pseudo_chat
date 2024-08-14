@@ -177,7 +177,7 @@ function Home({ isMissedListener, rootURL, user }) {
             const result = await axios.get(`${rootURL}/api/generate-response/result/${taskId}`);
             if (result && result.data) {
                 if (result.data.state === 'PENDING' || result.data.state === 'RETRY') {
-                    setTimeout(() => pollResult(taskId), 2000); // 3秒後に再度リクエスト
+                    setTimeout(() => pollResult(taskId), 2000); // 2秒後に再度リクエスト
                 } else if (result.data.result) {
                     addChats({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
                     addChatsToOmitted({ index: chats.length + 2, person: agent, content: result.data.result, role: 'free' });
