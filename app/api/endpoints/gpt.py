@@ -19,6 +19,8 @@ class Conversation(BaseModel):
 class ImageChatPayload(BaseModel):
     chat_history: list
     image_name: str
+    is_scains: bool
+    person: str
 
 
 class Dialogue(BaseModel):
@@ -65,7 +67,11 @@ async def generate_response_with_image(payload: ImageChatPayload):
     try:
         chat_history = payload.chat_history
         image_name = payload.image_name
-        prompt = topic11(chat_history)
+        if payload.is_scains:
+            prompt = topic11_to_b(chat_history)
+            print(f"prompt: {prompt}")
+        else:
+            prompt = topic11(chat_history, payload.person)
         task = fetch_openai_data_with_image.apply_async(args=[image_name, prompt])
         return {"task_id": task.id}
     except Exception as e:

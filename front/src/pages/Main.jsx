@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Chats, SharedMonitor, UserStatements } from "../components";
-import { checkScains } from "../api/checkScains";
-import { generateImageTask } from "../api/imageTask";
-import { pollResult } from "../utils/pollResult";
+import React, {useEffect, useRef, useState} from 'react';
+import {Chats, SharedMonitor, UserStatements} from "../components";
+import {checkScains} from "../api/checkScains";
+import {generateImageTask} from "../api/imageTask";
+import {pollResult} from "../utils/pollResult";
 import image_A from "../assets/images/A.jpg";
 import image_B from "../assets/images/B.jpg";
 import image_user from "../assets/images/user.jpg";
 import image_missing_B from "../assets/images/missing_B.jpg";
 import sharedImg from "../assets/images/topic1.JPG";
+
+const imageName = 'topic1.JPG';
 
 function Main({ isMissedListener, rootURL }) {
     const [chatHistory, setChatHistory] = useState([
@@ -18,10 +20,13 @@ function Main({ isMissedListener, rootURL }) {
     const [speaker, setSpeaker] = useState('');
     const [switchMissedImage, setSwitchMissedImage] = useState(false);
 
-    const addChatHistroy = (currentStatement) => {
+    const chatHistoryRef = useRef(chatHistory);
+
+    const addChatHistory = (currentStatement) => {
         return new Promise((resolve) => {
             setChatHistory((prevChatHistory) => {
                 const updatedChatHistory = [...prevChatHistory, currentStatement];
+                chatHistoryRef.current = updatedChatHistory;
                 resolve(updatedChatHistory);
                 return updatedChatHistory;
             });
@@ -29,43 +34,81 @@ function Main({ isMissedListener, rootURL }) {
     };
 
     const addScains = (newScain) => {
-        setScains((prevScains) => [...prevScains, newScain]);
+        return new Promise((resolve) => {
+            setScains((prevScains) => {
+                const updatedScains = [...prevScains, newScain];
+                resolve(updatedScains);
+                return updatedScains;
+            });
+        });
     };
 
     const handleUserSendMessage = async (inputValue) => {
         setShowSubmitButton(false);
-        const userStatement = { person: 'user', content: inputValue };
-        const currentChatHistroy = await addChatHistroy(userStatement);
-        const imageName = 'topic1.JPG';
-
-        const payload = {
-            chat_history: currentChatHistroy,
-            image_name: imageName,
-        };
-
+        const initialScainsLength = scains.length;
         try {
-            const scainsPromise = checkScains(rootURL, currentChatHistroy).then(result => {
-                if (result.data) {
-                    addScains(result.data);
-                }
-            }).catch(error => {
-                console.error('Error in checkScains:', error.response ? error.response.data : error.message);
-            });
+            const userStatement = { person: 'user', content: inputValue };
+            let currentChatHistory = await addChatHistory(userStatement);
+            const payload = createPayload(currentChatHistory, imageName, false, 'A');
 
-            const llmResponse = await generateImageTask(rootURL, payload);
-            const taskId = llmResponse.data.task_id;
+            const scainsUpdated = await Promise.all([
+                handleScains(rootURL, currentChatHistory),
+                handleImageTask(rootURL, payload)
+            ]).then(results => results[0]);
 
-            const pollResultPromise = pollResult(rootURL, taskId, async (result) => {
-                await addChatHistroy({ person: 'A', content: result });
-            }, async (errorMessage) => {
-                await addChatHistroy({ person: 'A', content: errorMessage });
-            });
-
-            await Promise.all([scainsPromise, pollResultPromise]);
+            if (scainsUpdated && scainsUpdated.length > initialScainsLength) {
+                await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, true, 'A'));
+                await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, false, 'B'));
+            }
         } catch (error) {
             console.error('Error in handleUserSendMessage:', error);
         } finally {
             setShowSubmitButton(true);
+        }
+    };
+
+    const createPayload = (chatHistory, imageName, isScains, person) => ({
+        chat_history: chatHistory,
+        image_name: imageName,
+        is_scains: isScains,
+        person: person,
+    });
+
+    const handleScains = (rootURL, currentChatHistory) => {
+        return checkScains(rootURL, currentChatHistory)
+            .then(result => {
+                if (result.data) {
+                    return addScains(result.data);  // ここで Promise を返す
+                }
+                return scains;  // 更新がない場合、現在の scains を返す
+            })
+            .catch(error => {
+                console.error('Error in checkScains:', error.response ? error.response.data : error.message);
+                return scains;
+            });
+    };
+
+    const handleImageTask = async (rootURL, payload) => {
+        try {
+            const llmResponse = await generateImageTask(rootURL, payload);
+            const taskId = llmResponse.data.task_id;
+
+            return await pollResult(rootURL, taskId, async (result) => {
+                if (payload.person === 'B') {
+                    // Bさんの発言を少し遅らせて表示
+                    console.log("Bさんの発言を遅らせて表示します");
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+                return await addChatHistory({ person: payload.person, content: result });
+            }, async (errorMessage) => {
+                if (payload.person === 'B') {
+                    // Bさんのエラーメッセージの表示も遅らせる
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+                return await addChatHistory({ person: payload.person, content: errorMessage });
+            });
+        } catch (error) {
+            throw error;
         }
     };
 
@@ -74,6 +117,10 @@ function Main({ isMissedListener, rootURL }) {
         const scrollArea = document.getElementById('scroll-area');
         if (scrollArea) {
             scrollArea.scrollTop = scrollArea.scrollHeight;
+        }
+
+        if (speaker === 'B') {
+            setSwitchMissedImage(true);
         }
     }, [speaker]);
 

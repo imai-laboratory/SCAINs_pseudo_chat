@@ -12,11 +12,18 @@ def generate_answer(dialogue, agent):
         raise
 
 
-def topic11(dialogue):
+def topic11(dialogue, agent):
     joined_dialogue = "\n".join([f"{entry['person']}: {entry['content']}" for entry in dialogue])
     prompt = (f"入力された画像に対して、以下のテーマに沿って議論しています。\n\n テーマ: "
               f"「なぜフード付きのスウェットシャツを着た男性とパイプを持った男性が話していると思いますか？」\n"
-              f"このテーマに沿って、以下の会話文に続くようにAとして1~2文程度で簡潔に発言をしてください。\n\n会話文：\n{joined_dialogue}")
+              f"このテーマに沿って、以下の会話文に続くように{agent}として1~2文程度で簡潔に発言をしてください。\n\n会話文：\n{joined_dialogue}")
+    return prompt
+
+
+def topic11_to_b(dialogue):
+    joined_dialogue = "\n".join([f"{entry['person']}: {entry['content']}" for entry in dialogue])
+    prompt = (f"以下の会話文に続くようにAさんとして1文程度で簡潔に、Bさんに話を振る発言をしてください。\n\n"
+              f"会話文：\n{joined_dialogue}")
     return prompt
 
 
