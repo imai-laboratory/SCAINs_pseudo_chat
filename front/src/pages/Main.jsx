@@ -50,8 +50,18 @@ function Main({ isMissedListener, rootURL }) {
             const userStatement = { person: 'user', content: inputValue };
             let currentChatHistory = await addChatHistory(userStatement);
             let target = 'A';
+
             if (switchMissedImage) {
-                target = inputValue.includes('Bさん') ? 'B' : 'A';
+                const bPhrases = ['Bさんに', 'Bさんは', 'Bさんも'];
+                const aPhrases = ['Aさんに', 'Aさんは', 'Aさんも'];
+
+                if (bPhrases.some(phrase => inputValue.includes(phrase))) {
+                    target = 'B';
+                } else if (aPhrases.some(phrase => inputValue.includes(phrase))) {
+                    target = 'A';
+                } else {
+                    target = chatHistoryRef.current[chatHistoryRef.current.length - 2]?.person || 'A';
+                }
             }
             const payload = createPayload(currentChatHistory, imageName, false, target);
 
