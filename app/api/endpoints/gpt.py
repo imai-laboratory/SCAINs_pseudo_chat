@@ -69,7 +69,6 @@ async def generate_response_with_image(payload: ImageChatPayload):
         image_name = payload.image_name
         if payload.is_scains:
             prompt = topic11_to_b(chat_history)
-            print(f"prompt: {prompt}")
         else:
             prompt = topic11(chat_history, payload.person)
         task = fetch_openai_data_with_image.apply_async(args=[image_name, prompt])
