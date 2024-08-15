@@ -56,9 +56,10 @@ function Main({ isMissedListener, rootURL }) {
                 handleImageTask(rootURL, payload)
             ]).then(results => results[0]);
 
-            if (scainsUpdated && scainsUpdated.length > initialScainsLength) {
+            if (!switchMissedImage && scainsUpdated && scainsUpdated.length > initialScainsLength) {
                 await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, true, 'A'));
-                await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, false, 'B'));
+                setTimeout(2000);
+                await handleImageTask(rootURL, createPayload([chatHistoryRef.current[chatHistoryRef.current.length - 1]], imageName, false, 'B'));
             }
         } catch (error) {
             console.error('Error in handleUserSendMessage:', error);
@@ -94,17 +95,8 @@ function Main({ isMissedListener, rootURL }) {
             const taskId = llmResponse.data.task_id;
 
             return await pollResult(rootURL, taskId, async (result) => {
-                if (payload.person === 'B') {
-                    // Bさんの発言を少し遅らせて表示
-                    console.log("Bさんの発言を遅らせて表示します");
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                }
                 return await addChatHistory({ person: payload.person, content: result });
             }, async (errorMessage) => {
-                if (payload.person === 'B') {
-                    // Bさんのエラーメッセージの表示も遅らせる
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                }
                 return await addChatHistory({ person: payload.person, content: errorMessage });
             });
         } catch (error) {
@@ -118,7 +110,9 @@ function Main({ isMissedListener, rootURL }) {
         if (scrollArea) {
             scrollArea.scrollTop = scrollArea.scrollHeight;
         }
+    }, [chatHistoryRef.current]);
 
+    useEffect(() => {
         if (speaker === 'B') {
             setSwitchMissedImage(true);
         }
@@ -140,6 +134,11 @@ function Main({ isMissedListener, rootURL }) {
                     />
                 </div>
                 <div className="chats-content">
+                    <div className="text-bold">
+                        <span className="pink-color">ピンク：あなたの曖昧な発言</span>
+                        <br></br>
+                        <span className="orange-color">オレンジ：あなたの曖昧な発言を理解するために必要な情報</span>
+                    </div>
                     <div className="chat-box-container">
                         <Chats
                             agent={'B'}
