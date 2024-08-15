@@ -49,7 +49,11 @@ function Main({ isMissedListener, rootURL }) {
         try {
             const userStatement = { person: 'user', content: inputValue };
             let currentChatHistory = await addChatHistory(userStatement);
-            const payload = createPayload(currentChatHistory, imageName, false, 'A');
+            let target = 'A';
+            if (switchMissedImage) {
+                target = inputValue.includes('Bさん') ? 'B' : 'A';
+            }
+            const payload = createPayload(currentChatHistory, imageName, false, target);
 
             const scainsUpdated = await Promise.all([
                 handleScains(rootURL, currentChatHistory),
