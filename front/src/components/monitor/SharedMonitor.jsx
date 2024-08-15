@@ -7,10 +7,11 @@ function SharedMonitor({ image_A, image_B, image_user, image_missing_B, sharedIm
     return (
         <div className="shared-monitor">
             <div className="left-images">
+                <div className="md text-bold">なぜフード付きのシャツを着た男性とパイプを持った男性が話していると思いますか？</div>
                 <img src={sharedImg} alt="A" className="left-image"/>
             </div>
             <div className="right-images">
-                <div className="right-item">
+            <div className="right-item">
                     <img src={image_user} alt="user" className={`right-image ${speaker === 'user' ? "speaker" : ""}`}/>
                     <div>あなた</div>
                 </div>
