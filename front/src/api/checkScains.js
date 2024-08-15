@@ -4,7 +4,11 @@ import createAxiosClient from "./axiosClient";
 const getSessionId = () => {
     let sessionId = sessionStorage.getItem('sessionId');
     if (!sessionId) {
-        sessionId = Math.random().toString(36).substr(2, 9);
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        const formattedTime = currentDate.toTimeString().split(' ')[0].replace(/:/g, ''); // HHMMSS
+        const randomId = Math.random().toString(36).substr(2, 9);
+        sessionId = `${formattedDate}-${formattedTime}-${randomId}`;
         sessionStorage.setItem('sessionId', sessionId);
     }
     return sessionId;
