@@ -32,7 +32,11 @@ class ScainsCore:
             formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
             file_handler.setFormatter(formatter)
             self.logger.addHandler(file_handler)
-        
+
+    def __del__(self):
+        # セッション終了時に会話履歴全体をログに記録
+        self.logger.info("セッション終了時の会話履歴: " + str(self.dialogue) + "\n")
+
     def openai_api_completion(self, prompt):
         params = self.params
         completion = openai.ChatCompletion.create(
