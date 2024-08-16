@@ -66,7 +66,7 @@ class SCAINExtractor(ScainsCore):
             full_summary = self.rephrasing(full_dialogue, core_sentence)
             self.logger.info(f"完全対話文での言い換え文: {full_summary}")
             # 並列処理で省略されたダイアログを処理
-            for j in range(self.params.RELATIVE_POSITION):
+            for j in range(min(full_dialogue_idx - 2, self.params.RELATIVE_POSITION)):
                 omitted_dialogue = self.dialogue[:- j - 3] + self.dialogue[-1 - j:]
                 futures.append(
                     executor.submit(self.process_omitted_dialogue, full_dialogue_idx, j, full_summary, omitted_dialogue, core_sentence)

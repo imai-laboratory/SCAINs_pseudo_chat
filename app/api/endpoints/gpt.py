@@ -100,7 +100,7 @@ async def check_scains(request: CheckScainsRequest):
         "scains_index": [2, 3, 4]
     }
     """
-    if len(request.conversation) >= params.RELATIVE_POSITION + 2:
+    if len(request.conversation) >= 4:
         joined_dialogue = [f"{entry.person}: {entry.content}" for entry in request.conversation]
         SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue, request.sessionId)
         return SCAINExtractor.distance_extract()
