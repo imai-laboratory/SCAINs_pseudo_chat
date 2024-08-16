@@ -44,7 +44,7 @@ export const Chat = ({agent, text, person, textClass, isCoreStatementSpoken, isM
                 <Avatar alt={person} src={icon}/>
                 <div className="sm">{speaker}</div>
             </ListItemAvatar>
-            <div className={textClass}>{text}</div>
+            <div className={textClass} style={{ whiteSpace: 'pre-wrap' }}>{text}</div>
         </ListItem>
     )
 }
