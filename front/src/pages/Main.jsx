@@ -65,15 +65,14 @@ function Main({ isMissedListener, rootURL }) {
             }
             const payload = createPayload(currentChatHistory, imageName, false, target);
 
-            const scainsUpdated = await Promise.all([
-                handleScains(rootURL, currentChatHistory),
-                handleImageTask(rootURL, payload)
-            ]).then(results => results[0]);
+            const scainsUpdated = await handleScains(rootURL, currentChatHistory);
 
             if (!switchMissedImage && scainsUpdated && scainsUpdated.length > initialScainsLength) {
                 await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, true, 'A'));
-                setTimeout(2000);
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 await handleImageTask(rootURL, createPayload([chatHistoryRef.current[chatHistoryRef.current.length - 1]], imageName, false, 'B'));
+            } else {
+                await handleImageTask(rootURL, payload);
             }
         } catch (error) {
             console.error('Error in handleUserSendMessage:', error);

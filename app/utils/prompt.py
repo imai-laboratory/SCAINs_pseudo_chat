@@ -23,7 +23,8 @@ def topic11(dialogue, agent):
 def topic11_to_b(dialogue):
     joined_dialogue = "\n".join([f"{entry['person']}: {entry['content']}" for entry in dialogue])
     prompt = (f"以下の会話文に続くようにAさんとして1文程度で簡潔に、Bさんに話を振る発言をしてください。"
-              f"条件：「Bさん」という単語は必ず入れてください。\n\n"
+              f"条件：「Bさん」という単語は必ず入れてください。\n"
+              f"会話文の話題を突然変えないでください。\n\n"
               f"会話文：\n{joined_dialogue}")
     return prompt
 
