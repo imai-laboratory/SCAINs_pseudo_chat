@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Chats, SharedMonitor, UserStatements} from "../components";
 import {checkScains} from "../api/checkScains";
-import {generateImageTask} from "../api/imageTask";
-import {pollResult} from "../utils/pollResult";
+import {generateImageTask, generateTask} from "../api/generateResponse";
+import {pollImageResult, pollResult} from "../utils/pollResult";
 import image_A from "../assets/images/A.jpg";
 import image_B from "../assets/images/B.jpg";
 import image_user from "../assets/images/user.jpg";
@@ -63,16 +63,28 @@ function Main({ isMissedListener, rootURL }) {
                     target = chatHistoryRef.current[chatHistoryRef.current.length - 2]?.person || 'A';
                 }
             }
-            const payload = createPayload(currentChatHistory, imageName, false, target);
-
+            let payload;
+            if (target === 'A') {
+                payload = createPayloadWithImage(currentChatHistory, imageName, false, target);
+            } else {
+                const initScains = scains[0].scains_index;
+                const omittedChatHistory = chatHistoryRef.current.filter((_, index) => !initScains.includes(index+1));
+                payload = createPayload(omittedChatHistory, target);
+            }
             const scainsUpdated = await handleScains(rootURL, currentChatHistory);
 
             if (!switchMissedImage && scainsUpdated && scainsUpdated.length > initialScainsLength) {
-                await handleImageTask(rootURL, createPayload(chatHistoryRef.current, imageName, true, 'A'));
+                await addChatHistory({ person: 'A', content: 'Bさんはどう思いますか？' });
                 await new Promise(resolve => setTimeout(resolve, 2000));
-                await handleImageTask(rootURL, createPayload([chatHistoryRef.current[chatHistoryRef.current.length - 1]], imageName, false, 'B'));
+                const initScains = scainsUpdated[0].scains_index;
+                const omittedChatHistory = chatHistoryRef.current.filter((_, index) => !initScains.includes(index+1));
+                await handleTask(rootURL, createPayload(omittedChatHistory, 'B'));
             } else {
-                await handleImageTask(rootURL, payload);
+                if (target === 'A') {
+                    await handleImageTask(rootURL, payload);
+                } else {
+                    await handleTask(rootURL, payload);
+                }
             }
         } catch (error) {
             console.error('Error in handleUserSendMessage:', error);
@@ -81,10 +93,15 @@ function Main({ isMissedListener, rootURL }) {
         }
     };
 
-    const createPayload = (chatHistory, imageName, isScains, person) => ({
+    const createPayloadWithImage = (chatHistory, imageName, isScains, person) => ({
         chat_history: chatHistory,
         image_name: imageName,
         is_scains: isScains,
+        person: person,
+    });
+
+    const createPayload = (chatHistory, person) => ({
+        chat_history: chatHistory,
         person: person,
     });
 
@@ -106,6 +123,22 @@ function Main({ isMissedListener, rootURL }) {
         try {
             const llmResponse = await generateImageTask(rootURL, payload);
             const taskId = llmResponse.data.task_id;
+
+            return await pollImageResult(rootURL, taskId, async (result) => {
+                return await addChatHistory({ person: payload.person, content: result });
+            }, async (errorMessage) => {
+                return await addChatHistory({ person: payload.person, content: errorMessage });
+            });
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const handleTask = async (rootURL, payload) => {
+        try {
+            const llmResponse = await generateTask(rootURL, payload);
+            const taskId = llmResponse.data.task_id;
+            console.log('taskId:', taskId);
 
             return await pollResult(rootURL, taskId, async (result) => {
                 return await addChatHistory({ person: payload.person, content: result });

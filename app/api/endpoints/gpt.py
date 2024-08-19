@@ -12,8 +12,8 @@ params = DefaultParams()
 
 # schemasではあるが、少し特殊なためこのファイルで明示
 class Conversation(BaseModel):
-    conversation: list
-    agent: str
+    chat_history: list
+    person: str
 
 
 class ImageChatPayload(BaseModel):
@@ -44,7 +44,9 @@ def get_db():
 @router.post("/")
 async def generate_response(request: Conversation):
     try:
-        prompt = generate_answer(request.conversation, request.agent)
+        print(request)
+        prompt = generate_answer(request.chat_history, request.person)
+        print(prompt)
         task = fetch_openai_data.delay(prompt)
         return {"task_id": task.id}
     except Exception as e:
