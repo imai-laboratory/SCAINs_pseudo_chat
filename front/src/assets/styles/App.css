@@ -62,48 +62,38 @@
     flex-flow: column;
 }
 
-.chat-text {
-    background-color: #EFEFEF;
-    color: black;
+.text-style {
+    color: #353535;
     border-radius: 4px;
     padding: .5rem;
     margin-right: 1rem;
     max-width: 80%;
     width: auto;
     word-break: break-word;
+}
+
+.chat-text {
+    background-color: #EFEFEF;
 }
 
 .chat-user-text {
     background-color: #B5F892;
-    color: black;
-    border-radius: 4px;
-    padding: .5rem;
-    margin-right: 1rem;
-    max-width: 80%;
-    width: auto;
-    word-break: break-word;
 }
 
 .scains-text {
     background-color: rgba(237, 173, 54, 0.79);
-    color: black;
-    border-radius: 4px;
-    padding: .5rem;
-    margin-right: 1rem;
-    max-width: 80%;
-    width: auto;
-    word-break: break-word;
+}
+
+.scains-text__first {
+    background-color: rgba(241, 233, 75, 0.79);
 }
 
 .core-sentence-text {
     background-color: #f178c7;
-    color: black;
-    border-radius: 4px;
-    padding: .5rem;
-    margin-right: 1rem;
-    max-width: 80%;
-    width: auto;
-    word-break: break-word;
+}
+
+.core-sentence-text__first {
+    background-color: #ef5858;
 }
 
 .scains-btn{

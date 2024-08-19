@@ -13,6 +13,8 @@ const ChatsContainer = styled('div')({
 
 
 export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, isScainsMode, onSpeakerChange, scains }) => {
+    const [firstCoreIndex, setFirstCoreIndex] = useState({});
+    const [firstHighlightedIndices, setFirstHighlightedIndices] = useState({});
     const [highlightedIndices, setHighlightedIndices] = useState({});
     const [selectedCoreIndex, setSelectedCoreIndex] = useState('');
 
@@ -23,12 +25,21 @@ export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, i
 
         if (targetScain) {
             setSelectedCoreIndex(targetScain.core_index);
-
             const newHighlightedIndices = {};
-            targetScain.scains_index.forEach(idx => {
-                newHighlightedIndices[idx] = 'scains-text md text-bold';
-            });
-            setHighlightedIndices(newHighlightedIndices);
+            const newFirstCoreIndex = {};
+            if (scains.length === 1) {
+                targetScain.scains_index.forEach(idx => {
+                    newHighlightedIndices[idx] = 'scains-text__first md text-bold text-style';
+                });
+                newFirstCoreIndex[targetScain.core_index] = 'core-sentence-text__first md text-bold text-style';
+                setFirstCoreIndex(newFirstCoreIndex);
+                setFirstHighlightedIndices(newHighlightedIndices);
+            } else {
+                targetScain.scains_index.forEach(idx => {
+                    newHighlightedIndices[idx] = 'scains-text sm text-style';
+                });
+                setHighlightedIndices(newHighlightedIndices);
+            }
         } else {
             setSelectedCoreIndex(null);
             setHighlightedIndices({});
@@ -52,10 +63,9 @@ export const Chats = ({ agent, chats, isCoreStatementSpoken, isMissedListener, i
                         const isScainsIndex = isScainsMode && scains.some(s => s.index === chat.index);
                         const currentIndex = index + 1;
                         const isCoreIndex = currentIndex === selectedCoreIndex;
-                        const defaultTextClass =  chat.person === "user" ? 'chat-user-text sm' : 'chat-text sm';
-                        const coreTextClass = isCoreIndex ? 'core-sentence-text md text-bold' : '';
-                        const textClass = highlightedIndices[currentIndex] || coreTextClass || defaultTextClass;
-
+                        const defaultTextClass =  chat.person === "user" ? 'chat-user-text sm text-style' : 'chat-text sm text-style';
+                        const coreTextClass = isCoreIndex ? 'core-sentence-text sm text-style' : '';
+                        const textClass = firstHighlightedIndices[currentIndex] || highlightedIndices[currentIndex] || firstCoreIndex[currentIndex] || coreTextClass || defaultTextClass;
                         return (
                             <Chat
                                 agent={agent}
