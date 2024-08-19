@@ -138,7 +138,6 @@ function Main({ isMissedListener, rootURL }) {
         try {
             const llmResponse = await generateTask(rootURL, payload);
             const taskId = llmResponse.data.task_id;
-            console.log('taskId:', taskId);
 
             return await pollResult(rootURL, taskId, async (result) => {
                 return await addChatHistory({ person: payload.person, content: result });
