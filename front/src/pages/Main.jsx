@@ -180,9 +180,9 @@ function Main({ isMissedListener, rootURL }) {
                 </div>
                 <div className="chats-content">
                     <div className="text-bold">
-                        <span className="pink-color">ピンク：あなたの曖昧な発言</span>
+                        <span className="pink-color">赤/ピンク：あなたの曖昧な発言</span>
                         <br></br>
-                        <span className="orange-color">オレンジ：あなたの曖昧な発言を理解するために必要な情報</span>
+                        <span className="orange-color">黄色/オレンジ：あなたの曖昧な発言を理解するために必要な情報</span>
                     </div>
                     <div className="chat-box-container">
                         <Chats
