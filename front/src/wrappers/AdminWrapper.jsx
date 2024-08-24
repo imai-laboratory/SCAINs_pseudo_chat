@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
-import {UserContext} from "../context/UserContext";
 import {Admin} from "../pages";
+import {ApiContext} from "../context/ApiContext";
 
 const AdminWrapper = () => {
-    const { rootUrl } = useContext(UserContext);
+    const { rootUrl } = useContext(ApiContext);
     return <Admin rootURL={rootUrl} />;
 };
 

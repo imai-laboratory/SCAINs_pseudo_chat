@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../context/UserContext';
 import {Main} from "../pages";
+import {ApiContext} from "../context/ApiContext";
+import {UserContext} from "../context/UserContext";
 
 const MainWrapper = () => {
-    const { rootUrl, user } = useContext(UserContext);
+    const { rootUrl } = useContext(ApiContext);
+    const { user } = useContext(UserContext);
     const [isMissedListener, setIsMissedListener] = useState(false);
 
     const handleChangePerspective = () => {
