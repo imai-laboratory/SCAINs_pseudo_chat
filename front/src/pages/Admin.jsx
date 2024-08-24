@@ -120,7 +120,7 @@ function Admin({rootURL}) {
 
     return (
         <div className="admin-container">
-            <h1>t{'admin.title'}</h1>
+            <h1>{t('admin.title')}</h1>
             <div className="sub-container">
                 <h2>{t('admin.users.list.title')}</h2>
                 <DataGrid

@@ -42,7 +42,7 @@
     "toLogin": "Go to Login Page"
   },
   "admin": {
-    "title": "admin page",
+    "title": "Admin Page",
     "users": {
       "list": {
         "title": "user list"
