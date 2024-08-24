@@ -60,7 +60,7 @@ function Header({ user, setUser }) {
             </Link>
             <div className="right-items">
                 <div className="language-and-account">
-                    <Button onClick={handleLangMenu}>
+                    <Button sx={{ color: '#efefef' }} onClick={handleLangMenu}>
                         {t('language')}
                     </Button>
                     <Menu
