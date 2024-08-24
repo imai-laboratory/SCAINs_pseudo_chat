@@ -14,13 +14,14 @@ params = DefaultParams()
 class Conversation(BaseModel):
     chat_history: list
     person: str
+    language: str
 
 
 class ImageChatPayload(BaseModel):
     chat_history: list
     image_name: str
-    is_scains: bool
     person: str
+    language: str
 
 
 class Dialogue(BaseModel):
@@ -31,6 +32,7 @@ class Dialogue(BaseModel):
 class CheckScainsRequest(BaseModel):
     conversation: list[Dialogue]
     sessionId: str
+    language: str
 
 
 def get_db():
@@ -44,7 +46,7 @@ def get_db():
 @router.post("/")
 async def generate_response(request: Conversation):
     try:
-        prompt = generate_answer(request.chat_history, request.person)
+        prompt = generate_answer(request.chat_history, request.person, request.language)
         task = fetch_openai_data.delay(prompt)
         return {"task_id": task.id}
     except Exception as e:
@@ -67,10 +69,7 @@ async def generate_response_with_image(payload: ImageChatPayload):
     try:
         chat_history = payload.chat_history
         image_name = payload.image_name
-        if payload.is_scains:
-            prompt = topic11_to_b(chat_history)
-        else:
-            prompt = topic11(chat_history, payload.person)
+        prompt = topic11(chat_history, payload.person, payload.language)
         task = fetch_openai_data_with_image.apply_async(args=[image_name, prompt])
         return {"task_id": task.id}
     except Exception as e:
@@ -102,6 +101,6 @@ async def check_scains(request: CheckScainsRequest):
     """
     if len(request.conversation) >= 4:
         joined_dialogue = [f"{entry.person}: {entry.content}" for entry in request.conversation]
-        SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue, request.sessionId)
+        SCAINExtractor = scains_core.SCAINExtractor(joined_dialogue, request.sessionId, request.language)
         return SCAINExtractor.distance_extract()
     return

@@ -12,10 +12,11 @@ from app.utils.params import DefaultParams
 
 
 class ScainsCore:
-    def __init__(self, dialogue, session_id: str):
+    def __init__(self, dialogue, session_id: str, language: str):
         self.params = DefaultParams()
         self.dialogue = dialogue
         self.session_id = session_id
+        self.language = language
 
         # ログディレクトリを指定
         project_root = os.path.abspath(os.path.dirname(__file__))
@@ -91,7 +92,7 @@ class SCAINExtractor(ScainsCore):
             }
 
     def rephrasing(self, dialogue, sentence):
-        prompt = prompts.rephrase_chat_ja(dialogue, sentence)
+        prompt = prompts.rephrase_chat(dialogue, sentence, self.language)
         response = self.openai_api_completion(prompt)
         rephrased_statement = response.get("choices")[0].get("message").get("content")
 
