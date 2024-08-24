@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Chats, SharedMonitor, UserStatements} from "../components";
 import {checkScains} from "../api/checkScains";
 import {generateImageTask, generateTask} from "../api/generateResponse";
@@ -8,12 +8,16 @@ import image_B from "../assets/images/B.jpg";
 import image_user from "../assets/images/user.jpg";
 import image_missing_B from "../assets/images/missing_B.jpg";
 import sharedImg from "../assets/images/topic1.JPG";
+import {useTranslation} from "react-i18next";
+import {LanguageContext} from "../context/LanguageContext";
 
 const imageName = 'topic1.JPG';
 
 function Main({ isMissedListener, rootURL }) {
+    const { t } = useTranslation();
+    const { language } = useContext(LanguageContext);
     const [chatHistory, setChatHistory] = useState([
-        { person: 'A', content: "なんで2人が話していると思う？" }
+        { person: 'A', content: t("chats.first") }
     ]);
     const [scains, setScains] = useState([]);
     const [showSubmitButton, setShowSubmitButton] = useState(true);
@@ -52,8 +56,8 @@ function Main({ isMissedListener, rootURL }) {
             let target = 'A';
 
             if (switchMissedImage) {
-                const bPhrases = ['Bさんに', 'Bさんは', 'Bさんも'];
-                const aPhrases = ['Aさんに', 'Aさんは', 'Aさんも'];
+                const bPhrases = [t("phrases.B.first"), t("phrases.B.second"), t("phrases.B.third")];
+                const aPhrases = [t("phrases.A.first"), t("phrases.A.second"), t("phrases.A.third")];
 
                 if (bPhrases.some(phrase => inputValue.includes(phrase))) {
                     target = 'B';
@@ -65,16 +69,16 @@ function Main({ isMissedListener, rootURL }) {
             }
             let payload;
             if (target === 'A') {
-                payload = createPayloadWithImage(currentChatHistory, imageName, false, target);
+                payload = createPayloadWithImage(currentChatHistory, imageName, target);
             } else {
                 const initScains = scains[0].scains_index;
                 const omittedChatHistory = chatHistoryRef.current.filter((_, index) => !initScains.includes(index+1));
                 payload = createPayload(omittedChatHistory, target);
             }
-            const scainsUpdated = await handleScains(rootURL, currentChatHistory);
+            const scainsUpdated = await handleScains(rootURL, currentChatHistory, language);
 
             if (!switchMissedImage && scainsUpdated && scainsUpdated.length > initialScainsLength) {
-                await addChatHistory({ person: 'A', content: 'Bさんはどう思いますか？' });
+                await addChatHistory({ person: 'A', content: t("chats.scains") });
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 const initScains = scainsUpdated[0].scains_index;
                 const omittedChatHistory = chatHistoryRef.current.filter((_, index) => !initScains.includes(index+1));
@@ -93,20 +97,21 @@ function Main({ isMissedListener, rootURL }) {
         }
     };
 
-    const createPayloadWithImage = (chatHistory, imageName, isScains, person) => ({
+    const createPayloadWithImage = (chatHistory, imageName, person) => ({
         chat_history: chatHistory,
         image_name: imageName,
-        is_scains: isScains,
         person: person,
+        language: language,
     });
 
     const createPayload = (chatHistory, person) => ({
         chat_history: chatHistory,
         person: person,
+        language: language,
     });
 
-    const handleScains = (rootURL, currentChatHistory) => {
-        return checkScains(rootURL, currentChatHistory)
+    const handleScains = (rootURL, currentChatHistory, language) => {
+        return checkScains(rootURL, currentChatHistory, language)
             .then(result => {
                 if (result.data) {
                     return addScains(result.data);  // ここで Promise を返す
@@ -180,9 +185,9 @@ function Main({ isMissedListener, rootURL }) {
                 </div>
                 <div className="chats-content">
                     <div className="text-bold">
-                        <span className="pink-color">赤/ピンク：あなたの曖昧な発言</span>
+                        <span className="pink-color">{t('annotations.scains.description')}</span>
                         <br></br>
-                        <span className="orange-color">黄色/オレンジ：あなたの曖昧な発言を理解するために必要な情報</span>
+                        <span className="orange-color">{t('annotations.coreStatement.description')}</span>
                     </div>
                     <div className="chat-box-container">
                         <Chats

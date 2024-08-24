@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import '../assets/styles/SessionExpired.css';
+import {useTranslation} from "react-i18next";
 
 const SessionExpired = ({ setSessionExpired }) => {
-
+    const { t } = useTranslation();
     return (
         <div className="container">
-            <h1>セッションタイムアウト</h1>
-            <p>セッションがタイムアウトしました。再度ログインしてください。</p>
-            <Link to="/login" onClick={() => setSessionExpired(false)}>ログインページへ</Link>
+            <h1>{t('sessionExpired.timeout')}</h1>
+            <p>{t('sessionExpired.requireLogin')}</p>
+            <Link to="/login" onClick={() => setSessionExpired(false)}>{t('sessionExpired.toLogin')}</Link>
         </div>
     );
 };

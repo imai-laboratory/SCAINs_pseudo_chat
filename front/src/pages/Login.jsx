@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { AuthForm } from '../components';
 import { useNavigate } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 function Login({ setUser, setLoading, rootURL, user }) {
+    const { t } = useTranslation();
     const [loginId, setLoginId] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -27,9 +29,9 @@ function Login({ setUser, setLoading, rootURL, user }) {
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
-                setError('ログインに失敗しました。ログインIDが間違っています。');
+                setError(t("login.errors.invalid"));
             } else {
-                setError('ログイン中にエラーが発生しました。もう一度お試しください。');
+                setError(t("login.errors.server"));
             }
             setLoading(false);
         }
@@ -41,10 +43,10 @@ function Login({ setUser, setLoading, rootURL, user }) {
 
     return (
         <AuthForm
-            btnText="ログイン"
-            title="ログイン画面"
+            btnText={t('login.btnText')}
+            title={t('login.title')}
             fields={[
-                { type: 'text', value: loginId, placeholder: 'ログインID' },
+                { type: 'text', value: loginId, placeholder: t("login.id") },
             ]}
             onSubmit={handleSubmit}
             error={error}

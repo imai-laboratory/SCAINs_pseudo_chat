@@ -1,0 +1,76 @@
+{
+  "language": "\uD83C\uDDFA\uD83C\uDDF8 English",
+  "menus": {
+    "admin": "admin",
+    "logout": "logout"
+  },
+  "speakers": {
+    "A": "A",
+    "B": "B",
+    "you": "you"
+  },
+  "tasks": {
+    "description": "Why do you think the man in the hooded sweatshirt and the man with the pipe are talking?"
+  },
+  "annotations": {
+    "scains": {
+      "description": "Red: Your vague statement"
+    },
+    "coreStatement": {
+      "description": "Yellow: Contextual information needed to understand your vague statement"
+    }
+  },
+  "chats": {
+    "first": "Why do you think the two are talking?",
+    "scains": "What do you think, B?"
+  },
+  "phrases": {
+    "A": {
+      "first": "To A",
+      "second": "A is",
+      "third": "A also"
+    },
+    "B": {
+      "first": "To B",
+      "second": "B is",
+      "third": "B also"
+    }
+  },
+  "sessionExpired": {
+    "timeout": "Session Timeout",
+    "requireLogin": "Your session has timed out. Please log in again.",
+    "toLogin": "Go to Login Page"
+  },
+  "admin": {
+    "title": "Admin Page",
+    "users": {
+      "list": {
+        "title": "user list"
+      },
+      "create": {
+        "title": "Create User",
+        "name": "Name",
+        "email": "Email",
+        "role": "Role (0:admin, 1:user)"
+      }
+    },
+    "conversation": {
+      "list": {
+        "title": "Conversation List"
+      },
+      "history": {
+        "title": "Conversation History"
+      }
+    }
+  },
+  "login": {
+    "title": "Login Page",
+    "id": "Login ID",
+    "btnText": "Login",
+    "errors": {
+      "server": "An error occurred during login. Please try again.",
+      "invalid": "Login failed. The login ID is incorrect."
+    }
+  },
+  "send": "Send"
+}

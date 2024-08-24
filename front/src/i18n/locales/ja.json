@@ -1,0 +1,76 @@
+{
+  "language": "\uD83C\uDDEF\uD83C\uDDF5 日本語",
+  "menus": {
+    "admin": "管理画面",
+    "logout": "ログアウト"
+  },
+  "speakers": {
+    "A": "Aさん",
+    "B": "Bさん",
+    "you": "あなた"
+  },
+  "tasks": {
+    "description": "なぜフード付きのシャツを着た男性とパイプを持った男性が話していると思いますか？"
+  },
+  "annotations": {
+    "scains": {
+      "description": "赤：あなたの曖昧な発言"
+    },
+    "coreStatement": {
+      "description": "黄色：あなたの曖昧な発言を理解するために必要な情報"
+    }
+  },
+  "chats": {
+    "first": "なんで2人が話していると思う？",
+    "scains": "Bさんはどう思いますか？"
+  },
+  "phrases": {
+    "A": {
+      "first": "Aさんに",
+      "second": "Aさんは",
+      "third": "Aさんも"
+    },
+    "B": {
+      "first": "Bさんに",
+      "second": "Bさんは",
+      "third": "Bさんも"
+    }
+  },
+  "sessionExpired": {
+    "timeout": "セッションタイムアウト",
+    "requireLogin": "セッションがタイムアウトしました。再度ログインしてください。",
+    "toLogin": "ログインページへ"
+  },
+  "admin": {
+    "title": "管理画面",
+    "users": {
+      "list": {
+        "title": "ユーザー一覧"
+      },
+      "create": {
+        "title": "ユーザー作成",
+        "name": "ユーザ名",
+        "email": "メールアドレス",
+        "role": "権限 (0:admin, 1:user)"
+      }
+    },
+    "conversation": {
+      "list": {
+        "title": "対話文一覧"
+      },
+      "history": {
+        "title": "対話履歴"
+      }
+    }
+  },
+  "login": {
+    "title": "ログイン画面",
+    "id": "ログインID",
+    "btnText": "ログイン",
+    "errors": {
+      "server": "ログイン中にエラーが発生しました。もう一度お試しください。",
+      "invalid": "ログインに失敗しました。ログインIDが間違っています。"
+    }
+  },
+  "send": "送信"
+}

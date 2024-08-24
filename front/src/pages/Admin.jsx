@@ -4,6 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import '../assets/styles/Admin.css';
 import '../enums/UserRole';
 import { userRoleLabels } from "../enums/UserRole";
+import {useTranslation} from "react-i18next";
 
 const userColumns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -45,6 +46,7 @@ const chatMessageHistoryColumns: GridColDef[] = [
 ];
 
 function Admin({rootURL}) {
+    const { t } = useTranslation();
     const [chatMessageHistory, setChatMessageHistory] = useState([]);
     const [conversations, setConversations] = useState([]);
     const [users, setUsers] = useState([]);
@@ -118,9 +120,9 @@ function Admin({rootURL}) {
 
     return (
         <div className="admin-container">
-            <h1>管理画面</h1>
+            <h1>{t('admin.title')}</h1>
             <div className="sub-container">
-                <h2>ユーザーリスト</h2>
+                <h2>{t('admin.users.list.title')}</h2>
                 <DataGrid
                     className="table"
                     rows={users}
@@ -135,32 +137,32 @@ function Admin({rootURL}) {
                 />
             </div>
             <div className="sub-container">
-                <h2>新しいユーザーの追加</h2>
+                <h2>{t('admin.users.create.title')}</h2>
                 <input
                     type="text"
                     name="name"
                     value={newUser.name}
                     onChange={handleNewUserChange}
-                    placeholder="ユーザー名"
+                    placeholder={t('admin.users.create.name')}
                 />
                 <input
                     type="text"
                     name="email"
                     value={newUser.email}
                     onChange={handleNewUserChange}
-                    placeholder="email"
+                    placeholder={t('admin.users.create.email')}
                 />
                 <input
                     type="text"
                     name="role"
                     value={newUser.role}
                     onChange={handleNewUserChange}
-                    placeholder="権限 (0:admin, 1:user)"
+                    placeholder={t('admin.users.create.role')}
                 />
-                <button onClick={handleUserAdd}>ユーザを追加</button>
+                <button onClick={handleUserAdd}>{t('admin.users.create.title')}</button>
             </div>
             <div className="sub-container">
-                <h2>対話リスト</h2>
+                <h2>{t('admin.conversation.list.title')}</h2>
                 <DataGrid
                     className="table"
                     rows={conversations}
@@ -175,7 +177,7 @@ function Admin({rootURL}) {
                 />
             </div>
             <div className="sub-container">
-                <h2>対話履歴</h2>
+                <h2>{t('admin.conversation.history.title')}</h2>
                 <DataGrid
                     className="table"
                     rows={chatMessageHistory}

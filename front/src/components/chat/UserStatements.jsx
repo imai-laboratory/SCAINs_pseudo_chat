@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send'
+import {useTranslation} from "react-i18next";
 export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMessage, userStatement }) => {
+    const { t } = useTranslation();
     const [inputValue, setInputValue] = useState('');
     const [isShownButton, setIsShownButton] = useState(false);
 
@@ -54,7 +56,7 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                     disabled={!isShownButton}
                     onClick={handleSubmit}
                 >
-                    送信
+                    {t('send')}
                 </Button>
             </div>
         </div>

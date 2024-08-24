@@ -20,7 +20,21 @@
   height: 100%;
 }
 
-.account {
-  display: flex;
-  padding: 16px;
+.right-items {
+    display: flex;
+    align-items: center;
+}
+
+.language-and-account {
+    display: flex;
+    align-items: center;
+}
+
+.language-and-account .account {
+    margin-left: 8px;
+}
+
+.right-items::before {
+    content: '';
+    flex-grow: 1;
 }
