@@ -56,19 +56,24 @@ def rephrase_chat(dialogue, sentence, language='ja'):
 
     if language == 'en':
         prompt = (
-            f"Rephrase a particular statement in a dialogue into a more specific statement.\n"
-            f"A dialogue between two speakers is written and one of the statements is assigned to be rephrased.\n"
-            f"Rephrase the assigned statement into a more specific statement using the words in the dialogue.\n\n"
-            f"# Dialogue\n{joined_dialogue}\n\n"
-            f"# Statement to be rephrased\n"
+            f"Rephrase a specific statement in a conversation to make it more concrete.\n"
+            f"After a conversation between two people is input, the statement to be rephrased is specified.\n"
+            f"Rephrase the specified statement to be more concrete, avoiding the use of demonstratives, while using words from the conversation.\n\n"
+            f"# Conversation\n"
+            f"{joined_dialogue}\n\n"
+            f"# Statement to Rephrase\n"
             f"{sentence}\n\n"
-            f"# rephrased statement\n"
+            f"# Concrete Statement\n"
         )
     else:
         prompt = (
             f"会話文中のある発言を具体的に言い換えます．\n2人の会話文が入力された後に，言い換えの対象となる発言が指定されます．\n"
-            f"指定された発言を，会話文中の言葉を使って指示語を含まないようにより具体的に言い換えます．\n\n# 会話文\n{joined_dialogue}\n\n# 言い換える発言\n"
-            f"{sentence}\n\n# 具体的な発言\n"
+            f"指定された発言を，会話文中の言葉を使って指示語を含まないようにより具体的に言い換えます．\n\n"
+            f"# 会話文\n"
+            f"{joined_dialogue}\n\n"
+            f"# 言い換える発言\n"
+            f"{sentence}\n\n"
+            f"# 具体的な発言\n"
         )
 
     return prompt
