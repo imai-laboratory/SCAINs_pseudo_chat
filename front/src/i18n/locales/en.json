@@ -1,0 +1,16 @@
+{
+  "menus": {
+    "admin": "admin",
+    "logout": "logout"
+  },
+  "menus.admin": "",
+  "menus.logout": "",
+  "speakers": {
+    "A": "A",
+    "B": "B",
+    "you": "you"
+  },
+  "speakers.A": "",
+  "speakers.B": "",
+  "speakers.you": ""
+}
