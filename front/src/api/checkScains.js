@@ -18,12 +18,13 @@ window.addEventListener('beforeunload', () => {
     sessionStorage.removeItem('sessionId');
 });
 
-export const checkScains = (rootUrl, conversation) => {
+export const checkScains = (rootUrl, conversation, language) => {
     const axiosClient = createAxiosClient(rootUrl);
     const sessionId = getSessionId();
     const conversationWithSession = {
         "conversation": conversation,
-        "sessionId": sessionId
+        "sessionId": sessionId,
+        "language": language,
     };
     return axiosClient.post('/api/generate-response/check-scains', conversationWithSession);
 };

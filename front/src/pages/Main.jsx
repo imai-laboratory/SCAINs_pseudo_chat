@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Chats, SharedMonitor, UserStatements} from "../components";
 import {checkScains} from "../api/checkScains";
 import {generateImageTask, generateTask} from "../api/generateResponse";
@@ -9,11 +9,13 @@ import image_user from "../assets/images/user.jpg";
 import image_missing_B from "../assets/images/missing_B.jpg";
 import sharedImg from "../assets/images/topic1.JPG";
 import {useTranslation} from "react-i18next";
+import {LanguageContext} from "../context/LanguageContext";
 
 const imageName = 'topic1.JPG';
 
 function Main({ isMissedListener, rootURL }) {
     const { t } = useTranslation();
+    const { language } = useContext(LanguageContext);
     const [chatHistory, setChatHistory] = useState([
         { person: 'A', content: t("chats.first") }
     ]);
@@ -67,13 +69,13 @@ function Main({ isMissedListener, rootURL }) {
             }
             let payload;
             if (target === 'A') {
-                payload = createPayloadWithImage(currentChatHistory, imageName, false, target);
+                payload = createPayloadWithImage(currentChatHistory, imageName, target);
             } else {
                 const initScains = scains[0].scains_index;
                 const omittedChatHistory = chatHistoryRef.current.filter((_, index) => !initScains.includes(index+1));
                 payload = createPayload(omittedChatHistory, target);
             }
-            const scainsUpdated = await handleScains(rootURL, currentChatHistory);
+            const scainsUpdated = await handleScains(rootURL, currentChatHistory, language);
 
             if (!switchMissedImage && scainsUpdated && scainsUpdated.length > initialScainsLength) {
                 await addChatHistory({ person: 'A', content: t("chats.scains") });
@@ -95,20 +97,21 @@ function Main({ isMissedListener, rootURL }) {
         }
     };
 
-    const createPayloadWithImage = (chatHistory, imageName, isScains, person) => ({
+    const createPayloadWithImage = (chatHistory, imageName, person) => ({
         chat_history: chatHistory,
         image_name: imageName,
-        is_scains: isScains,
         person: person,
+        language: language,
     });
 
     const createPayload = (chatHistory, person) => ({
         chat_history: chatHistory,
         person: person,
+        language: language,
     });
 
-    const handleScains = (rootURL, currentChatHistory) => {
-        return checkScains(rootURL, currentChatHistory)
+    const handleScains = (rootURL, currentChatHistory, language) => {
+        return checkScains(rootURL, currentChatHistory, language)
             .then(result => {
                 if (result.data) {
                     return addScains(result.data);  // ここで Promise を返す

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../../assets/styles/Header.css";
 import header_logo from "../../assets/images/header_logo.jpg"
@@ -6,8 +6,10 @@ import {IconButton, Menu, MenuItem} from '@mui/material';
 import {AccountCircle} from "@mui/icons-material";
 import { useTranslation } from 'react-i18next'
 import Button from "@mui/material/Button";
+import {LanguageContext} from "../../context/LanguageContext";
 
 function Header({ user, setUser }) {
+    const { changeLanguage } = useContext(LanguageContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const [langAnchorEl, setLangAnchorEl] = useState(null);
     const navigate = useNavigate();
@@ -41,6 +43,7 @@ function Header({ user, setUser }) {
 
     const handleLangChange = (lang) => {
         i18n.changeLanguage(lang).then(() => {
+            changeLanguage(lang);
             setLangAnchorEl(null);
             window.location.reload();
         });
@@ -65,8 +68,8 @@ function Header({ user, setUser }) {
                         open={Boolean(langAnchorEl)}
                         onClose={handleLangClose}
                     >
-                        <MenuItem onClick={() => handleLangChange('en')}>🇺🇸 English</MenuItem>
                         <MenuItem onClick={() => handleLangChange('ja')}>🇯🇵 日本語</MenuItem>
+                        <MenuItem onClick={() => handleLangChange('en')}>🇺🇸 English</MenuItem>
                     </Menu>
 
                     {user && (
