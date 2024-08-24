@@ -5,12 +5,13 @@ import header_logo from "../../assets/images/header_logo.jpg"
 import {IconButton, Menu, MenuItem} from '@mui/material';
 import {AccountCircle} from "@mui/icons-material";
 import { useTranslation } from 'react-i18next'
+import Button from "@mui/material/Button";
 
 function Header({ user, setUser }) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [langAnchorEl, setLangAnchorEl] = useState(null);
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
-    const [language, setLanguage] = useState(i18n.language);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -34,6 +35,20 @@ function Header({ user, setUser }) {
         navigate('/login'); // ログインページにリダイレクト
     };
 
+    const handleLangMenu = (event) => {
+        setLangAnchorEl(event.currentTarget);
+    };
+
+    const handleLangChange = (lang) => {
+        i18n.changeLanguage(lang).then(() => {
+            setLangAnchorEl(null);
+            window.location.reload();
+        });
+    };
+
+    const handleLangClose = () => {
+        setLangAnchorEl(null);
+    };
 
     return (
         <header className="header">
@@ -41,40 +56,54 @@ function Header({ user, setUser }) {
                 <img src={header_logo} alt="header-logo" className="header-logo"/>
             </Link>
             <div className="right-items">
-                {user && (
-                    <div className="account">
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                          >
-                            <AccountCircle sx={{ fontSize: 36 }} />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            { user.role === 0 && (
-                                <MenuItem onClick={handleAdmin}>{t('menus.admin')}</MenuItem>
-                            )}
-                            <MenuItem onClick={handleLogout}>{t('menus.logout')}</MenuItem>
-                        </Menu>
-                    </div>
-                )}
+                <div className="language-and-account">
+                    <Button onClick={handleLangMenu}>
+                        {t('language')}
+                    </Button>
+                    <Menu
+                        anchorEl={langAnchorEl}
+                        open={Boolean(langAnchorEl)}
+                        onClose={handleLangClose}
+                    >
+                        <MenuItem onClick={() => handleLangChange('en')}>🇺🇸 English</MenuItem>
+                        <MenuItem onClick={() => handleLangChange('ja')}>🇯🇵 日本語</MenuItem>
+                    </Menu>
+
+                    {user && (
+                        <div className="account">
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle sx={{fontSize: 36}}/>
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
+                            >
+                                {user.role === 0 && (
+                                    <MenuItem onClick={handleAdmin}>{t('menus.admin')}</MenuItem>
+                                )}
+                                <MenuItem onClick={handleLogout}>{t('menus.logout')}</MenuItem>
+                            </Menu>
+                        </div>
+                    )}
+                </div>
             </div>
         </header>
     );

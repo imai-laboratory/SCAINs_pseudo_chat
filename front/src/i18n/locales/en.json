@@ -1,4 +1,5 @@
 {
+  "language": "\uD83C\uDDFA\uD83C\uDDF8 English",
   "menus": {
     "admin": "admin",
     "logout": "logout"
@@ -70,5 +71,6 @@
       "server": "An error occurred during login. Please try again.",
       "invalid": "Login failed. The login ID is incorrect."
     }
-  }
+  },
+  "send": "Send"
 }
