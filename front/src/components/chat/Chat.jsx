@@ -5,10 +5,12 @@ import React, { useEffect } from 'react';
 import UserAvatar from "../../assets/images/no-profile.png"
 import A_icon from "../../assets/images/A_icon.png"
 import B_icon from "../../assets/images/B_icon.png"
+import {useTranslation} from "react-i18next";
 
 export const Chat = ({agent, text, person, textClass, isCoreStatementSpoken, isMissedListener, isScainsIndex, onSpeakerChange, onSelectCore}) => {
     const isUser = (person === "user");
     const isAgent = (person === agent);
+    const { t } = useTranslation();
     // let textClass;
     let icon;
     let speaker;
@@ -25,13 +27,13 @@ export const Chat = ({agent, text, person, textClass, isCoreStatementSpoken, isM
 
     if (isUser) {
         icon = UserAvatar;
-        speaker = 'あなた';
+        speaker = t("speakers.you");
     } else if (isAgent) {
         icon = B_icon;
-        speaker = 'Bさん';
+        speaker = t("speakers.B");
     } else {
         icon = A_icon;
-        speaker = 'Aさん';
+        speaker = t("speakers.A");
     }
 
     useEffect(() => {
@@ -40,7 +42,7 @@ export const Chat = ({agent, text, person, textClass, isCoreStatementSpoken, isM
 
     return (
         <ListItem className={classes} onClick={onSelectCore}>
-            <ListItemAvatar>
+            <ListItemAvatar className="center">
                 <Avatar alt={person} src={icon}/>
                 <div className="sm">{speaker}</div>
             </ListItemAvatar>
