@@ -10,6 +10,7 @@ import image_missing_B from "../assets/images/missing_B.jpg";
 import sharedImg from "../assets/images/topic1.JPG";
 import {useTranslation} from "react-i18next";
 import {LanguageContext} from "../context/LanguageContext";
+import * as XLSX from "xlsx/xlsx.mjs";
 
 const imageName = 'topic1.JPG';
 
@@ -45,6 +46,26 @@ function Main({ isMissedListener, rootURL }) {
                 return updatedScains;
             });
         });
+    };
+
+    const formatCurrentDate = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    };
+
+    const handleDownload = () => {
+        const worksheet = XLSX.utils.json_to_sheet(chatHistory);
+        XLSX.utils.sheet_add_aoa(worksheet, [['7段階評価']], { origin: 'C1' });
+        const workbook = XLSX.utils.book_new();
+        const currentDate = formatCurrentDate();
+        XLSX.utils.book_append_sheet(workbook, worksheet, `ChatHistory_${currentDate}`);
+        XLSX.writeFile(workbook, `chat_history_${currentDate}.xlsx`);
     };
 
     const handleUserSendMessage = async (inputValue) => {
@@ -172,6 +193,7 @@ function Main({ isMissedListener, rootURL }) {
         <section className="app-container">
             <div className="content">
                 <div className="monitor-container">
+                    <button className="download-button" onClick={handleDownload}>{t('buttons.download')}</button>
                     <SharedMonitor
                         image_A={image_A}
                         image_B={image_B}
@@ -185,7 +207,7 @@ function Main({ isMissedListener, rootURL }) {
                 </div>
                 <div className="chats-content">
                     <div className="text-bold">
-                        <span className="pink-color">{t('annotations.scains.description')}</span>
+                    <span className="pink-color">{t('annotations.scains.description')}</span>
                         <br></br>
                         <span className="orange-color">{t('annotations.coreStatement.description')}</span>
                     </div>

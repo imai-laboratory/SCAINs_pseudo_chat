@@ -56,7 +56,7 @@ export const UserStatements = ({ buttonVisible, isFreeChatMode, handleUserSendMe
                     disabled={!isShownButton}
                     onClick={handleSubmit}
                 >
-                    {t('send')}
+                    {t('buttons.send')}
                 </Button>
             </div>
         </div>
