@@ -63,6 +63,7 @@ function Main({ isMissedListener, rootURL }) {
         const worksheet = XLSX.utils.json_to_sheet(chatHistory);
         XLSX.utils.sheet_add_aoa(worksheet, [['量(1~7)：発言に対して色付けされた量は適切である']], { origin: 'C1' });
         XLSX.utils.sheet_add_aoa(worksheet, [['質(1~7)：発言に対して重要な情報が含まれている']], { origin: 'D1' });
+        XLSX.utils.sheet_add_aoa(worksheet, [['(1~7)：各発言に対してアシストの有無は適切だったか']], { origin: 'E1' });
         const workbook = XLSX.utils.book_new();
         const currentDate = formatCurrentDate();
         XLSX.utils.book_append_sheet(workbook, worksheet, `ChatHistory_${currentDate}`);
