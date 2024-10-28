@@ -1,4 +1,3 @@
-import random
 from app.utils.utils import join_dialogue
 
 def generate_answer(dialogue, agent, language='ja'):
