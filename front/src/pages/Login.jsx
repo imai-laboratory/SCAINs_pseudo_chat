@@ -12,7 +12,7 @@ function Login({ setUser, setLoading, rootURL, user }) {
 
     useEffect(() => {
         setLoading(false);
-    }, []);
+    }, [setLoading]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
