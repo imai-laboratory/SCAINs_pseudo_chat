@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { AuthForm } from '../components';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,10 @@ function Login({ setUser, setLoading, rootURL, user }) {
     const [loginId, setLoginId] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
